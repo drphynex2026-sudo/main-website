@@ -42,4 +42,3 @@ Container `a5462fe1fe3626e9a319689476c9f7f372019ffaf31a53265ee3a635ff61f437` và
 - Chưa mở rộng mọi interleaving/concurrency hoặc lost-update của Product/Brand; hai ca giao dịch thật tập trung lock/approval Home Page.
 - Warning webpack chưa có diagnostic vẫn mở. Không nâng dependency để che warning.
 - Bản sửa chưa được tích hợp/deploy; Production hiện chưa nhận chốt Unpublish này. Bốn sản phẩm thật vẫn draft theo đợt Admin cơ bản.
-
