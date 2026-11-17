@@ -1,5 +1,39 @@
 # Kế hoạch triển khai thử (Vercel)
 
+## Cấu hình upload Production đã kiểm chứng — 17/11/2026
+
+Phần này ghi nhận cấu hình hiện hành; kế hoạch ngày 29/10 bên dưới là tài liệu lịch sử, không phải lệnh cho phép migration hoặc rollback database.
+
+- Production: `NEXT_PUBLIC_SERVER_URL=https://main-website-orcin-sigma.vercel.app` (không có dấu `/` cuối), khớp origin dùng đăng nhập Admin.
+- `S3_CLIENT_UPLOADS=true`, loại **Config**, phạm vi **Production**. Sau khi đổi biến phải Redeploy: plugin chỉ bật upload trực tiếp khi giá trị chính xác là `true`. Không gửi file lớn qua multipart của Vercel để né lỗi cấu hình.
+- Bucket R2 giữ **private**: không bật Public Development URL/custom domain; không đổi ACL hay bỏ kiểm tra quyền Payload. Endpoint cấp URL upload vẫn chỉ cho editor/admin theo `src/config/storage.ts`.
+- CORS bucket cho luồng hiện tại:
+
+```json
+[
+  {
+    "AllowedOrigins": ["https://main-website-orcin-sigma.vercel.app"],
+    "AllowedMethods": ["PUT"],
+    "AllowedHeaders": ["content-type", "if-none-match"],
+    "MaxAgeSeconds": 600
+  }
+]
+```
+
+Plugin 3.92.1 cấp presigned URL bằng POST có phiên đăng nhập, PUT binary trực tiếp tới R2, rồi lưu metadata bằng receipt phía server. CORS không thay thế chữ ký hoặc quyền ứng dụng. Môi trường Preview dùng origin/bucket riêng; không mở wildcard cho mọi deployment. Đổi domain cần cập nhật URL ứng dụng và origin CORS tương ứng. PDF mở bằng liên kết staff qua redirect có ký; không cần mở bucket công khai hoặc thêm GET chỉ để công cụ fetch cross-origin hoạt động.
+
+Đã kiểm trên deployment `dpl_4UHooG3bsdhH7Uio35VsDthppSU5`, nguồn `5d4d0738881f4528b4d1ec050b99f95f875bf7b8`: PNG 6.762.422 byte, tên tiếng Việt, PDF mở trong trình đọc và hai thao tác Thay ảnh của Landing bằng fixture. Presign trả 200, lưu metadata 201; khách bị chặn. Không có capture Network đầy đủ OPTIONS/PUT hoặc checksum PDF tải về. Fixture đã dọn, bốn sản phẩm thật vẫn draft. Không có thay đổi mã cần PR cho lỗi upload này. Không ghi credentials, receipt hoặc URL có chữ ký vào tài liệu.
+
+Tài liệu CORS chính thức: https://developers.cloudflare.com/r2/buckets/cors/
+
+### Admin cơ bản: kết quả và giới hạn cùng ngày
+
+Đã kiểm bằng fixture riêng trên deployment trên: lưu nháp KO hai lần liên tiếp, giữ EN/VI; SEO/rich text VI không lan sang locale khác; preview KO/EN/VI đúng nội dung; khách thật nhận 404 và không có copy/SEO nháp. Builder lưu đúng thao tác thêm, nhân bản, đổi thứ tự bằng nút, ẩn/hiện và xoá khối. Fixture đã dọn; bốn sản phẩm thật vẫn draft. Đây không phải nghiệm thu toàn diện.
+
+Đã đọc bốn nhóm build warning: cấu hình npm `cache-dir` và package deprecated; sáu install scripts chưa covered bởi allowlist; `cache-dir` lặp lại; `Compiled with warnings` không kèm diagnostic webpack. Chưa chứng minh chúng gây lỗi Admin; warning webpack vẫn chưa rõ nguyên nhân. Không nâng dependency hoặc tự approve scripts chỉ để bỏ warning.
+
+Chưa kiểm trong đợt Admin cơ bản: duyệt/publish/unpublish trên DB thử, quyền editor và xung đột hai phiên, CRUD toàn bộ collection/global, phân trang Product nhiều trang, kéo thả/touch và lỗi mạng khi lưu. Các ca ghi/xuất bản tiếp theo phải dùng bản sao DB tạm đã xác minh, không thay nội dung thật. Không cần redeploy cho cập nhật tài liệu này.
+
 Cập nhật: 29/10/2026, sau mốc nghiệm thu Local `2d2d7a5`. **Chưa tạo dịch vụ, chưa phát sinh phí, chưa push, chưa triển khai.** Giá và giới hạn gói dịch vụ dưới đây cần kiểm tra lại trên trang của nhà cung cấp trước khi đăng ký.
 
 > Cập nhật sau review độc lập: xem [independent-review-remediation.md](independent-review-remediation.md). Cache nội dung chia sẻ đã được gỡ để ưu tiên thu hồi; URL optimizer bị chặn, upload dùng no-store. Storage có migration schema riêng chưa chạy trên database thật. Các bảng kiểm tra cũ dưới đây là lịch sử, không thay thế báo cáo mới.
