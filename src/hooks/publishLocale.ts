@@ -19,7 +19,9 @@ export const publishOnlyRequestedLocale: CollectionBeforeOperationHook = ({
     // asking to publish KO would otherwise go through. Local API callers are checked by
     // lib/content-mutations.ts before Payload is called.
     const restLocaleMismatch =
-      req.payloadAPI === 'REST' && options.publishSpecificLocale != null && options.publishSpecificLocale !== rawLocale
+      req.payloadAPI === 'REST' &&
+      options.publishSpecificLocale != null &&
+      options.publishSpecificLocale !== rawLocale
     if (
       (rawLocale != null && !isLocale(rawLocale)) ||
       !isLocale(req.locale) ||
@@ -45,6 +47,19 @@ export const publishOnlyRequestedLocale: CollectionBeforeOperationHook = ({
       throw new APIError(
         'Yêu cầu mâu thuẫn: lưu bản nháp (draft=true) không được kèm trạng thái "published". Lưu nháp hoặc xuất bản riêng từng ngôn ngữ.',
         400,
+        null,
+        true,
+      )
+    }
+    // Payload's Unpublish changes the shared document status, even when
+    // publishSpecificLocale is set. Refuse this whole-document operation in a
+    // locale-scoped workflow: it would also hide valid publications in KO/EN/VI.
+    // Ordinary Save Draft remains supported. Intentional approval withdrawal
+    // uses the existing guarded, single-locale publish path instead.
+    if (operation === 'update' && !savingDraft && status === 'draft') {
+      throw new APIError(
+        'Không thể bỏ xuất bản toàn tài liệu trong quy trình từng ngôn ngữ: thao tác này sẽ ẩn cả các ngôn ngữ khác. Lưu bản nháp bằng nút Lưu bản nháp; thu hồi nội dung cần thực hiện bằng thao tác hạ duyệt riêng ngôn ngữ.',
+        409,
         null,
         true,
       )
