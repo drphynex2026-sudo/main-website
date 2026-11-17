@@ -8,6 +8,7 @@ import config from '@/payload.config'
 import { withContentLocaleGuard } from '@/lib/content-mutations'
 import { readApprovalState } from '@/lib/approval-basis'
 import { readApprovals } from '@/lib/banner-revision'
+import { publishOnlyRequestedLocale } from '@/hooks/publishLocale'
 const locs = ['ko', 'en', 'vi'] as const
 type L = (typeof locs)[number]
 let raw: Payload, p: Payload
@@ -85,6 +86,64 @@ const pick = (value: unknown, field: string) => {
   const d = value as Record<string, unknown> | null
   return d ? { text: d[field], seo: d.seo, translationStatus: d.translationStatus } : null
 }
+it('limits the hook to the registered localized content workflow', async () => {
+  for (const slug of [
+    'media',
+    'source-documents',
+    'users',
+    'contact-submissions',
+    'partner-inquiries',
+  ]) {
+    const collection = raw.collections[slug as keyof typeof raw.collections].config
+    expect(collection.hooks.beforeOperation).not.toContain(publishOnlyRequestedLocale)
+  }
+  expect(raw.collections.products.config.hooks.beforeOperation).toContain(
+    publishOnlyRequestedLocale,
+  )
+  for (const global of raw.globals.config) {
+    expect(global.hooks.beforeOperation).toContain(publishOnlyRequestedLocale)
+  }
+})
+it('deliberately refuses document-wide Unpublish even with only EN public; Save Draft remains usable', async () => {
+  const doc = await p.create({
+    collection: 'products',
+    locale: 'en',
+    draft: true,
+    user: users.admin,
+    overrideAccess: false,
+    data: { name: 'SINGLE EN PUBLIC', slug: 'workflow-single-' + Date.now() },
+  })
+  const options = {
+    collection: 'products' as const,
+    id: doc.id,
+    locale: 'en' as const,
+    user: users.admin,
+    overrideAccess: false,
+  }
+  await p.update({ ...options, draft: true, data: { translationStatus: 'approved' } })
+  await p.update({ ...options, data: { _status: 'published' } })
+  const publicRead = async (locale: L) =>
+    (
+      await p.find({
+        collection: 'products',
+        locale,
+        fallbackLocale: false,
+        depth: 0,
+        draft: false,
+        overrideAccess: false,
+        where: { id: { equals: doc.id } },
+      })
+    ).docs
+  expect(await publicRead('ko')).toEqual([])
+  expect(await publicRead('vi')).toEqual([])
+  expect(
+    (await rest('products/' + doc.id + '?locale=en', { _status: 'draft' }, 'admin')).status,
+  ).toBe(409)
+  expect((await publicRead('en'))[0].name).toBe('SINGLE EN PUBLIC')
+  await p.update({ ...options, draft: true, data: { name: 'SINGLE EN DRAFT' } })
+  expect((await publicRead('en'))[0].name).toBe('SINGLE EN PUBLIC')
+  expect((await p.findByID({ ...options, draft: true })).name).toBe('SINGLE EN DRAFT')
+})
 for (const kind of ['product', 'brand'] as const)
   for (const role of ['admin', 'editor'] as const) {
     let id: number, path: string, field: string
@@ -273,6 +332,16 @@ for (const kind of ['product', 'brand'] as const)
         )
         expect(unpublish.status).toBe(409)
         expect(unpublish.body.errors[0].message).toMatch(/ẩn cả các ngôn ngữ khác/)
+        const nativeAdminUnpublish = await rest(
+          path + '?depth=0&fallback-locale=null&unpublishAllLocales=true',
+          { _status: 'draft' },
+          role,
+          kind === 'product' ? 'PATCH' : 'POST',
+        )
+        expect(nativeAdminUnpublish.status).toBe(409)
+        expect(nativeAdminUnpublish.body.errors[0].message).toMatch(
+          /Giao diện thu hồi riêng từng ngôn ngữ chưa được triển khai/,
+        )
         await expect(save(l, { _status: 'draft' }, false)).rejects.toThrow(
           /ẩn cả các ngôn ngữ khác/,
         )

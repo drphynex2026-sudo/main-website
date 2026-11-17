@@ -66,11 +66,11 @@ Preview chỉ dành cho nhân viên đã đăng nhập. Khách mở cùng đư�
 
 Chỉ Editor hoặc Admin:
 1. Kiểm tra từng ngôn ngữ trong preview.
-2. Đặt **Approved** cho các ngôn ngữ đạt yêu cầu.
-3. Bấm **Publish changes**.
+2. Đặt **Approved** cho ngôn ngữ đạt yêu cầu và lưu nháp ở một lần lưu riêng, không kèm sửa nội dung.
+3. Bấm **Publish changes** cho đúng ngôn ngữ đang chọn.
 4. Bấm **Thoát xem trước** rồi mở trang như khách để xác nhận. Nội dung mới sẽ hiện ngay. Nếu sau một phút vẫn chưa thấy, báo bộ phận kỹ thuật; bộ nhớ đệm cũng tự làm mới sau tối đa 1 giờ.
 
-Muốn gỡ khỏi website: chọn **Unpublish**, hoặc đặt ngôn ngữ đó về **In review** rồi Publish lại.
+**Giới hạn thu hồi:** giao diện thu hồi riêng từng ngôn ngữ chưa được triển khai. Nút **Unpublish** của Payload tác động trạng thái toàn tài liệu nên hiện bị chặn, kể cả tài liệu chỉ có một ngôn ngữ công khai; nội dung công khai được giữ nguyên. **Save draft** vẫn lưu nháp bình thường. Không dùng việc hạ trạng thái rồi lưu nháp như bằng chứng đã gỡ nội dung công khai; không tự thao tác API để thu hồi. Khi cần gỡ nội dung, báo người phụ trách kỹ thuật để thống nhất một quy trình riêng được kiểm thử và phê duyệt.
 
 Các trang Thương hiệu, Trang chủ, Hợp tác (mục **Pages**) và Bài viết, Chính sách, Điểm bán cũng theo cùng quy tắc.
 
