@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { Suspense, type ReactNode } from 'react'
+import { headers } from 'next/headers'
 
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider'
 import { ConsentSettingsButton } from '@/components/analytics/ConsentSettingsButton'
@@ -9,7 +10,8 @@ import { locales, type Locale } from '@/i18n/locales'
 import { trackingConfig } from '@/lib/analytics/config'
 import { contactRows } from '@/lib/contact-details'
 import { findGuestGlobal, findPublicGlobal } from '@/lib/content'
-import { getPreviewUser } from '@/lib/preview'
+import { getPreviewStaffUser } from '@/lib/preview'
+import { previewHref, previewView, previewViewHeader } from '@/lib/preview-navigation'
 import { localizedPath } from '@/lib/seo'
 import { productBriefs } from '@/lib/product-brief'
 
@@ -71,13 +73,15 @@ export async function PageShell({
 }: Props) {
   const [t, preview, settings] = await Promise.all([
     getTranslations(),
-    getPreviewUser(),
+    getPreviewStaffUser(),
     // Same block as the Contact page (published + approved for this language; drafts in preview,
     // except in "Xem như khách", which reads it with the visitor's permissions).
     guestView ? findGuestGlobal('site-settings', locale) : findPublicGlobal('site-settings', locale),
   ])
   const contact = contactRows(settings?.contact)
-  const href = (p: string) => localizedPath(locale, p)
+  const view = preview ? previewView((await headers()).get(previewViewHeader)) : null
+  const href = (p: string) => previewHref(localizedPath(locale, p), view)
+  const languageSearch = previewHref('/' + search, view).slice(1)
   // Off by default (env flag + IDs); never in staff preview. The admin has no PageShell.
   const tracking = trackingConfig()
   const trackingOn = tracking.enabled && !preview
@@ -100,7 +104,7 @@ export async function PageShell({
     <LanguageSwitcher
       locale={locale}
       path={path}
-      search={search}
+      search={languageSearch}
       available={available}
       variant={variant}
     />
@@ -119,12 +123,12 @@ export async function PageShell({
         {t('common.skipToContent')}
       </a>
 
-      {preview ? (
+      {preview && view !== 'guest' ? (
         <div role="note" className="bg-navy text-sm text-white">
           <div className="container-page on-dark flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2">
             <p>{t('preview.banner')}</p>
             <a
-              href={`/preview/exit?path=${encodeURIComponent(href(path))}`}
+              href={`/preview/exit?path=${encodeURIComponent(localizedPath(locale, path))}`}
               className="underline underline-offset-4"
             >
               {t('preview.exit')}
