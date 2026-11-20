@@ -8,6 +8,7 @@ import config from '@/payload.config'
 import { withContentLocaleGuard } from '@/lib/content-mutations'
 import { readApprovalState } from '@/lib/approval-basis'
 import { readApprovals } from '@/lib/banner-revision'
+import { buildApprovalRequest } from '@/lib/approval-refresh'
 import { publishOnlyRequestedLocale } from '@/hooks/publishLocale'
 const locs = ['ko', 'en', 'vi'] as const
 type L = (typeof locs)[number]
@@ -360,6 +361,169 @@ const home = (data: Record<string, unknown>, user: User, context: Record<string,
     overrideAccess: false,
     context,
   })
+
+// Compare every persisted row/column of the main document, locale and version tables.
+// This includes approval fields, timestamps, version ids/counts and nested landing rows.
+async function publicationSnapshot(kind: 'product' | 'global') {
+  const tables = (
+    await client.query<{ tablename: string }>(
+      "SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename",
+    )
+  ).rows.filter(({ tablename: t }) =>
+    kind === 'product'
+      ? /^(products($|_)|_products_v($|_))/.test(t)
+      : /^(brand_page($|_)|_brand_page_v($|_))/.test(t),
+  )
+  expect(tables.length).toBeGreaterThanOrEqual(4)
+  const result = []
+  for (const { tablename } of tables) {
+    const {
+      rows: [row],
+    } = await client.query(
+      `SELECT count(*)::int count, md5(COALESCE(jsonb_agg(to_jsonb(t) ORDER BY to_jsonb(t)::text)::text,'[]')) hash FROM "${tablename}" t`,
+    )
+    result.push({ table: tablename, ...row })
+  }
+  return result
+}
+for (const kind of ['product', 'global'] as const) {
+  it(`${kind}: explicit draft+unpublish preserves all persisted publication and version rows`, async () => {
+    const user = users.admin
+    const id =
+      kind === 'product'
+        ? (
+            await p.create({
+              collection: 'products',
+              locale: 'en',
+              draft: true,
+              overrideAccess: false,
+              user,
+              data: { name: 'UNPUBLISH FLAG FIXTURE', slug: 'unpublish-flag-' + Date.now() },
+            })
+          ).id
+        : undefined
+    const mutate = (data: Record<string, unknown>, extra: Record<string, unknown> = {}) =>
+      kind === 'product'
+        ? p.update({
+            collection: 'products',
+            id: id!,
+            locale: 'en',
+            user,
+            overrideAccess: false,
+            data: data as never,
+            ...extra,
+          })
+        : p.updateGlobal({
+            slug: 'brand-page',
+            locale: 'en',
+            user,
+            overrideAccess: false,
+            data: data as never,
+            ...extra,
+          })
+    await mutate(
+      { [kind === 'product' ? 'name' : 'title']: 'UNPUBLISH PUBLIC FIXTURE' },
+      { draft: true },
+    )
+    await mutate({ translationStatus: 'approved' }, { draft: true })
+    await mutate({ _status: 'published' })
+    const versions =
+      kind === 'product'
+        ? await p.findVersions({
+            collection: 'products',
+            where: { parent: { equals: id } },
+            sort: '-updatedAt',
+            limit: 1,
+            overrideAccess: false,
+            user,
+          })
+        : await p.findGlobalVersions({
+            slug: 'brand-page',
+            sort: '-updatedAt',
+            limit: 1,
+            overrideAccess: false,
+            user,
+          })
+    // Single-locale publish also leaves a draft snapshot. Seed the reported
+    // legacy/latest-published shape explicitly, in this verified disposable DB only.
+    const versionTable = kind === 'product' ? '_products_v' : '_brand_page_v'
+    await client.query(`UPDATE "${versionTable}" SET version__status='published' WHERE id=$1`, [
+      versions.docs[0].id,
+    ])
+    expect(
+      (
+        await client.query(`SELECT version__status FROM "${versionTable}" WHERE id=$1`, [
+          versions.docs[0].id,
+        ])
+      ).rows[0].version__status,
+    ).toBe('published')
+    expect(
+      (
+        await client.query(`SELECT latest FROM "${versionTable}" WHERE id=$1`, [
+          versions.docs[0].id,
+        ])
+      ).rows[0].latest,
+    ).toBe(true)
+    const before = await publicationSnapshot(kind)
+    const path = kind === 'product' ? `products/${id}` : 'globals/brand-page'
+    for (const data of [{ _status: 'draft' }, {}]) {
+      const response = await rest(
+        path + '?locale=en&draft=true&unpublishAllLocales=true',
+        data,
+        'admin',
+        kind === 'product' ? 'PATCH' : 'POST',
+      )
+      const after = await publicationSnapshot(kind)
+      console.info(
+        'unpublish persistence evidence',
+        JSON.stringify({ kind, status: response.status, before, after }),
+      )
+      expect(response.status).toBe(409)
+      expect(response.body.errors[0].message).toMatch(/ẩn cả các ngôn ngữ khác/)
+      expect(after).toEqual(before)
+      await expect(mutate(data, { draft: true, unpublishAllLocales: true })).rejects.toThrow(
+        /ẩn cả các ngôn ngữ khác/,
+      )
+      expect(await publicationSnapshot(kind)).toEqual(before)
+      const localOptions = {
+        locale: 'en' as const,
+        draft: true,
+        unpublishAllLocales: true,
+        data: data as never,
+        overrideAccess: true,
+      }
+      await expect(
+        kind === 'product'
+          ? raw.update({ collection: 'products', id: id!, ...localOptions })
+          : raw.updateGlobal({ slug: 'brand-page', ...localOptions }),
+      ).rejects.toThrow(/ẩn cả các ngôn ngữ khác/)
+      expect(await publicationSnapshot(kind)).toEqual(before)
+    }
+    if (kind === 'product') {
+      const bulk = await rest(
+        `products?locale=en&draft=true&unpublishAllLocales=true&where[id][equals]=${id}`,
+        { _status: 'draft' },
+        'admin',
+      )
+      expect([400, 409]).toContain(bulk.status)
+      expect(bulk.body.errors.length).toBeGreaterThan(0)
+      expect(await publicationSnapshot(kind)).toEqual(before)
+      const ordinaryBulk = await rest(
+        `products?locale=en&where[id][equals]=${id}`,
+        { _status: 'draft' },
+        'admin',
+      )
+      expect([400, 409]).toContain(ordinaryBulk.status)
+      expect(await publicationSnapshot(kind)).toEqual(before)
+    }
+    // Ordinary draft saves and separate approval remain usable after refusals.
+    await mutate(
+      { [kind === 'product' ? 'name' : 'title']: 'UNPUBLISH PRIVATE FIXTURE' },
+      { draft: true },
+    )
+    await mutate({ translationStatus: 'approved' }, { draft: true })
+  })
+}
 const homeRead = () =>
   p.findGlobal({
     slug: 'home-page',
@@ -369,6 +533,23 @@ const homeRead = () =>
     user: users.editor,
     overrideAccess: false,
   })
+it('ordinary ApprovalPanel request still approves a separately saved draft', async () => {
+  await home({ banners: { forma: { title: 'PANEL FLAG REGRESSION ' + Date.now() } } }, users.editor)
+  const state = await readApprovalState(raw, 'vi')
+  const request = buildApprovalRequest(state, 'vi', 'Tiếng Việt')!
+  const response = await handleEndpoints({
+    config,
+    request: new Request('http://localhost:3057' + request.url, {
+      method: 'POST',
+      headers: { ...request.headers, Authorization: 'JWT ' + tokens.editor },
+      body: request.body,
+    }),
+  })
+  expect(response.status).toBe(200)
+  const approved = await homeRead()
+  expect(approved.translationStatus).toBe('approved')
+  expect(readApprovals(approved.bannerApprovals).vi).toBeDefined()
+})
 const pendingLock = async () => {
   const deadline = Date.now() + 10000
   while (Date.now() < deadline) {

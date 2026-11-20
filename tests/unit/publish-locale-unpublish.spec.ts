@@ -26,7 +26,7 @@ describe('whole-document unpublish safety in locale workflow', () => {
     it(`${kind}: the real Admin all-locale Unpublish gets the specific safety message`, () => {
       const args = { unpublishAllLocales: true, data: { _status: 'draft' } }
       const req = {
-        locale: 'all',
+        locale: 'ko',
         payloadAPI: 'REST',
         searchParams: new URLSearchParams({ unpublishAllLocales: 'true' }),
         context: {},
@@ -35,6 +35,42 @@ describe('whole-document unpublish safety in locale workflow', () => {
         /Giao diện thu hồi riêng từng ngôn ngữ chưa được triển khai/,
       )
       expect(req.context).toEqual({})
+    })
+    it.each([true, 'true'])(
+      `${kind}: refuses explicit all-locale unpublish with draft=true (%s)`,
+      (flag) => {
+        const args = { draft: true, unpublishAllLocales: flag, data: {} }
+        const req = {
+          locale: 'en',
+          payloadAPI: 'REST',
+          searchParams: new URLSearchParams({
+            locale: 'en',
+            draft: 'true',
+            unpublishAllLocales: 'true',
+          }),
+          context: {},
+        }
+        expect(() => hook({ operation: 'update', args, req } as never)).toThrow(
+          /ẩn cả các ngôn ngữ khác/,
+        )
+        expect(args.data).toEqual({})
+        expect(req.context).toEqual({})
+      },
+    )
+    it(`${kind}: rejects the all-locale edge case before locale validation`, () => {
+      const req = {
+        locale: 'all',
+        payloadAPI: 'REST',
+        searchParams: new URLSearchParams({ locale: 'all' }),
+        context: {},
+      }
+      expect(() =>
+        hook({
+          operation: 'update',
+          args: { unpublishAllLocales: true, data: { _status: 'draft' } },
+          req,
+        } as never),
+      ).toThrow(/ẩn cả các ngôn ngữ khác/)
     })
     it(`${kind}: still accepts an ordinary Save Draft`, () => {
       const args = { draft: true, data: { _status: 'draft' } }

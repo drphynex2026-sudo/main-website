@@ -18,9 +18,14 @@ export const publishOnlyRequestedLocale: CollectionBeforeOperationHook = ({
     // Payload's Unpublish changes the shared document status, even when
     // publishSpecificLocale is set. Refuse this whole-document operation in a
     // locale-scoped workflow: it would also hide valid publications in KO/EN/VI.
+    // Explicit unpublish must also be refused with draft=true: Payload passes
+    // this flag through to saveVersion and can overwrite the latest version.
+    // REST parses the query into a boolean; Local API forwards the option.
+    const unpublishAllLocales =
+      options.unpublishAllLocales === true || options.unpublishAllLocales === 'true'
     // Ordinary Save Draft remains supported. There is no dedicated locale
     // withdrawal UI yet; do not suggest a manual API workaround to operators.
-    if (operation === 'update' && !savingDraft && status === 'draft') {
+    if (operation === 'update' && (unpublishAllLocales || (!savingDraft && status === 'draft'))) {
       throw new APIError(
         'Không thể bỏ xuất bản toàn tài liệu: thao tác này sẽ ẩn cả các ngôn ngữ khác. Nội dung công khai được giữ nguyên. Bạn vẫn có thể dùng Lưu bản nháp. Giao diện thu hồi riêng từng ngôn ngữ chưa được triển khai.',
         409,
