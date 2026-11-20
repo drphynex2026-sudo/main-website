@@ -13,13 +13,35 @@ export const publishOnlyRequestedLocale: CollectionBeforeOperationHook = ({
 }) => {
   if (operation === 'create' || operation === 'update') {
     const options = args as unknown as Record<string, unknown>
+    const savingDraft = options.draft === true || options.draft === 'true'
+    const status = (options.data as Record<string, unknown> | undefined)?._status
+    // Payload's Unpublish changes the shared document status, even when
+    // publishSpecificLocale is set. Refuse this whole-document operation in a
+    // locale-scoped workflow: it would also hide valid publications in KO/EN/VI.
+    // Explicit unpublish must also be refused with draft=true: Payload passes
+    // this flag through to saveVersion and can overwrite the latest version.
+    // REST parses the query into a boolean; Local API forwards the option.
+    const unpublishAllLocales =
+      options.unpublishAllLocales === true || options.unpublishAllLocales === 'true'
+    // Ordinary Save Draft remains supported. There is no dedicated locale
+    // withdrawal UI yet; do not suggest a manual API workaround to operators.
+    if (operation === 'update' && (unpublishAllLocales || (!savingDraft && status === 'draft'))) {
+      throw new APIError(
+        'Không thể bỏ xuất bản toàn tài liệu: thao tác này sẽ ẩn cả các ngôn ngữ khác. Nội dung công khai được giữ nguyên. Bạn vẫn có thể dùng Lưu bản nháp. Giao diện thu hồi riêng từng ngôn ngữ chưa được triển khai.',
+        409,
+        null,
+        true,
+      )
+    }
     const rawLocale = req.searchParams?.get('locale') ?? req.query?.locale
     // REST: compare with the locale written on the request itself. For globals Payload has already
     // replaced req.locale with publishSpecificLocale before any hook runs, so a "?locale=vi" request
     // asking to publish KO would otherwise go through. Local API callers are checked by
     // lib/content-mutations.ts before Payload is called.
     const restLocaleMismatch =
-      req.payloadAPI === 'REST' && options.publishSpecificLocale != null && options.publishSpecificLocale !== rawLocale
+      req.payloadAPI === 'REST' &&
+      options.publishSpecificLocale != null &&
+      options.publishSpecificLocale !== rawLocale
     if (
       (rawLocale != null && !isLocale(rawLocale)) ||
       !isLocale(req.locale) ||
@@ -35,12 +57,10 @@ export const publishOnlyRequestedLocale: CollectionBeforeOperationHook = ({
         true,
       )
     }
-    const savingDraft = options.draft === true || options.draft === 'true'
     // "Save as draft" that also asks to publish: Payload would publish (its own draft flag
     // yields to `_status: 'published'`), while every guard here would treat it as a draft save
     // and skip the approval checks. Refused before anything is written; the Admin never sends it
     // (Publish has no draft flag, Save draft sends `_status: 'draft'`).
-    const status = (options.data as Record<string, unknown> | undefined)?._status
     if (savingDraft && status === 'published') {
       throw new APIError(
         'Yêu cầu mâu thuẫn: lưu bản nháp (draft=true) không được kèm trạng thái "published". Lưu nháp hoặc xuất bản riêng từng ngôn ngữ.',

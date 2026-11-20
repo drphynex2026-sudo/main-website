@@ -1,5 +1,6 @@
 import { blockContentRestore, blockGlobalRestore } from '@/hooks/blockContentRestore'
 import { publishOnlyRequestedLocale, publishOnlyRequestedGlobalLocale } from '@/hooks/publishLocale'
+import { bulkUnpublishError } from '@/hooks/bulkUnpublishError'
 import type { CollectionConfig, Field, GlobalConfig } from 'payload'
 
 import { editors, publishedAndApproved, staff } from '@/access/roles'
@@ -42,6 +43,7 @@ export const contentCollection = ({
       ...(hooks?.beforeOperation ?? []),
     ],
     beforeChange: [guardPublishing, ...(hooks?.beforeChange ?? [])],
+    afterError: [...(hooks?.afterError ?? []), bulkUnpublishError],
   },
   fields: [...fields, translationStatusField],
 })

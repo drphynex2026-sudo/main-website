@@ -169,16 +169,19 @@ async function main() {
       page.response.status === 200 && !page.html.includes('UNREVIEWED HTTP product'),
       'pending draft does not enter public HTML or metadata',
     )
-    await payload.update({
-      collection: 'products',
-      id: p.id,
-      locale: 'en',
-      data: { _status: 'draft' },
-    })
+    await assert.rejects(
+      payload.update({
+        collection: 'products',
+        id: p.id,
+        locale: 'en',
+        data: { _status: 'draft' },
+      }),
+      /Không thể bỏ xuất bản toàn tài liệu/,
+    )
     page = await read(productPath)
     check(
-      page.response.status === 404 && !page.html.includes('Review approved product'),
-      'unpublish takes effect on next HTTP request',
+      page.response.status === 200 && page.html.includes('Review approved product'),
+      'refused whole-document unpublish preserves the published page',
     )
     await payload.update({
       collection: 'products',
