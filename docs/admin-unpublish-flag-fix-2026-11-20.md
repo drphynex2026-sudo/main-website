@@ -30,3 +30,9 @@ Unit mô phỏng Admin native: không có query locale, `req.locale=ko` mặc đ
 Evidence ngoài Git tại thư mục visualizations của đợt kiểm: `unpublish-before-20261120.log`, `unpublish-after-20261120.log`. Không đưa file credential hoặc dump vào commit.
 
 Giới hạn: không mở browser mới hoặc build lại trong vòng sửa nhỏ này; request ApprovalPanel được kiểm ở endpoint bằng helper production, không gọi đó là kiểm browser. Kết quả build/browser của baseline chỉ áp dụng nguồn baseline. Không lặp upload. Cấu hình `vercel.json` tắt auto-deploy riêng nhánh PR giữ nguyên. Cần review SHA mới trước merge/deploy.
+
+## Checkpoint siết bulk sau review độc lập
+
+Đổi riêng test: cả request bulk native và tổ hợp draft/unpublish phải trả đúng 409 và đúng toàn bộ thông báo guard, không còn chấp nhận 400 chung. Query dùng `where.and` với `_status.not_equals=draft` và `id.in` theo `@payloadcms/ui/UnpublishMany/DrawerContent`; không dùng ID equals đơn lẻ thay cho request Admin. Count/hash bảng chính và versions vẫn được đối chiếu sau mỗi lần từ chối. Regression liên quan 39/39 PASS trên DB disposable mới đã xác minh. Không đổi runtime, schema, dependency hoặc giới hạn fixture SQL đã nêu.
+
+Kết quả production build và browser tiếp theo được ghi vào PR #1 theo SHA checkpoint cuối; các ghi chú chưa build/browser trong phần lịch sử phía trên mô tả thời điểm trước các lượt xác nhận đó.

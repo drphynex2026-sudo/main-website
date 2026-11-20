@@ -500,20 +500,22 @@ for (const kind of ['product', 'global'] as const) {
       expect(await publicationSnapshot(kind)).toEqual(before)
     }
     if (kind === 'product') {
+      // Payload UnpublishMany/DrawerContent combines the published-status filter
+      // with selected ids; keep the native request distinct from the flag edge case.
+      const where = `where[and][0][_status][not_equals]=draft&where[and][1][id][in][0]=${id}`
+      const guardMessage =
+        'Không thể bỏ xuất bản toàn tài liệu: thao tác này sẽ ẩn cả các ngôn ngữ khác. Nội dung công khai được giữ nguyên. Bạn vẫn có thể dùng Lưu bản nháp. Giao diện thu hồi riêng từng ngôn ngữ chưa được triển khai.'
       const bulk = await rest(
-        `products?locale=en&draft=true&unpublishAllLocales=true&where[id][equals]=${id}`,
+        `products?locale=en&draft=true&unpublishAllLocales=true&${where}`,
         { _status: 'draft' },
         'admin',
       )
-      expect([400, 409]).toContain(bulk.status)
-      expect(bulk.body.errors.length).toBeGreaterThan(0)
+      expect(bulk.status).toBe(409)
+      expect(bulk.body.errors[0].message).toBe(guardMessage)
       expect(await publicationSnapshot(kind)).toEqual(before)
-      const ordinaryBulk = await rest(
-        `products?locale=en&where[id][equals]=${id}`,
-        { _status: 'draft' },
-        'admin',
-      )
-      expect([400, 409]).toContain(ordinaryBulk.status)
+      const ordinaryBulk = await rest(`products?locale=en&${where}`, { _status: 'draft' }, 'admin')
+      expect(ordinaryBulk.status).toBe(409)
+      expect(ordinaryBulk.body.errors[0].message).toBe(guardMessage)
       expect(await publicationSnapshot(kind)).toEqual(before)
     }
     // Ordinary draft saves and separate approval remain usable after refusals.
