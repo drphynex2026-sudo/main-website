@@ -8,6 +8,7 @@ export default defineConfig({
     include: [
       'tests/workflow/admin-workflow-copy.spec.ts',
       'tests/unit/publish-locale-unpublish.spec.ts',
+      'tests/unit/bulk-unpublish-error.spec.ts',
     ],
     fileParallelism: false,
     maxWorkers: 1,

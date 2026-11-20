@@ -36,3 +36,15 @@ Giới hạn: không mở browser mới hoặc build lại trong vòng sửa nh�
 Đổi riêng test: cả request bulk native và tổ hợp draft/unpublish phải trả đúng 409 và đúng toàn bộ thông báo guard, không còn chấp nhận 400 chung. Query dùng `where.and` với `_status.not_equals=draft` và `id.in` theo `@payloadcms/ui/UnpublishMany/DrawerContent`; không dùng ID equals đơn lẻ thay cho request Admin. Count/hash bảng chính và versions vẫn được đối chiếu sau mỗi lần từ chối. Regression liên quan 39/39 PASS trên DB disposable mới đã xác minh. Không đổi runtime, schema, dependency hoặc giới hạn fixture SQL đã nêu.
 
 Kết quả production build và browser tiếp theo được ghi vào PR #1 theo SHA checkpoint cuối; các ghi chú chưa build/browser trong phần lịch sử phía trên mô tả thời điểm trước các lượt xác nhận đó.
+
+## Sửa nhỏ thông báo lỗi bulk sau checkpoint 23d9fe7
+
+Đã xác nhận Payload Admin `UnpublishMany/DrawerContent` đọc `json.docs.length` trước khi xử lý `errors`. Guard trả đúng 409 nhưng response chỉ có `errors`, nên UI chuyển sang “Lỗi - Không xác định”.
+
+Ứng dụng bổ sung hook collection `afterError` chính thức của Payload: chỉ với REST PATCH bulk, có `where`, body `_status:draft`, đúng APIError công khai 409 và thông báo guard hiện tại, thêm `docs: []` vào response đã được Payload lọc. Không đổi status, không xóa/đổi errors, không ghi dữ liệu; không phải kết quả thành công giả. `UnpublishMany` thấy zero docs và HTTP lỗi nên đi tới nhánh hiển thị từng error. Giữ nguyên guard, route sinh tự động, node_modules và dependency. Không cần can thiệp sâu Payload.
+
+Hook không áp dụng cho tài liệu đơn, global, Local API, lỗi khác/private, response đã bị lọc thông báo hoặc bulk result đã có docs (kể cả có bản ghi thành công). So khớp thông báo cố ý chặt; unit đối chiếu với guard thật để phát hiện nếu thông báo guard thay đổi.
+
+Regression trước đăng ký hook đỏ đúng tại `bulk.body.docs` thiếu. Sau sửa: **53/53 PASS** = 14 unit formatter + 16 unit guard + 23 workflow DB; HTTP bulk vẫn bắt buộc 409 và đúng nguyên văn thông báo. Count/hash main/versions/approval không đổi sau từ chối. Typecheck, ESLint có mục tiêu và format đạt sau sửa annotation trong test. Không chạy lại toàn bộ 669 unit hoặc upload. Dữ liệu chỉ ghi vào DB disposable mới, có kiểm container/endpoint/marker/role trước restore/fixture; không migration/reset DB thật.
+
+Build và browser bulk tại SHA cuối được cập nhật trực tiếp vào PR để không đổi SHA sau khi kiểm. Giữ evidence ngoài Git với tiền tố `bulk-message-`; không đưa secret/dump vào commit.

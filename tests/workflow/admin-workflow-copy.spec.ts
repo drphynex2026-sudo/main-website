@@ -512,10 +512,12 @@ for (const kind of ['product', 'global'] as const) {
       )
       expect(bulk.status).toBe(409)
       expect(bulk.body.errors[0].message).toBe(guardMessage)
+      expect(bulk.body.docs).toEqual([])
       expect(await publicationSnapshot(kind)).toEqual(before)
       const ordinaryBulk = await rest(`products?locale=en&${where}`, { _status: 'draft' }, 'admin')
       expect(ordinaryBulk.status).toBe(409)
       expect(ordinaryBulk.body.errors[0].message).toBe(guardMessage)
+      expect(ordinaryBulk.body.docs).toEqual([])
       expect(await publicationSnapshot(kind)).toEqual(before)
     }
     // Ordinary draft saves and separate approval remain usable after refusals.
