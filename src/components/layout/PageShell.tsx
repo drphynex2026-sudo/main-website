@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- the logo is the brand's SVG artwork, shown unmodified */
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { getTranslations } from 'next-intl/server'
 import { Suspense, type ReactNode } from 'react'
 import { headers } from 'next/headers'
@@ -11,7 +11,9 @@ import { trackingConfig } from '@/lib/analytics/config'
 import { contactRows } from '@/lib/contact-details'
 import { findGuestGlobal, findPublicGlobal } from '@/lib/content'
 import { getPreviewStaffUser } from '@/lib/preview'
-import { previewHref, previewView, previewViewHeader } from '@/lib/preview-navigation'
+import { previewHref, previewView, previewViewHeader, previewOriginHeader } from '@/lib/preview-navigation'
+import { PreviewNavigation, PreviewReporter } from '@/components/preview/PreviewNavigation'
+import { siteURL } from '@/lib/seo'
 import { localizedPath } from '@/lib/seo'
 import { productBriefs } from '@/lib/product-brief'
 
@@ -80,8 +82,9 @@ export async function PageShell({
   ])
   const contact = contactRows(settings?.contact)
   const view = preview ? previewView((await headers()).get(previewViewHeader)) : null
-  const href = (p: string) => previewHref(localizedPath(locale, p), view)
-  const languageSearch = previewHref('/' + search, view).slice(1)
+  const origin = preview ? (await headers()).get(previewOriginHeader) : null
+  const href = (p: string) => previewHref(localizedPath(locale, p), view, origin)
+  const languageSearch = new URL(previewHref(localizedPath(locale, path) + search, view, origin), 'https://preview.invalid').search
   // Off by default (env flag + IDs); never in staff preview. The admin has no PageShell.
   const tracking = trackingConfig()
   const trackingOn = tracking.enabled && !preview
@@ -115,7 +118,8 @@ export async function PageShell({
   const aboutLinks = aboutKeys.flatMap((k) => items.filter((i) => i.key === k))
 
   return (
-    <>
+    <PreviewNavigation view={view} origin={origin} siteOrigin={siteURL} path={localizedPath(locale, path)}>
+      <Suspense fallback={null}><PreviewReporter /></Suspense>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-surface focus:px-4 focus:py-2 focus:shadow"
@@ -124,7 +128,7 @@ export async function PageShell({
       </a>
 
       {preview && view !== 'guest' ? (
-        <div role="note" className="bg-navy text-sm text-white">
+        <div role="note" data-preview-staff-mark className="bg-navy text-sm text-white">
           <div className="container-page on-dark flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2">
             <p>{t('preview.banner')}</p>
             <a
@@ -247,6 +251,6 @@ export async function PageShell({
           <AnalyticsProvider config={tracking} locale={locale} privacyHref={href('/privacy')} />
         </Suspense>
       ) : null}
-    </>
+    </PreviewNavigation>
   )
 }

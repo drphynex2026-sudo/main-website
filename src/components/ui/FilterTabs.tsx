@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 
 /** Filter as plain links (works without JavaScript); the active one carries aria-current. */
 export function FilterTabs({

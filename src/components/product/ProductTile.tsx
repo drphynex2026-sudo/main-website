@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 
 import { Arrow } from '@/components/ui/Arrow'
 import { MediaImage } from '@/components/ui/MediaImage'

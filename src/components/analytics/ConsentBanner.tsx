@@ -1,4 +1,5 @@
 'use client'
+import PreviewLink from '@/components/preview/PreviewNavigation'
 
 import { useTranslations } from 'next-intl'
 import { useId, useState } from 'react'
@@ -40,9 +41,9 @@ export function ConsentBanner({
           </h2>
           <p className="mt-1 text-sm text-ink-muted">
             {t('body')}{' '}
-            <a href={privacyHref} className="text-navy underline underline-offset-2">
+            <PreviewLink href={privacyHref} className="text-navy underline underline-offset-2">
               {t('privacy')}
-            </a>
+            </PreviewLink>
           </p>
           {details ? (
             <fieldset className="mt-3 grid gap-2 text-sm text-ink">

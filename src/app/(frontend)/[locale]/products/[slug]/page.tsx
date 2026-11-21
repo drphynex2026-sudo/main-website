@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
@@ -19,7 +19,7 @@ import { approvedLocalesFor, findPublic, findPublicBySlug, populated, populatedL
 import { pageLocale, type SlugParams } from '@/lib/locale'
 import { withVisitorRelations } from '@/lib/guest-relations'
 import { asGuestView } from '@/lib/guest-view'
-import { getPreviewUser } from '@/lib/preview'
+import { getPreviewStaffUser } from '@/lib/preview'
 import { alternatesFor, localizedPath, publicImage, withSocial } from '@/lib/seo'
 import { breadcrumbLd, productLd } from '@/lib/structured-data'
 import { keepBrandTogether } from '@/lib/text'
@@ -88,14 +88,14 @@ export default async function ProductPage({
 
   const [t, available, previewUser, query] = await Promise.all([
     getTranslations(),
-    approvedLocalesFor('products', slug),
-    getPreviewUser(),
+    approvedLocalesFor('products', slug, (await searchParams).lp === 'guest'),
+    getPreviewStaffUser(),
     searchParams,
   ])
   // Admin landing builder: "Xem như khách" shows the draft exactly as a visitor would get it
   // (no staff marks, private files dropped). Only for signed-in staff in draft preview.
   const asGuest = !!previewUser && query.lp === 'guest'
-  const editable = !!previewUser && (query.lp === 'guest' || query.lp === 'staff')
+  const editable = !!previewUser && (query.lp === 'staff' || (query.lp === 'guest' && (!query.lpOrigin || query.lpOrigin === slug)))
   const preview = asGuest ? null : previewUser
   // Guest view: private files dropped, and every related document (line, product types, ingredients,
   // technologies, related products) read with the visitor query of the public page.

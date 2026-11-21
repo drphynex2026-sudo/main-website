@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { pageNumber, journalSearch } from '@/lib/pagination'
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { PageShell } from '@/components/layout/PageShell'

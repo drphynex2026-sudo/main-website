@@ -1,5 +1,10 @@
 # Preview navigation: preserve the selected view
 
+> Historical first pass at `fc86bf5`. Its header/footer-only scope and 19-test
+> results do not describe the final remediation. See
+> [the follow-up report](preview-navigation-followup-2026-11-21.md) for the
+> content-link, public-locale and iframe acknowledgement fixes and final checks.
+
 Base: `bb0e6ca30143194923bc1ef76f766794bd27c877`.
 Branch: `codex/preview-navigation-fix`. Not deployed.
 

@@ -1,4 +1,5 @@
 'use client'
+import PreviewLink from '@/components/preview/PreviewNavigation'
 
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, type ReactNode } from 'react'
@@ -111,9 +112,9 @@ export function ConsentField({ state, privacyHref }: { state: FormState; privacy
         />
         <label htmlFor="f-consent" className="text-sm text-ink-muted">
           {t('form.consent')}{' '}
-          <a href={privacyHref} className="font-medium text-navy underline underline-offset-2">
+          <PreviewLink href={privacyHref} className="font-medium text-navy underline underline-offset-2">
             {t('nav.privacy')}
-          </a>
+          </PreviewLink>
         </label>
       </div>
       {invalid ? (

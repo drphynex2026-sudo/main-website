@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
+import PreviewLink from '@/components/preview/PreviewNavigation'
 
 import { submitContact } from '@/app/(frontend)/[locale]/actions'
 import type { Locale } from '@/i18n/locales'
@@ -48,9 +49,9 @@ export function ContactForm({
               {product.name}
             </p>
             {clearProductHref ? (
-              <a href={clearProductHref} className="text-sm font-medium text-navy underline underline-offset-2">
+              <PreviewLink href={clearProductHref} className="text-sm font-medium text-navy underline underline-offset-2">
                 {t('contact.productRemove')}
-              </a>
+              </PreviewLink>
             ) : null}
           </div>
           <input type="hidden" name="product" value={product.slug} />
