@@ -1,5 +1,9 @@
 # Preview navigation — follow-up, 21 November 2026
 
+> This report records checkpoint `c75dfe9`. The later Journal redirect and
+> same-URL reporter corrections are documented in
+> [the focused follow-up](preview-navigation-journal-2026-11-21.md).
+
 Branch: `codex/preview-navigation-fix`; base: `fc86bf594979fada15e83c25ca4dcf7ca0dcae3d`.
 PR #2 remains unmerged, with auto-deployment disabled for this branch.
 

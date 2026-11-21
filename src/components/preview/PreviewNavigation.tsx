@@ -3,7 +3,7 @@
 import NextLink from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { createContext, useContext, useEffect, type ComponentProps, type ReactNode } from 'react'
-import { previewHref, type PreviewView } from '@/lib/preview-navigation'
+import { previewHref, previewNavigationChangesPage, type PreviewView } from '@/lib/preview-navigation'
 
 type Context = { view: PreviewView; origin: string | null; siteOrigin: string; path: string }
 const PreviewContext = createContext<Context>({ view: null, origin: null, siteOrigin: 'https://preview.invalid', path: '/' })
@@ -24,14 +24,17 @@ export function PreviewReporter() {
     const report = () => send({ type: 'ready', view: context.view, href: window.location.href,
       staffMarks: !!document.querySelector('[data-preview-staff-mark]') })
     report()
+    const renderedURL = window.location.href
     window.addEventListener('pageshow', report)
-    const navigating = () => send({ type: 'navigating', href: window.location.href })
+    window.addEventListener('hashchange', report)
+    const navigating = () => previewNavigationChangesPage(window.location.href, renderedURL)
+      ? send({ type: 'navigating', href: window.location.href }) : report()
     window.addEventListener('popstate', navigating)
     const onMessage = (e: MessageEvent) => {
       if (e.source === window.parent && e.origin === window.location.origin && e.data?.source === 'dx-lp-builder' && e.data.type === 'report') report()
     }
     window.addEventListener('message', onMessage)
-    return () => { window.removeEventListener('pageshow', report); window.removeEventListener('message', onMessage); window.removeEventListener('popstate', navigating) }
+    return () => { window.removeEventListener('pageshow', report); window.removeEventListener('hashchange', report); window.removeEventListener('message', onMessage); window.removeEventListener('popstate', navigating) }
   }, [context.view, path, search])
   return null
 }
@@ -43,6 +46,6 @@ export default function PreviewLink({ href, onNavigate, ...props }: ComponentPro
   return <NextLink {...props} href={target} onNavigate={e => {
     let prevented = false
     onNavigate?.({ preventDefault: () => { prevented = true; e.preventDefault() } })
-    if (context.view && !prevented) send({ type: 'navigating', href: typeof target === 'string' ? new URL(target, window.location.href).href : null })
+    if (context.view && !prevented && typeof target === 'string' && previewNavigationChangesPage(target, window.location.href)) send({ type: 'navigating', href: new URL(target, window.location.href).href })
   }} />
 }

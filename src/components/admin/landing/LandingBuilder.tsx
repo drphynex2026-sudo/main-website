@@ -21,7 +21,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { blockDescriptions, blockTitles, type LandingBlockType } from '@/lib/landing'
-import { builderPreviewRoute, previewReport, type BuilderLocation } from '@/lib/preview-navigation'
+import { builderPreviewRoute, previewDestinationMatches, previewReport, type BuilderLocation } from '@/lib/preview-navigation'
 
 import { useBlockStatus } from './blockStatus'
 import { useLandingRows, type LandingRowData } from './useLandingRows'
@@ -296,9 +296,10 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
       }
       if (e.data.type === 'ready') {
         const report = previewReport(e.data)
-        if (!report || (expectedHrefRef.current && report.href !== expectedHrefRef.current)) return
+        if (!report || (expectedHrefRef.current && !previewDestinationMatches(expectedHrefRef.current, report.href))) return
         const route = new URL(report.href)
         if (route.origin !== window.location.origin) return
+        expectedHrefRef.current = null
         frameRouteRef.current = route.pathname + route.search
         if (srcRef.current) setFrameReport({ src: srcRef.current, view: report.view as 'guest' | 'staff' })
         return
