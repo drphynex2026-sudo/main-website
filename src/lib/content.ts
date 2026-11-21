@@ -70,8 +70,8 @@ const guestApprovedLocales = async (collection: CollectionSlug, slug: string) =>
   return results.filter((l): l is Locale => l !== null)
 }
 
-export const approvedLocalesFor = cache(async (collection: CollectionSlug, slug: string) => {
-  if (await getPreviewUser()) return [...locales]
+export const approvedLocalesFor = cache(async (collection: CollectionSlug, slug: string, publicOnly = false) => {
+  if (!publicOnly && await getPreviewUser()) return [...locales]
   return guestApprovedLocales(collection, slug)
 })
 

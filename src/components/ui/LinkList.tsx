@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 
 type Item = { id: number | string; href: string; title: string; description?: string | null }
 

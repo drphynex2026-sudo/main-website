@@ -21,6 +21,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { blockDescriptions, blockTitles, type LandingBlockType } from '@/lib/landing'
+import { builderPreviewRoute, previewDestinationMatches, previewReport, type BuilderLocation } from '@/lib/preview-navigation'
 
 import { useBlockStatus } from './blockStatus'
 import { useLandingRows, type LandingRowData } from './useLandingRows'
@@ -154,11 +155,12 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
   const [pendingDelete, setPendingDelete] = useState<number | null>(null)
   const [announce, setAnnounce] = useState('')
   const [frameKey, setFrameKey] = useState(0)
-  // What the frame reported it shows ('guest' | 'staff'), and one automatic reload on mismatch.
+  // Confirmed frame view; unknown/mismatched reports never imply Guest and do not auto-retry.
   const [frameReport, setFrameReport] = useState<{ src: string; view: 'guest' | 'staff' } | null>(null)
-  const guestRef = useRef(false)
+  const frameRouteRef = useRef<string | null>(null)
+  const [navigationPath, setNavigationPath] = useState<BuilderLocation | null>(null)
   const srcRef = useRef<string | null>(null)
-  const retriesRef = useRef(0)
+  const expectedHrefRef = useRef<string | null>(null)
   const [narrowPane, setNarrowPane] = useState<'list' | 'preview' | 'edit'>('edit')
   const frameRef = useRef<HTMLIFrameElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
@@ -256,18 +258,22 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
   const previewSrc = useMemo(() => {
     if (!slug || !code) return null
     const v = encodeURIComponent(`${savedAt}-${frameKey}`)
-    const page = `/${code}/products/${slug}?lp=${guest ? 'guest' : 'staff'}&v=${v}`
-    return `/preview?path=${encodeURIComponent(page)}`
-  }, [slug, code, guest, frameKey, savedAt])
+    const route = builderPreviewRoute(code, slug, navigationPath)
+    const page = new URL(route, 'https://preview.invalid')
+    page.searchParams.set('lp', guest ? 'guest' : 'staff')
+    page.searchParams.set('lpOrigin', slug)
+    page.searchParams.set('v', decodeURIComponent(v))
+    return `/preview?path=${encodeURIComponent(page.pathname + page.search)}`
+  }, [slug, code, guest, frameKey, savedAt, navigationPath])
 
   // Keep the message handler in step with the current choice and frame (refs, no re-render).
   useEffect(() => {
-    if (guestRef.current !== guest) retriesRef.current = 0
-    guestRef.current = guest
     srcRef.current = previewSrc
   }, [guest, previewSrc])
   const frameView = frameReport && frameReport.src === previewSrc ? frameReport.view : null
   const frameLoading = frameView === null
+  const keepFrameLocation = () => setNavigationPath(frameRouteRef.current && code && slug
+    ? { path: frameRouteRef.current, locale: code, slug } : null)
 
   useEffect(() => {
     const el = stageRef.current
@@ -282,16 +288,20 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
   // Clicking a block in the preview opens it here.
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
-      if (e.origin !== window.location.origin || e.data?.source !== PREVIEW_SOURCE) return
+      if (e.origin !== window.location.origin || e.source !== frameRef.current?.contentWindow || e.data?.source !== PREVIEW_SOURCE) return
+      if (e.data.type === 'navigating') {
+        expectedHrefRef.current = typeof e.data.href === 'string' ? e.data.href : null
+        setFrameReport(null)
+        return
+      }
       if (e.data.type === 'ready') {
-        // The frame says which view it rendered. A guest view must carry no staff marks.
-        const shown: 'guest' | 'staff' = e.data.view === 'guest' && !e.data.staffMarks ? 'guest' : 'staff'
-        const wanted = guestRef.current ? 'guest' : 'staff'
-        if (srcRef.current) setFrameReport({ src: srcRef.current, view: shown })
-        if (shown !== wanted && retriesRef.current < 1) {
-          retriesRef.current += 1
-          setFrameKey((k) => k + 1)
-        }
+        const report = previewReport(e.data)
+        if (!report || (expectedHrefRef.current && !previewDestinationMatches(expectedHrefRef.current, report.href))) return
+        const route = new URL(report.href)
+        if (route.origin !== window.location.origin) return
+        expectedHrefRef.current = null
+        frameRouteRef.current = route.pathname + route.search
+        if (srcRef.current) setFrameReport({ src: srcRef.current, view: report.view as 'guest' | 'staff' })
         return
       }
       if (e.data.type === 'select' && typeof e.data.id === 'string') {
@@ -641,17 +651,17 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
               <div role="group" aria-label="Xem với vai trò">
                 <button
                   type="button"
-                  className={`dx-lp-chip ${!guest ? 'dx-lp-chip--on' : ''}`}
-                  aria-pressed={!guest}
-                  onClick={() => setGuest(false)}
+                  className={`dx-lp-chip ${!guest && frameView === 'staff' ? 'dx-lp-chip--on' : ''}`}
+                  aria-pressed={!guest && frameView === 'staff'}
+                  onClick={() => { keepFrameLocation(); setGuest(false) }}
                 >
                   Nhân sự (có đánh dấu)
                 </button>
                 <button
                   type="button"
-                  className={`dx-lp-chip ${guest ? 'dx-lp-chip--on' : ''}`}
-                  aria-pressed={guest}
-                  onClick={() => setGuest(true)}
+                  className={`dx-lp-chip ${guest && frameView === 'guest' ? 'dx-lp-chip--on' : ''}`}
+                  aria-pressed={guest && frameView === 'guest'}
+                  onClick={() => { keepFrameLocation(); setGuest(true) }}
                 >
                   Xem như khách
                 </button>
@@ -659,11 +669,12 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
               <button
                 type="button"
                 className="dx-lp-btn dx-lp-btn--sm"
-                onClick={() => setFrameKey((k) => k + 1)}
+                onClick={() => { keepFrameLocation(); setFrameKey((k) => k + 1) }}
               >
                 Tải lại
               </button>
             </div>
+            {frameLoading ? <p className="dx-lp-builder__stale" role="status">Chưa xác minh chế độ của trang trong khung. Không coi đây là chế độ Khách cho đến khi trang xác nhận.</p> : null}
             {frameView !== null && frameView !== (guest ? 'guest' : 'staff') && !frameLoading ? (
               <p className="dx-lp-builder__stale" role="alert">
                 <strong>Khung xem trước chưa khớp chế độ đã chọn</strong> (đang hiện{' '}
@@ -677,7 +688,9 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
               </p>
             ) : (
               <p className="dx-lp-overview__hint dx-lp-builder__preview-note">
-                {guest
+                {frameLoading || frameView !== (guest ? 'guest' : 'staff')
+                  ? 'Chế độ của khung chưa được xác nhận khớp lựa chọn. Xem thông báo phía trên trước khi kiểm nội dung.'
+                  : guest
                   ? 'Xem như khách: khối trống, khối ẩn và ảnh riêng tư bị bỏ hẳn (kể cả dải nền), như khách sẽ thấy khi ngôn ngữ này được duyệt và xuất bản.'
                   : 'Bấm vào một khối trong xem trước để mở khối đó ở bảng chỉnh.'}
               </p>
@@ -699,6 +712,9 @@ export function LandingBuilder(props: BlocksFieldClientProps) {
                       transform: `scale(${scale})`,
                     }}
                     onLoad={() => {
+                      expectedHrefRef.current = null
+                      setFrameReport(null)
+                      frameRef.current?.contentWindow?.postMessage({ source: BUILDER_SOURCE, type: 'report' }, window.location.origin)
                       if (currentId)
                         frameRef.current?.contentWindow?.postMessage(
                           { source: BUILDER_SOURCE, type: 'focus', id: currentId },

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 
 import { MediaImage } from '@/components/ui/MediaImage'
 import type { Locale } from '@/i18n/locales'

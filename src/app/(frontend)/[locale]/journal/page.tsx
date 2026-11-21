@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation'
 import { pageNumber, journalSearch } from '@/lib/pagination'
+import { previewRedirectHref } from '@/lib/preview-navigation'
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { PageShell } from '@/components/layout/PageShell'
@@ -35,14 +36,14 @@ export default async function JournalPage({ params, searchParams }: { params: Lo
   ])
   const topic = topicSlug ? topics.docs.find((x) => x.slug === topicSlug) : undefined
   const base = localizedPath(locale, '/journal')
-  if (topicSlug && !topic) redirect(base)
+  if (topicSlug && !topic) redirect(previewRedirectHref(base, query))
   const where = topic ? { topic: { equals: topic.id } } : undefined
   // Some adapters return zero totals when the requested offset is beyond the result set.
   // Determine the valid range from the first page before requesting the actual offset.
   const summary = await findPublic('articles', locale, { where, limit: 1, depth: 0 })
   const totalPages = Math.max(1, Math.ceil(summary.totalDocs / 24))
   const currentPage = Math.min(requestedPage, totalPages)
-  if (currentPage !== requestedPage) redirect(base + journalSearch(topic?.slug, currentPage))
+  if (currentPage !== requestedPage) redirect(previewRedirectHref(base + journalSearch(topic?.slug, currentPage), query))
   const articles = await findPublic('articles', locale, {
     where, depth: 1, limit: 24, page: currentPage, sort: ['-publishedAt', '-id'],
   })

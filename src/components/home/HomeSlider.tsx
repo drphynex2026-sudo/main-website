@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react'
 
 import { autoplayReducer, initialAutoplayState, isAutoplaying } from './autoplay'

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
@@ -48,7 +48,7 @@ const mutedClass = (tone: Tone) => (tone === 'dark' ? 'text-mx-muted' : 'text-in
 /** Staff-only marker (draft preview): why visitors would not see something. Vietnamese, as the Admin. */
 function StaffMark({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-4 inline-block rounded border border-dashed border-current px-2.5 py-1 text-xs font-mono opacity-90">
+    <p data-preview-staff-mark className="mb-4 inline-block rounded border border-dashed border-current px-2.5 py-1 text-xs font-mono opacity-90">
       [Xem trước] {children}
     </p>
   )

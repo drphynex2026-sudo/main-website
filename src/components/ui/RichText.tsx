@@ -1,6 +1,7 @@
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { RichText as LexicalRichText, type JSXConvertersFunction } from '@payloadcms/richtext-lexical/react'
 import { createElement } from 'react'
+import PreviewLink from '@/components/preview/PreviewNavigation'
 
 import type { Locale } from '@/i18n/locales'
 import { localizedPath } from '@/lib/seo'
@@ -52,9 +53,9 @@ const converters =
       if (!href) return <>{children}</>
       const newTab = Boolean(fields.newTab)
       return (
-        <a href={href} rel={newTab ? 'noopener noreferrer' : undefined} target={newTab ? '_blank' : undefined}>
+        <PreviewLink href={href} rel={newTab ? 'noopener noreferrer' : undefined} target={newTab ? '_blank' : undefined}>
           {children}
-        </a>
+        </PreviewLink>
       )
     },
   })

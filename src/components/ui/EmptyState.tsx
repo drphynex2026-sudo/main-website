@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { getTranslations } from 'next-intl/server'
 
 import { Arrow } from './Arrow'

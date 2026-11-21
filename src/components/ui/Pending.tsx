@@ -1,4 +1,6 @@
 import { getTranslations } from 'next-intl/server'
+import { headers } from 'next/headers'
+import { previewViewHeader } from '@/lib/preview-navigation'
 
 import { getPreviewUser } from '@/lib/preview'
 
@@ -39,10 +41,10 @@ export async function Pending({
   values?: Record<string, string>
   className?: string
 }) {
-  if (!(await getPreviewUser())) return null
+  if ((await headers()).get(previewViewHeader) === 'guest' || !(await getPreviewUser())) return null
   const t = await getTranslations('pending')
   return (
-    <span className={`inline-block rounded border border-dashed border-current px-2 py-1 text-sm font-normal opacity-80 ${className}`}>
+    <span data-preview-staff-mark className={`inline-block rounded border border-dashed border-current px-2 py-1 text-sm font-normal opacity-80 ${className}`}>
       [{t('prefix')}: {t(label, values)}]
     </span>
   )

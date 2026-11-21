@@ -18,7 +18,7 @@ export async function StaffReviewNote({ product, locale }: { product: Product; l
   const approved = status === 'approved'
 
   return (
-    <aside aria-labelledby="staff-review-title" className="container-page pt-4">
+    <aside data-preview-staff-mark aria-labelledby="staff-review-title" className="container-page pt-4">
       <div className={`rounded-lg border-2 border-dashed p-4 text-sm sm:p-5 ${approved ? 'border-line-strong' : 'border-danger'}`}>
         <h2 id="staff-review-title" className="font-bold text-navy">
           {t('title')}

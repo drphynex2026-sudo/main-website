@@ -1,5 +1,6 @@
 import createMiddleware from 'next-intl/middleware'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
+import { previewRequestHeaders } from './lib/preview-navigation'
 import { routing } from './i18n/routing'
 
 const localeMiddleware = createMiddleware(routing)
@@ -13,7 +14,9 @@ export default function proxy(request: NextRequest) {
     response.headers.set('Cache-Control', 'private, no-store, max-age=0, must-revalidate')
     return response
   }
-  return localeMiddleware(request)
+  return localeMiddleware(new NextRequest(request.clone(), {
+    headers: previewRequestHeaders(request.nextUrl, request.headers),
+  }))
 }
 export const config = {
   matcher: ['/((?!(?:admin|api|preview)(?:/|$)|_next|_vercel|.*\\..*).*)', '/_next/image', '/api/media/file/:path*', '/api/source-documents/file/:path*'],

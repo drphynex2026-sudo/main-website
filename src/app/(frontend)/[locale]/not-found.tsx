@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/preview/PreviewNavigation'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { PageShell } from '@/components/layout/PageShell'
