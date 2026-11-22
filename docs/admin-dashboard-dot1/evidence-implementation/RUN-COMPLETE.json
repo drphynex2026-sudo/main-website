@@ -1,0 +1,13 @@
+{
+  "manualCleanupVerified": true,
+  "harnessFailure": "EISDIR removing empty fixture credential directory after successful checks",
+  "browserLinksVerified": 198,
+  "cleanupFix": "rmdirSync; syntax checked, full launcher not rerun",
+  "harnessExit": 1,
+  "integrationExit": 0,
+  "browserViewports": 9,
+  "runId": "4f4ef780-521c-43e1-8a7e-cd976366fe3d",
+  "completedAt": "2026-11-22T14:43:05.5308905Z",
+  "browserContentUnchanged": true,
+  "buildExit": 0
+}

@@ -1,0 +1,30 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90mC:/Users/THAI/.codex/worktrees/dashboard-phase-one/website-demo[39m
+
+[21:22:16] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+[21:22:16] [32mINFO[39m: [36mMigrating: 20261028_101829_initial[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261028_101829_initial (960ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261029_021524_media_release_and_line_appearance[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261029_021524_media_release_and_line_appearance (17ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261029_035541_product_editorial_note[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261029_035541_product_editorial_note (5ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261029_080000_form_rate_limits[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261029_080000_form_rate_limits (8ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261029_100000_storage_fields[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261029_100000_storage_fields (5ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261105_085002_home_banners[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261105_085002_home_banners (222ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261107_050810_landing_blocks[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261107_050810_landing_blocks (265ms)[39m
+[21:22:17] [32mINFO[39m: [36mMigrating: 20261109_024237_landing_approvals[39m
+[21:22:17] [32mINFO[39m: [36mMigrated:  20261109_024237_landing_approvals (3ms)[39m
+ [32m✓[39m docs/admin-dashboard-dot1/evidence-db/gaps.int.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 6265[2mms[22m[39m
+   [33m[2m✓[22m[39m G1 never-published Product: staff main, draft, guest, denied and read error [33m 382[2mms[22m[39m
+   [33m[2m✓[22m[39m G2 Home empty -> draft -> own approval -> CMS published, other locales unchanged [33m 1584[2mms[22m[39m
+   [33m[2m✓[22m[39m G3 shared change: approvals invalidated, own approval first, cross-locale dependency blocks, refusal durable unchanged, reapproval permits [33m 1614[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 21:22:03
+[2m   Duration [22m 18.30s[2m (transform 606ms, setup 0ms, import 11.25s, tests 6.27s, environment 0ms)[22m
+

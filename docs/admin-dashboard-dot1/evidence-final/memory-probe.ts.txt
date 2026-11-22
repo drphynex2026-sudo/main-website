@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict'
+import { resolveSlot } from '../../../src/lib/home-banners.ts'
+import { bannersApprovedFor, sharedRevision } from '../../../src/lib/banner-revision.ts'
+import { asGuestView } from '../../../src/lib/guest-view.ts'
+import { blockIssues } from '../../../src/lib/landing.ts'
+let passed=0
+function check(name:string,fn:()=>void){fn();passed++;console.log('PASS '+name)}
+const media={id:9001,url:'/neutral-fixture.webp',filename:'neutral-fixture.webp',mimeType:'image/webp',publicRelease:false}
+const publicMedia={...media,publicRelease:true}
+const provides={image:false,packSize:false,inci:false,howToUse:false,cautions:false,keyIngredients:false}
+const isPublic=(v:any)=>!!v&&typeof v==='object'&&'id' in v&&!!v.url&&v.publicRelease===true
+check('band known-private object filtered for guest has required image',()=>assert.deepEqual(blockIssues(asGuestView({blockType:'band',image:media}),provides,isPublic).required,['ảnh']))
+check('band known-public populated image has no required image issue',()=>assert.deepEqual(blockIssues({blockType:'band',image:publicMedia},provides,isPublic).required,[]))
+check('hero private image remains optional; not a hidden-block proof',()=>assert.deepEqual(blockIssues({blockType:'hero',image:media},provides,isPublic).required,[]))
+check('unresolved ID alone cannot distinguish released from private',()=>{assert.equal(isPublic(9001),false);assert.equal(asGuestView(media),9001);assert.equal(typeof 9001,'number')})
+check('fullBleed released image with embedded copy enables copyHidden',()=>{const r=resolveSlot('luma',{visualType:'fullBleed',desktopImage:publicMedia,textDisplay:'imageHasText'} as never);assert.equal(r.visual.kind,'fullBleed');assert.equal(r.copyHidden,true)})
+check('fullBleed private image guest fallback does not hide HTML copy',()=>{const r=resolveSlot('luma',asGuestView({visualType:'fullBleed',desktopImage:media,textDisplay:'imageHasText'}) as never);assert.equal(r.visual.kind,'formula');assert.equal(r.copyHidden,false)})
+check('packshot chosen private is not replaced with another product image',()=>{const r=resolveSlot('luma',asGuestView({visualType:'packshot',desktopImage:media}) as never,publicMedia as never);assert.equal(r.visual.kind,'formula')})
+check('Home current approval differs from old shared configuration',()=>{const banners={luma:{desktopImage:9001}};const rev=sharedRevision(banners);assert.equal(bannersApprovedFor({banners,bannerApprovals:{ko:rev}},'ko'),true);assert.equal(bannersApprovedFor({banners,bannerApprovals:{ko:rev}},'en'),false);assert.equal(bannersApprovedFor({banners:{luma:{desktopImage:9002}},bannerApprovals:{ko:rev}},'ko'),false)})
+console.log(`${passed}/${passed} pure-memory probes; NO DATABASE, NO WORKFLOW/PUBLISH proof`)

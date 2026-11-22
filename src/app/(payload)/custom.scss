@@ -285,3 +285,21 @@
 .dx-lp-overview__approval .dx-lp-overview__hint {
   margin: 4px 0 0;
 }
+
+/* Read-only dashboard, Products and Home. All controls remain in the existing Admin view. */
+.dx-dash-notice { padding: 14px; border-left: 3px solid var(--theme-elevation-500); background: var(--theme-elevation-50); overflow-wrap: anywhere; }
+.dx-dash-document { margin: 20px 0; }
+.dx-dash-locales { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.dx-dash-locale { min-width: 0; border: 1px solid var(--theme-elevation-200); padding: 14px; border-radius: 6px; overflow-wrap: anywhere; }
+.dx-dash-locale h4 { margin: 0 0 12px; }
+.dx-dash-locale dl { margin: 0; }
+.dx-dash-locale dt { font-weight: 600; margin-top: 12px; }
+.dx-dash-locale dd { margin: 3px 0 0; }
+.dx-dash-locale a, .dx-dash-tasks a, .dx-dash-pages a { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 0; }
+.dx-dash-tasks { list-style: none; padding: 0; }
+.dx-dash-tasks > li { border-bottom: 1px solid var(--theme-elevation-200); padding: 14px 0; overflow-wrap: anywhere; }
+.dx-dash-pages, .dx-dash-filter { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin: 16px 0; }
+.dx-dash-filter select, .dx-dash-filter button { font: inherit; min-height: 44px; padding: 8px; color: var(--theme-text); background: var(--theme-input-bg); border: 1px solid var(--theme-elevation-400); border-radius: 4px; }
+.dx-dash a:focus-visible, .dx-dash summary:focus-visible, .dx-dash select:focus-visible, .dx-dash button:focus-visible { outline: 3px solid var(--theme-elevation-600); outline-offset: 3px; }
+.dx-dash summary { cursor: pointer; padding: 12px 0; min-height: 44px; }
+@media (max-width: 899px) { .dx-dash-locales { grid-template-columns: minmax(0, 1fr); } }

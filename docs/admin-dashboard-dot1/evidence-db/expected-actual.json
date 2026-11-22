@@ -1,0 +1,311 @@
+{
+  "sha": "75b07feed68d6dba833dd730b17e9d74902cac34",
+  "records": [
+    {
+      "name": "G1.observed-before-assert-ko",
+      "expected": "observational; asserted below",
+      "actual": {
+        "staffMainCount": 1,
+        "staffStatus": "draft",
+        "staffTS": "in-review",
+        "staffLanding": 0,
+        "draftCount": 1,
+        "guestKind": "ok",
+        "guestCount": 0
+      }
+    },
+    {
+      "name": "G1.observed-before-assert-en",
+      "expected": "observational; asserted below",
+      "actual": {
+        "staffMainCount": 1,
+        "staffStatus": "draft",
+        "staffTS": "in-review",
+        "staffLanding": 0,
+        "draftCount": 1,
+        "guestKind": "ok",
+        "guestCount": 0
+      }
+    },
+    {
+      "name": "G1.observed-before-assert-vi",
+      "expected": "observational; asserted below",
+      "actual": {
+        "staffMainCount": 1,
+        "staffStatus": "draft",
+        "staffTS": "in-review",
+        "staffLanding": 0,
+        "draftCount": 1,
+        "guestKind": "ok",
+        "guestCount": 0
+      }
+    },
+    {
+      "name": "G1.actual-main-per-locale",
+      "expected": "Staff main has initial draft row; guest empty ok; never-published is not denied",
+      "actual": {
+        "ko": {
+          "staffMainCount": 1,
+          "staffStatus": "draft",
+          "staffTS": "in-review",
+          "staffLanding": 0,
+          "draftCount": 1,
+          "guestKind": "ok",
+          "guestCount": 0
+        },
+        "en": {
+          "staffMainCount": 1,
+          "staffStatus": "draft",
+          "staffTS": "in-review",
+          "staffLanding": 0,
+          "draftCount": 1,
+          "guestKind": "ok",
+          "guestCount": 0
+        },
+        "vi": {
+          "staffMainCount": 1,
+          "staffStatus": "draft",
+          "staffTS": "in-review",
+          "staffLanding": 0,
+          "draftCount": 1,
+          "guestKind": "ok",
+          "guestCount": 0
+        }
+      }
+    },
+    {
+      "name": "G1.guest-single-locale-empty-kind",
+      "expected": "ok",
+      "actual": "ok"
+    },
+    {
+      "name": "G1.actual-read-ACL-denial",
+      "expected": "denied",
+      "actual": "denied"
+    },
+    {
+      "name": "G1.read-parameter-error",
+      "expected": "error distinct from empty and denied",
+      "actual": {
+        "kind": "error",
+        "status": 400,
+        "name": "QueryError"
+      }
+    },
+    {
+      "name": "G2.empty-home-keys",
+      "expected": 0,
+      "actual": 0
+    },
+    {
+      "name": "G2.empty-home-CMS",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "G2.draft-not-CMS",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "G2.approved-draft-not-CMS",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "G2.published-CMS",
+      "expected": {
+        "ko": true,
+        "en": false,
+        "vi": false
+      },
+      "actual": {
+        "ko": true,
+        "en": false,
+        "vi": false
+      }
+    },
+    {
+      "name": "G2.all-public-CMS",
+      "expected": [
+        true,
+        true,
+        true
+      ],
+      "actual": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "name": "G3.shared-invalidates-all",
+      "expected": {},
+      "actual": {}
+    },
+    {
+      "name": "G3.edited-status",
+      "expected": "in-review",
+      "actual": "in-review"
+    },
+    {
+      "name": "G3.publish-without-own-approval",
+      "expected": 409,
+      "actual": 409
+    },
+    {
+      "name": "G3.public-preserved-before-own",
+      "expected": {
+        "ko": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME KO"
+        },
+        "en": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME EN"
+        },
+        "vi": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME VI"
+        }
+      },
+      "actual": {
+        "ko": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME KO"
+        },
+        "en": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME EN"
+        },
+        "vi": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME VI"
+        }
+      }
+    },
+    {
+      "name": "G3.dashboard-missing-set",
+      "expected": [
+        "en",
+        "vi"
+      ],
+      "actual": [
+        "en",
+        "vi"
+      ]
+    },
+    {
+      "name": "G3.guard-dependency-409",
+      "expected": 409,
+      "actual": 409
+    },
+    {
+      "name": "G3.refused-main-all-versions-identical",
+      "expected": "ba56687541fcdbab33d9a80b947c67af41f890b8831e531d47149583e3c37087",
+      "actual": "ba56687541fcdbab33d9a80b947c67af41f890b8831e531d47149583e3c37087"
+    },
+    {
+      "name": "G3.refused-public-CMS-old-preserved",
+      "expected": {
+        "ko": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME KO"
+        },
+        "en": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME EN"
+        },
+        "vi": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME VI"
+        }
+      },
+      "actual": {
+        "ko": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME KO"
+        },
+        "en": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME EN"
+        },
+        "vi": {
+          "status": "approved",
+          "revision": "130efe71d2a36d34fc640f95b961e95d24539cef5ac693c78eb9c6a6e962410e",
+          "cms": true,
+          "headline": "[FIXTURE] HOME VI"
+        }
+      }
+    },
+    {
+      "name": "G3.still-needs-VI",
+      "expected": 409,
+      "actual": 409
+    },
+    {
+      "name": "G3.new-shared-all-public",
+      "expected": [
+        true,
+        true,
+        true
+      ],
+      "actual": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "name": "G3.shared-now-current",
+      "expected": [
+        "cc4e758a6f77a2ba96563468f8de51b066db6d743aac87144c03c5dcf8efa317",
+        "cc4e758a6f77a2ba96563468f8de51b066db6d743aac87144c03c5dcf8efa317",
+        "cc4e758a6f77a2ba96563468f8de51b066db6d743aac87144c03c5dcf8efa317"
+      ],
+      "actual": [
+        "cc4e758a6f77a2ba96563468f8de51b066db6d743aac87144c03c5dcf8efa317",
+        "cc4e758a6f77a2ba96563468f8de51b066db6d743aac87144c03c5dcf8efa317",
+        "cc4e758a6f77a2ba96563468f8de51b066db6d743aac87144c03c5dcf8efa317"
+      ]
+    },
+    {
+      "name": "G3.other-locale-copy-preserved",
+      "expected": [
+        "[FIXTURE] HOME EN",
+        "[FIXTURE] HOME VI"
+      ],
+      "actual": [
+        "[FIXTURE] HOME EN",
+        "[FIXTURE] HOME VI"
+      ]
+    },
+    {
+      "name": "G3.real-renderer-default-for-empty-content",
+      "expected": "default",
+      "actual": "default"
+    }
+  ]
+}

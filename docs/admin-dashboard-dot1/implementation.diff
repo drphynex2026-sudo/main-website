@@ -1,0 +1,501 @@
+diff --git a/docs/huong-dan-quan-tri.md b/docs/huong-dan-quan-tri.md
+index 450ea43..23b4754 100644
+--- a/docs/huong-dan-quan-tri.md
++++ b/docs/huong-dan-quan-tri.md
+@@ -108,3 +108,13 @@ Không chép dữ liệu khách ra file, chat hay email cá nhân.
+ | Ảnh không hiện cho khách | Đã tích **Cleared for publication** chưa? |
+ | Không chọn được Approved | Tài khoản Translator không duyệt được; nhờ Editor |
+ | Bị khóa đăng nhập | Sai mật khẩu 5 lần sẽ khóa 10 phút |
++
++## Bảng điều khiển đợt 1: Sản phẩm và Trang chủ
++
++Bảng điều khiển chỉ đọc và dẫn tới màn hình chỉnh sửa hiện có. Mỗi tài liệu có KO/EN/VI; “Khách đọc được” nói về bản công khai, còn “Đã duyệt bản nháp” nói về bản đang soạn. Hai nhãn này không thay thế nhau. “Đang xem xét” không có nghĩa ai đó đã gửi yêu cầu duyệt.
++
++Sản phẩm chia 20 tài liệu mỗi trang. Số việc chỉ tính cặp tài liệu/ngôn ngữ ở trang đang xem; Trang chủ có số đếm riêng. Dùng Trang trước/Trang sau và bộ lọc để đọc, không có nút ghi dữ liệu trên dashboard.
++
++Bấm Mở để tới đúng tài liệu và ngôn ngữ; chưa hỗ trợ mở thẳng tab/field. Sản phẩm: kiểm nội dung, lưu nháp, duyệt riêng rồi xuất bản đúng locale trên màn hình hiện có. Trang chủ: dùng panel Duyệt cấu hình sau khi lưu nháp, không chỉ đổi dropdown. Khi cấu trúc chung đổi, dashboard nêu các ngôn ngữ khác cần duyệt kèm liên kết; server vẫn quyết định tại lần ghi.
++
++Biên dịch viên chỉ làm phần được quyền, không duyệt/xuất bản. Ảnh riêng, quan hệ chưa phân giải hoặc khối thiếu nội dung chỉ là cảnh báo hiển thị/chưa xác minh, không tự là chặn xuất bản. Chưa đọc được dữ liệu không đồng nghĩa chưa công khai. Snapshot có thể cũ khi người khác lưu; mở lại tài liệu trước khi xử lý. Không có cam kết “sẵn sàng xuất bản”, cũng không suy “thay đổi chưa xuất bản” từ trạng thái hay thời gian draft.
+diff --git a/src/app/(payload)/custom.scss b/src/app/(payload)/custom.scss
+index c218024..5de6254 100644
+--- a/src/app/(payload)/custom.scss
++++ b/src/app/(payload)/custom.scss
+@@ -285,3 +285,21 @@
+ .dx-lp-overview__approval .dx-lp-overview__hint {
+   margin: 4px 0 0;
+ }
++
++/* Read-only dashboard, Products and Home. All controls remain in the existing Admin view. */
++.dx-dash-notice { padding: 14px; border-left: 3px solid var(--theme-elevation-500); background: var(--theme-elevation-50); overflow-wrap: anywhere; }
++.dx-dash-document { margin: 20px 0; }
++.dx-dash-locales { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
++.dx-dash-locale { min-width: 0; border: 1px solid var(--theme-elevation-200); padding: 14px; border-radius: 6px; overflow-wrap: anywhere; }
++.dx-dash-locale h4 { margin: 0 0 12px; }
++.dx-dash-locale dl { margin: 0; }
++.dx-dash-locale dt { font-weight: 600; margin-top: 12px; }
++.dx-dash-locale dd { margin: 3px 0 0; }
++.dx-dash-locale a, .dx-dash-tasks a, .dx-dash-pages a { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 0; }
++.dx-dash-tasks { list-style: none; padding: 0; }
++.dx-dash-tasks > li { border-bottom: 1px solid var(--theme-elevation-200); padding: 14px 0; overflow-wrap: anywhere; }
++.dx-dash-pages, .dx-dash-filter { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin: 16px 0; }
++.dx-dash-filter select, .dx-dash-filter button { font: inherit; min-height: 44px; padding: 8px; color: var(--theme-text); background: var(--theme-input-bg); border: 1px solid var(--theme-elevation-400); border-radius: 4px; }
++.dx-dash a:focus-visible, .dx-dash summary:focus-visible, .dx-dash select:focus-visible, .dx-dash button:focus-visible { outline: 3px solid var(--theme-elevation-600); outline-offset: 3px; }
++.dx-dash summary { cursor: pointer; padding: 12px 0; min-height: 44px; }
++@media (max-width: 899px) { .dx-dash-locales { grid-template-columns: minmax(0, 1fr); } }
+diff --git a/src/components/admin/Dashboard.tsx b/src/components/admin/Dashboard.tsx
+index 9152068..ddf153a 100644
+--- a/src/components/admin/Dashboard.tsx
++++ b/src/components/admin/Dashboard.tsx
+@@ -2,8 +2,9 @@ import { Gutter } from '@payloadcms/ui'
+ import type { AdminViewServerProps } from 'payload'
+ import Link from 'next/link'
+ 
+-import { localeLabels, locales, type Locale } from '@/i18n/locales'
+-import { readApprovalState, type ApprovalState } from '@/lib/approval-basis'
++import { localeLabels } from '@/i18n/locales'
++import { readDashboard } from '@/lib/dashboard-read'
++import { permissionAllowed, taskCounts, type Cell, type DocumentSnapshot } from '@/lib/dashboard-snapshot'
+ 
+ /**
+  * Admin start page (Vietnamese). Everything shown is read from the CMS with the signed-in user's
+@@ -15,15 +16,6 @@ const roleName: Record<string, string> = {
+   editor: 'Biên tập viên',
+   translator: 'Biên dịch viên',
+ }
+-const reviewName: Record<string, string> = {
+-  'ai-draft': 'Bản nháp AI',
+-  'in-review': 'Đang xem xét',
+-  approved: 'Đã duyệt',
+-}
+-
+-const allowed = (permission: unknown) =>
+-  permission === true || (permission as { permission?: boolean } | undefined)?.permission === true
+-
+ const shortcuts = [
+   { href: '/admin/globals/home-page', label: 'Banner trang chủ', note: '5 banner, duyệt từng ngôn ngữ', kind: 'globals', slug: 'home-page' },
+   { href: '/admin/collections/products', label: 'Sản phẩm', note: 'Nội dung và thành phần', kind: 'collections', slug: 'products' },
+@@ -34,102 +26,55 @@ const shortcuts = [
+   { href: '/admin/collections/partner-inquiries', label: 'Yêu cầu hợp tác B2B', note: 'Chỉ quản trị viên', kind: 'collections', slug: 'partner-inquiries' },
+ ] as const
+ 
+-export async function Dashboard({ initPageResult, payload }: AdminViewServerProps) {
++
++const reasonLabels = { CONTENT: 'Cần xem xét nội dung', SHARED: 'Cần duyệt cấu trúc hiện tại', DEPENDENCY: 'Cần ngôn ngữ khác duyệt cấu trúc', DATA: 'Chưa kiểm đủ dữ liệu', DISPLAY: 'Cảnh báo hiển thị' }
++const filters = ['all', 'review', 'warning'] as const
++function taskMatches(cell: Cell, filter: string) {
++  if (!cell.reason) return false
++  return filter === 'all' || (filter === 'review' ? ['CONTENT', 'SHARED', 'DEPENDENCY'].includes(cell.reason) : ['DATA', 'DISPLAY'].includes(cell.reason))
++}
++function DocumentState({ doc }: { doc: DocumentSnapshot }) {
++  return <article className="dx-dash-document"><h3>{doc.title}</h3><div className="dx-dash-locales">{doc.cells.map(cell => <div key={cell.locale} className="dx-dash-locale" data-locale={cell.locale}>
++    <h4>{localeLabels[cell.locale]}</h4><dl><dt>Công khai</dt><dd>{cell.publicLabel}</dd><dt>Nội dung bản nháp</dt><dd>{cell.contentLabel}</dd><dt>Duyệt cấu trúc bản nháp</dt><dd>{cell.sharedLabel}</dd></dl>
++    <p>{cell.reason ? reasonLabels[cell.reason] : 'Chưa phát hiện điều kiện chặn trong snapshot'}</p>
++    <Link href={cell.href}>Mở {doc.title} · {cell.locale.toUpperCase()}</Link>
++  </div>)}</div></article>
++}
++function Tasks({ docs, filter = 'all' }: { docs: DocumentSnapshot[]; filter?: string }) {
++  const tasks = docs.flatMap(doc => doc.cells.filter(cell => taskMatches(cell, filter)).map(cell => ({ doc, cell })))
++  if (!tasks.length) return <p>Không có việc khớp bộ lọc trong phạm vi này.</p>
++  return <ul className="dx-dash-tasks">{tasks.map(({ doc, cell }) => <li key={`${doc.id}:${cell.locale}`}>
++    <strong>{doc.title} · {cell.locale.toUpperCase()} — {reasonLabels[cell.reason!]}</strong>
++    <p>{cell.reason === 'DATA' || cell.reason === 'DISPLAY' ? 'Mở tài liệu để kiểm tra dữ liệu hoặc hiển thị. Cảnh báo không tự yêu cầu duyệt lại.' : cell.instruction}</p>
++    {cell.missing.length > 0 && <p>Ngôn ngữ cần duyệt: {cell.missing.map((missing, index) => <span key={missing.locale}>{index > 0 ? ' · ' : ''}<Link href={missing.href}>Mở {doc.title} · {missing.locale.toUpperCase()}</Link></span>)}</p>}
++    {cell.warnings.length > 0 && <ul>{cell.warnings.map(warning => <li key={warning}>{warning}</li>)}</ul>}
++    <Link href={cell.href}>Mở {doc.title} · {cell.locale.toUpperCase()}</Link>
++  </li>)}</ul>
++}
++export async function Dashboard({ initPageResult, payload, searchParams }: AdminViewServerProps) {
+   const { req, permissions } = initPageResult
+   const user = req.user as { email?: string; name?: string | null; role?: string } | null
+-  const open = shortcuts.filter((s) =>
+-    allowed(
+-      (permissions as unknown as Record<string, Record<string, { read?: unknown }>>)?.[s.kind]?.[s.slug]
+-        ?.read,
+-    ),
+-  )
+-
+-  let banner: Record<Locale, ApprovalState> | null = null
+-  if (open.some((s) => s.slug === 'home-page')) {
+-    try {
+-      const states = await Promise.all(locales.map((l) => readApprovalState(payload, l)))
+-      banner = Object.fromEntries(locales.map((l, i) => [l, states[i]])) as Record<Locale, ApprovalState>
+-    } catch {
+-      banner = null
+-    }
+-  }
+-
+-  return (
+-    <Gutter>
+-      <div className="dx-dash">
+-        <header className="dx-dash__head">
+-          <h1>Bảng điều khiển</h1>
+-          <p>
+-            Xin chào <strong>{user?.name || user?.email}</strong>
+-            {user?.role ? ` · ${roleName[user.role] ?? user.role}` : ''}
+-          </p>
+-        </header>
+-
+-        <section aria-labelledby="dx-dash-banner">
+-          <h2 id="dx-dash-banner">Tình trạng banner trang chủ</h2>
+-          {banner ? (
+-            <table className="dx-dash__table">
+-              <caption className="dx-dash__sr">Trạng thái duyệt của trang chủ theo từng ngôn ngữ</caption>
+-              <thead>
+-                <tr>
+-                  <th scope="col">Ngôn ngữ</th>
+-                  <th scope="col">Trạng thái duyệt của trang</th>
+-                  <th scope="col">Cấu hình banner dùng chung</th>
+-                  <th scope="col">
+-                    <span className="dx-dash__sr">Mở</span>
+-                  </th>
+-                </tr>
+-              </thead>
+-              <tbody>
+-                {locales.map((l) => (
+-                  <tr key={l}>
+-                    <th scope="row">{localeLabels[l]}</th>
+-                    <td>{reviewName[banner![l].status] ?? banner![l].status}</td>
+-                    <td>{banner![l].approved[l] ? 'Đã duyệt cấu hình hiện tại' : 'Chưa duyệt / cần duyệt lại'}</td>
+-                    <td>
+-                      <Link href={`/admin/globals/home-page?locale=${l}`}>
+-                        Mở <span className="dx-dash__sr">trang chủ ngôn ngữ {localeLabels[l]}</span>
+-                      </Link>
+-                    </td>
+-                  </tr>
+-                ))}
+-              </tbody>
+-            </table>
+-          ) : (
+-            <p className="dx-dash__empty">
+-              {open.some((s) => s.slug === 'home-page')
+-                ? 'Chưa đọc được trạng thái banner. Hãy tải lại trang.'
+-                : 'Tài khoản của bạn không có quyền xem banner trang chủ.'}
+-            </p>
+-          )}
+-        </section>
+-
+-        <section aria-labelledby="dx-dash-todo">
+-          <h2 id="dx-dash-todo">Việc cần duyệt toàn website</h2>
+-          <p className="dx-dash__empty">
+-            Danh sách tổng hợp các mục đang chờ duyệt chưa được kết nối. Hãy mở từng mục trong lối
+-            tắt bên dưới hoặc menu bên trái để xem trạng thái duyệt theo ngôn ngữ.
+-          </p>
+-        </section>
+-
+-        <section aria-labelledby="dx-dash-links">
+-          <h2 id="dx-dash-links">Lối tắt</h2>
+-          {open.length ? (
+-            <ul className="dx-dash__cards">
+-              {open.map((s) => (
+-                <li key={s.href}>
+-                  <Link href={s.href}>
+-                    <strong>{s.label}</strong>
+-                    <span>{s.note}</span>
+-                  </Link>
+-                </li>
+-              ))}
+-            </ul>
+-          ) : (
+-            <p className="dx-dash__empty">Tài khoản của bạn chưa được cấp quyền truy cập mục nào.</p>
+-          )}
+-        </section>
+-      </div>
+-    </Gutter>
+-  )
++  const params = searchParams as Record<string, unknown> | undefined
++  const filter = typeof params?.work === 'string' && filters.includes(params.work as typeof filters[number]) ? params.work : 'all'
++  const open = shortcuts.filter(s => permissionAllowed((permissions as unknown as Record<string, Record<string, { read?: unknown }>>)?.[s.kind]?.[s.slug]?.read))
++  const data = await readDashboard(payload, req.user, permissions, params?.page)
++  const counts = taskCounts(data.products), homeCounts = taskCounts(data.home ? [data.home] : [])
++  const inventory = data.inventory.kind === 'ok' ? data.inventory.value : null
++  return <Gutter><div className="dx-dash">
++    <header className="dx-dash__head"><h1>Bảng điều khiển</h1><p>Xin chào <strong>{user?.name || user?.email}</strong>{user?.role ? ` · ${roleName[user.role] ?? user.role}` : ''}</p></header>
++    <p className="dx-dash-notice">Chỉ đọc: mở tài liệu để xử lý. Đây là snapshot lúc {data.observedAt}; không bảo đảm lần xuất bản sau sẽ được chấp nhận. Không suy thay đổi chưa xuất bản từ trạng thái bản nháp.</p>
++    {user?.role === 'translator' && <p className="dx-dash-notice">Bạn có thể soạn bản nháp theo quyền của mình; không có quyền duyệt hoặc xuất bản.</p>}
++    <section aria-labelledby="dx-home-title"><h2 id="dx-home-title">Trang chủ · tính riêng</h2>{!data.homeAllowed ? <p>Không có quyền đọc Trang chủ.</p> : data.home ? <>
++      <DocumentState doc={data.home} /><p>{homeCounts.total} cặp tài liệu/ngôn ngữ có việc ở Trang chủ. Không cộng vào Sản phẩm.</p><details><summary>Việc Trang chủ</summary><Tasks docs={[data.home]} /></details>
++    </> : <p>Chưa đọc được Trang chủ.</p>}</section>
++    <section aria-labelledby="dx-products-title"><h2 id="dx-products-title">Sản phẩm</h2>{!data.productsAllowed ? <p>Không có quyền đọc Sản phẩm.</p> : !inventory ? <p>{data.inventory.kind === 'denied' ? 'Bị từ chối đọc danh sách Sản phẩm.' : 'Chưa đọc được danh sách Sản phẩm. Hãy tải lại trang.'}</p> : <>
++      <p>Trang {inventory.page}/{inventory.pages} · {data.products.length}/{inventory.total} sản phẩm. Số đếm việc chỉ tính Sản phẩm trên trang này, không phải toàn website.</p>
++      <nav aria-label="Phân trang Sản phẩm" className="dx-dash-pages">{inventory.page > 1 && <Link href={`/admin?page=${inventory.page - 1}&work=${filter}`}>Trang trước</Link>}<span aria-current="page">Trang {inventory.page}</span>{inventory.page < inventory.pages && <Link href={`/admin?page=${inventory.page + 1}&work=${filter}`}>Trang sau</Link>}</nav>
++      <h3>Việc cần xử lý · trang hiện tại</h3><p>{counts.total} cặp có việc: {counts.review} cần xem xét, {counts.warning} chỉ cảnh báo/chưa xác định. Không gồm Trang chủ hoặc trang khác.</p>
++      <form action="/admin" method="get" className="dx-dash-filter"><input type="hidden" name="page" value={inventory.page} /><label htmlFor="dx-work">Lọc việc trong trang</label><select id="dx-work" name="work" defaultValue={filter}><option value="all">Tất cả việc</option><option value="review">Cần xem xét/duyệt</option><option value="warning">Cảnh báo/chưa xác định</option></select><button type="submit">Lọc</button></form>
++      <Tasks docs={data.products} filter={filter} />
++      <details open><summary>Trạng thái Sản phẩm · KO/EN/VI</summary>{data.products.length ? data.products.map(doc => <DocumentState key={doc.id} doc={doc} />) : <p>Chưa có Sản phẩm trong phạm vi được đọc.</p>}</details>
++    </>}</section>
++    <section aria-labelledby="dx-links-title"><h2 id="dx-links-title">Lối tắt</h2>{open.length ? <ul className="dx-dash__cards">{open.map(s => <li key={s.href}><Link href={s.href}><strong>{s.label}</strong><span>{s.note}</span></Link></li>)}</ul> : <p>Tài khoản chưa có quyền truy cập mục nào.</p>}</section>
++  </div></Gutter>
+ }
+diff --git a/src/lib/dashboard-read.ts b/src/lib/dashboard-read.ts
+new file mode 100644
+index 0000000..2b5632f
+--- /dev/null
++++ b/src/lib/dashboard-read.ts
+@@ -0,0 +1,50 @@
++import 'server-only'
++import type { Payload } from 'payload'
++import type { User } from '@/payload-types'
++import { isStaffUser, isEditorUser } from '@/access/roles'
++import { locales, type Locale } from '@/i18n/locales'
++import { permissionAllowed, pageNumber, snapshot, type Doc, type Read, type Source, type LocaleReads, type DocumentSnapshot } from './dashboard-snapshot'
++
++export async function safeRead<T>(fn: () => Promise<T>): Promise<Read<T>> {
++  try { return { kind: 'ok', value: await fn() } } catch (error) {
++    return { kind: error && typeof error === 'object' && 'status' in error && error.status === 403 ? 'denied' : 'error' }
++  }
++}
++export const PAGE_SIZE = 20
++export type DashboardData = { products: DocumentSnapshot[]; home: DocumentSnapshot | null; inventory: Read<{ total: number; pages: number; page: number }>; productsAllowed: boolean; homeAllowed: boolean; observedAt: string }
++export async function readDashboard(payload: Payload, user: User | null, permissions: unknown, requestedPage: unknown): Promise<DashboardData> {
++  const p = permissions as { collections?: Record<string, { read?: unknown }>; globals?: Record<string, { read?: unknown }> }
++  const productsAllowed = isStaffUser(user) && permissionAllowed(p?.collections?.products?.read)
++  const homeAllowed = isStaffUser(user) && permissionAllowed(p?.globals?.['home-page']?.read)
++  const data: DashboardData = { products: [], home: null, inventory: { kind: 'denied' }, productsAllowed, homeAllowed, observedAt: new Date().toISOString() }
++  // Never forward the dashboard request or auth cookie to the guest read.
++  const base = (locale: Locale, staff: boolean, draft: boolean) => ({ locale, fallbackLocale: false as const, overrideAccess: false, draft, ...(staff ? { user } : {}), context: { skipApprovalState: true } })
++  async function sources(kind: 'products' | 'home', id?: string): Promise<Source> {
++    const read = async (locale: Locale, staff: boolean, draft: boolean): Promise<Read<Doc | null>> => safeRead(async () => {
++      if (kind === 'home') return await payload.findGlobal({ slug: 'home-page', ...base(locale, staff, draft), depth: 1 }) as unknown as Doc
++      const result = await payload.find({ collection: 'products', ...base(locale, staff, draft), depth: draft ? 2 : 0, where: { id: { equals: id } }, limit: 1 })
++      return result.docs[0] as unknown as Doc ?? null
++    })
++    const all = async (staff: boolean, draft: boolean) => Object.fromEntries(await Promise.all(locales.map(async l => [l, await read(l, staff, draft)]))) as LocaleReads
++    const [draft, main, guest] = await Promise.all([all(true, true), all(true, false), all(false, false)])
++    return { draft, main, guest }
++  }
++  if (productsAllowed) {
++    const count = await safeRead(() => payload.count({ collection: 'products', locale: 'ko', user, overrideAccess: false }))
++    if (count.kind !== 'ok') data.inventory = count
++    else {
++      const pages = Math.max(1, Math.ceil(count.value.totalDocs / PAGE_SIZE)), page = Math.min(pageNumber(requestedPage), pages)
++      data.inventory = { kind: 'ok', value: { total: count.value.totalDocs, pages, page } }
++      const list = await safeRead(() => payload.find({ collection: 'products', locale: 'ko', fallbackLocale: false, draft: true, user, overrideAccess: false, limit: PAGE_SIZE, page, sort: ['slug', 'id'], depth: 0 }))
++      if (list.kind !== 'ok') data.inventory = list
++      else for (const item of list.value.docs) {
++        const id = String(item.id), source = await sources('products', id)
++        const name = locales.map(l => source.draft[l]).find(r => r.kind === 'ok' && typeof r.value?.name === 'string')
++        const title = name?.kind === 'ok' ? String(name.value?.name) : `Sản phẩm #${id}`
++        data.products.push(snapshot('products', id, title, source, isEditorUser(user)))
++      }
++    }
++  }
++  if (homeAllowed) data.home = snapshot('home', 'home-page', 'Trang chủ', await sources('home'), isEditorUser(user))
++  return data
++}
+diff --git a/src/lib/dashboard-snapshot.ts b/src/lib/dashboard-snapshot.ts
+new file mode 100644
+index 0000000..82a2de7
+--- /dev/null
++++ b/src/lib/dashboard-snapshot.ts
+@@ -0,0 +1,125 @@
++import { locales, type Locale } from '@/i18n/locales'
++import { sharedRevision, readApprovals, bannersApprovedFor } from '@/lib/banner-revision'
++import { landingRevision, EMPTY_LANDING_REVISION } from '@/lib/landing-approval'
++import { blockIssues, type ProductProvides } from '@/lib/landing'
++
++export type Doc = Record<string, unknown>
++export type Read<T> = { kind: 'ok'; value: T } | { kind: 'denied' } | { kind: 'error' }
++export type LocaleReads = Record<Locale, Read<Doc | null>>
++export type Source = { draft: LocaleReads; main: LocaleReads; guest: LocaleReads }
++export type Reason = 'CONTENT' | 'SHARED' | 'DEPENDENCY' | 'DATA' | 'DISPLAY'
++export type Cell = { locale: Locale; href: string; publicLabel: string; contentLabel: string; sharedLabel: string; reason: Reason | null; missing: { locale: Locale; href: string }[]; warnings: string[]; instruction: string }
++export type DocumentSnapshot = { id: string; title: string; cells: Cell[] }
++export const permissionAllowed = (p: unknown) => p === true || (!!p && typeof p === 'object' && 'permission' in p && p.permission === true)
++export const pageNumber = (v: unknown) => typeof v === 'string' && /^[1-9]\d*$/.test(v) && Number.isSafeInteger(Number(v)) ? Number(v) : 1
++export const documentHref = (kind: 'products' | 'home', id: string, locale: Locale) => kind === 'home' ? `/admin/globals/home-page?locale=${locale}` : `/admin/collections/products/${encodeURIComponent(id)}?locale=${locale}`
++const own = (d: Doc, k: string) => Object.prototype.hasOwnProperty.call(d, k)
++const object = (v: unknown): Doc | null => v && typeof v === 'object' && !Array.isArray(v) ? v as Doc : null
++const statuses: Record<string, string> = { 'ai-draft': 'Bản nháp AI', 'in-review': 'Đang xem xét', approved: 'Đã duyệt bản nháp' }
++function readLabel(read: Read<Doc | null>, home: boolean, locale: Locale) {
++  if (read.kind === 'denied') return 'Bị từ chối đọc bản công khai; cần kiểm tra cấu hình'
++  if (read.kind === 'error') return 'Chưa xác định bản công khai'
++  const doc = read.value
++  if (home) return doc?.translationStatus === 'approved' && bannersApprovedFor(doc, locale) ? 'Đang dùng banner CMS' : 'Đang dùng banner mặc định'
++  return doc ? 'Khách đọc được bản hiện tại' : 'Không có bản đọc được cho khách'
++}
++/** null/id/unpopulated never proves absence. No private URLs leave this projection. */
++export function mediaState(v: unknown): 'public' | 'private' | 'unknown' {
++  const m = object(v)
++  if (!m || !own(m, 'id') || typeof m.url !== 'string' || !m.url || typeof m.publicRelease !== 'boolean') return 'unknown'
++  return m.publicRelease ? 'public' : 'private'
++}
++export function displayWarnings(doc: Doc, home: boolean): string[] {
++  const warnings = new Set<string>()
++  const inspect = (value: unknown, label: string) => {
++    const state = mediaState(value)
++    if (state === 'unknown') warnings.add(`${label}: chưa xác minh ảnh/quan hệ (chưa phân giải hoặc không đủ dữ liệu).`)
++    if (state === 'private') warnings.add(`${label}: ảnh chưa công khai; chỉ là cảnh báo hiển thị.`)
++    return state
++  }
++  if (home) {
++    const banners = object(doc.banners)
++    if (!banners) return ['Chưa đủ dữ liệu để kiểm tra ảnh banner.']
++    for (const [slot, value] of Object.entries(banners)) {
++      const b = object(value)
++      if (!b) continue
++      if (b.visualType === 'brandOptics') continue
++      for (const field of ['desktopImage', 'mobileImage', 'localeDesktopImage', 'localeMobileImage']) {
++        // Optional empty fields are not proof of a missing required visual; do not claim hidden.
++        if (b[field] != null) inspect(b[field], `Banner ${slot}`)
++      }
++    }
++    return [...warnings]
++  }
++  if (Array.isArray(doc.images)) doc.images.forEach(v => inspect(v, 'Ảnh sản phẩm'))
++  if (!Array.isArray(doc.landing)) return ['Chưa đủ dữ liệu để kiểm tra khối landing.']
++  const provides: ProductProvides = { image: false, packSize: false, inci: false, howToUse: false, cautions: false, keyIngredients: false }
++  doc.landing.forEach((v, index) => {
++    const b = object(v)
++    if (!b || b.hidden === true) return
++    const label = `Khối ${index + 1}`
++    if (b.blockType === 'ingredients' || b.blockType === 'details') { warnings.add(`${label}: chưa xác minh nội dung/quan hệ theo quyền khách.`); return }
++    let known = true
++    for (const field of ['image', 'mobileImage']) {
++      if (own(b, field) && b[field] != null) known = inspect(b[field], label) !== 'unknown' && known
++    }
++    // Only the required desktop image with full provenance can prove band/split omission.
++    if (b.blockType === 'band' || b.blockType === 'split') known = mediaState(b.image) !== 'unknown' && known
++    if (b.blockType === 'split') known = known && own(b, 'heading') && own(b, 'body')
++    if (b.blockType === 'points' || b.blockType === 'faq') {
++      const keys = b.blockType === 'points' ? ['title'] : ['question', 'answer']
++      known = Array.isArray(b.items) && b.items.every(r => { const item = object(r); return !!item && keys.every(k => own(item, k)) })
++    }
++    if (!known) { warnings.add(`${label}: chưa đủ dữ liệu để kết luận khối có hiển thị với khách.`); return }
++    const issues = blockIssues(b, provides, value => mediaState(value) === 'public')
++    if (issues.required.length) warnings.add(`${label}: khách không thấy khối vì thiếu ${issues.required.join(', ')} (không phải chặn xuất bản).`)
++  })
++  return [...warnings]
++}
++
++/** Read-only prediction, not a promise that a later mutation will pass validation. */
++export function snapshot(kind: 'products' | 'home', id: string, title: string, source: Source, canPublish: boolean): DocumentSnapshot {
++  const home = kind === 'home'
++  const field = home ? 'banners' : 'landing'
++  const mapField = home ? 'bannerApprovals' : 'landingApprovals'
++  const revision = (doc: Doc) => home ? sharedRevision(doc.banners as never) : landingRevision(doc.landing)
++  return { id, title, cells: locales.map(locale => {
++    const dr = source.draft[locale], mr = source.main[locale], gr = source.guest[locale]
++    const doc = dr.kind === 'ok' ? dr.value : null
++    const status = typeof doc?.translationStatus === 'string' ? doc.translationStatus : ''
++    const complete = !!doc && own(doc, field) && own(doc, mapField)
++    const mainKnown = mr.kind === 'ok' && (mr.value === null || Object.keys(mr.value).length === 0 || own(mr.value, field))
++    // A successful absent main matches the guards' null/{} behavior; it is not a failed read.
++    const main = mr.kind === 'ok' ? mr.value : null
++    const rev = complete ? revision(doc!) : null
++    const mainRev = main && own(main, field) ? revision(main) : home ? sharedRevision(undefined) : EMPTY_LANDING_REVISION
++    const notApplicable = !home && complete && mainKnown && rev === EMPTY_LANDING_REVISION && mainRev === EMPTY_LANDING_REVISION
++    const approval = complete ? readApprovals(doc![mapField])[locale] === rev : null
++    let sharedLabel = notApplicable ? 'Không áp dụng landing' : !complete ? 'Chưa xác định duyệt cấu trúc' : status !== 'approved' ? 'Đi cùng lần duyệt nội dung' : approval ? 'Đã duyệt cấu trúc hiện tại' : 'Chưa có duyệt khớp cấu trúc hiện tại'
++    let reason: Reason | null = null
++    const missing: Cell['missing'] = []
++    const warnings = doc ? displayWarnings(doc, home) : []
++    if (!statuses[status] || !complete || !mainKnown) reason = 'DATA'
++    else if (status !== 'approved') reason = 'CONTENT'
++    else if (!notApplicable && !approval) reason = 'SHARED'
++    else if (!notApplicable && rev !== mainRev && (home ? !!main : main?._status === 'published')) {
++      for (const other of locales) {
++        if (other === locale) continue
++        const otherMain = source.main[other]
++        if (otherMain.kind !== 'ok') { reason = 'DATA'; continue }
++        if (otherMain.value && !own(otherMain.value, 'translationStatus') && Object.keys(otherMain.value).length) { reason = 'DATA'; continue }
++        if (otherMain.value?.translationStatus === 'approved' && readApprovals(doc![mapField])[other] !== rev) missing.push({ locale: other, href: documentHref(kind, id, other) })
++      }
++      if (reason !== 'DATA' && missing.length) reason = 'DEPENDENCY'
++    }
++    if (status !== 'approved' && approval && !notApplicable) { reason = 'DATA'; sharedLabel = 'Trạng thái duyệt chưa nhất quán; cần kiểm tra' }
++    if (gr.kind !== 'ok') warnings.push(gr.kind === 'denied' ? 'Bị từ chối đọc bản công khai; cần kiểm tra cấu hình.' : 'Nguồn công khai đang lỗi; chưa kiểm đủ điều kiện.')
++    if (!reason && warnings.length) reason = 'DISPLAY'
++    return { locale, href: documentHref(kind, id, locale), publicLabel: readLabel(gr, home, locale), contentLabel: dr.kind === 'denied' ? 'Không có quyền đọc bản nháp' : statuses[status] ?? 'Chưa đọc được trạng thái duyệt', sharedLabel, reason, missing, warnings,
++      instruction: !canPublish ? 'Bạn được soạn bản nháp theo quyền của mình; cần editor/admin duyệt và xuất bản.' : home ? 'Mở Banner trang chủ, lưu nháp và duyệt bằng panel Duyệt cấu hình; xuất bản riêng từng ngôn ngữ.' : 'Mở tab Landing page; xem lại, lưu nháp Approved trong lần riêng không sửa nội dung, rồi xuất bản đúng ngôn ngữ.' }
++  }) }
++}
++export function taskCounts(docs: DocumentSnapshot[]) {
++  const cells = docs.flatMap(d => d.cells).filter(c => c.reason)
++  return { total: cells.length, review: cells.filter(c => ['CONTENT', 'SHARED', 'DEPENDENCY'].includes(c.reason!)).length, warning: cells.filter(c => c.reason === 'DATA' || c.reason === 'DISPLAY').length }
++}
+diff --git a/tests/int/dashboard-snapshot.int.spec.ts b/tests/int/dashboard-snapshot.int.spec.ts
+new file mode 100644
+index 0000000..01a293c
+--- /dev/null
++++ b/tests/int/dashboard-snapshot.int.spec.ts
+@@ -0,0 +1,42 @@
++/* eslint-disable @typescript-eslint/no-explicit-any -- integration fixtures use actual Payload documents. */
++import {afterAll,beforeAll,describe,expect,it,vi} from 'vitest'
++vi.mock('server-only',()=>({}))
++import {getPayload,type Payload} from 'payload'
++import {randomBytes,createHash} from 'node:crypto'
++import {writeFileSync} from 'node:fs'
++import config from '@/payload.config'
++import {migrations} from '@/migrations'
++import {assertDisposableDatabase} from '../helpers/database'
++import {readDashboard} from '@/lib/dashboard-read'
++import {taskCounts} from '@/lib/dashboard-snapshot'
++import {homeApprovalContext} from '../helpers/home-approval'
++let p:Payload,admin:any,editor:any,translator:any
++const locales=['ko','en','vi'] as const
++const permissions={collections:{products:{read:true}},globals:{'home-page':{read:true}}}
++const pw=process.env.TEST_FIXTURE_PASSWORD || randomBytes(24).toString('hex')
++const options=(locale:any,user=editor,draft=false)=>({locale,user,draft,overrideAccess:false,fallbackLocale:false as const})
++const hash=(v:unknown)=>createHash('sha256').update(JSON.stringify(v)).digest('hex')
++async function durable(){return hash({main:await p.find({collection:'products',...options('ko'),limit:100,depth:0}),home:await p.findGlobal({slug:'home-page',...options('ko'),depth:0,context:{skipApprovalState:true}}),productVersions:await p.findVersions({collection:'products',overrideAccess:false,user:editor,limit:200,depth:0}),homeVersions:await p.findGlobalVersions({slug:'home-page',overrideAccess:false,user:editor,limit:100,depth:0})})}
++beforeAll(async()=>{
++ p=await getPayload({config:await config});await assertDisposableDatabase(p);await p.db.migrate({migrations:migrations as any})
++ admin=await p.create({collection:'users',overrideAccess:true,data:{email:'admin@fixture.invalid',password:pw,role:'admin'}})
++ editor=await p.create({collection:'users',overrideAccess:false,user:admin,data:{email:'editor@fixture.invalid',password:pw,role:'editor'}})
++ translator=await p.create({collection:'users',overrideAccess:false,user:admin,data:{email:'translator@fixture.invalid',password:pw,role:'translator'}})
++ for(let i=0;i<21;i++){
++  const doc=await p.create({collection:'products',...options('ko',editor,true),draft:true,data:{name:`[FIXTURE] ${String(i+1).padStart(2,'0')} KO`,slug:`dashboard-fixture-${String(i+1).padStart(2,'0')}`,translationStatus:'in-review',_status:'draft'}})
++  for(const l of ['en','vi'] as const)await p.update({collection:'products',id:doc.id,...options(l,editor,true),data:{name:`[FIXTURE] ${String(i+1).padStart(2,'0')} ${l.toUpperCase()}`}})
++  if(i===0){await p.update({collection:'products',id:doc.id,...options('ko',editor,true),data:{translationStatus:'approved'}});await p.update({collection:'products',id:doc.id,...options('ko'),data:{_status:'published'}});await p.update({collection:'products',id:doc.id,...options('ko',editor,true),data:{shortDescription:'[FIXTURE] New draft not approved'}})}
++ }
++ for(const l of locales){await p.updateGlobal({slug:'home-page',...options(l,editor,true),data:{headline:`[FIXTURE] ${l}`,translationStatus:'in-review'}});await p.updateGlobal({slug:'home-page',...options(l,editor,true),data:{translationStatus:'approved'},context:await homeApprovalContext(p,l)});await p.updateGlobal({slug:'home-page',...options(l),data:{_status:'published'}})}
++ await p.updateGlobal({slug:'home-page',...options('ko',editor,true),data:{banners:{luma:{theme:'forma'}}}})
++ await p.updateGlobal({slug:'home-page',...options('ko',editor,true),data:{translationStatus:'approved'},context:await homeApprovalContext(p,'ko')})
++})
++afterAll(async()=>{await p?.destroy()})
++describe('Dashboard application reads on disposable fixture',()=>{
++ it.each(['admin','editor','translator'])('%s sees page20 and separate Home, without serializing hidden data',async role=>{const user={admin,editor,translator}[role];const data=await readDashboard(p,user,permissions,'1');expect(data.products).toHaveLength(20);expect(data.inventory).toEqual({kind:'ok',value:{total:21,pages:2,page:1}});expect(data.home?.cells[0].missing.map(m=>m.locale)).toEqual(['en','vi']);expect(data.home?.cells[0].reason).toBe('DEPENDENCY');expect(data.products[0].cells[0]).toMatchObject({publicLabel:'Khách đọc được bản hiện tại',contentLabel:'Đang xem xét',reason:'CONTENT'});expect(data.products[1].cells[0].sharedLabel).toBe('Không áp dụng landing');expect(JSON.stringify(data)).not.toMatch(/approvalBasis|bannerApprovals|landingApprovals|docSave|password|salt|hash"|fixture.invalid/);expect(taskCounts(data.products).total).toBe(60)})
++ it('page2/clamping count only current Products and Home remains separate',async()=>{const data=await readDashboard(p,editor,permissions,'999');expect(data.products).toHaveLength(1);expect(data.inventory).toEqual({kind:'ok',value:{total:21,pages:2,page:2}});expect(taskCounts(data.products).total).toBe(3);expect(taskCounts([data.home!]).total).toBe(3)})
++ it('permission denied does not leak the other source',async()=>{const data=await readDashboard(p,translator,{collections:{products:{read:false}},globals:{'home-page':{read:false}}},'1');expect(data.products).toEqual([]);expect(data.home).toBeNull();expect(data.productsAllowed).toBe(false)})
++ it('readDashboard performs no mutation calls and leaves main/version data unchanged',async()=>{const before=await durable();const calls:string[]=[];const proxy=new Proxy(p,{get(target,key){if(['create','update','delete','updateGlobal','restoreVersion','restoreGlobalVersion'].includes(String(key)))return()=>{calls.push(String(key));throw Error('Mutation from dashboard')};return Reflect.get(target,key)}});await readDashboard(proxy,editor,permissions,'1');expect(calls).toEqual([]);expect(await durable()).toBe(before)})
++ it('dashboard missing set agrees with actual Home publish guard and refusal changes no durable state',async()=>{const before=await durable(),data=await readDashboard(p,editor,permissions,'1');expect(data.home!.cells[0].missing.map(m=>m.locale)).toEqual(['en','vi']);await expect(p.updateGlobal({slug:'home-page',...options('ko'),data:{_status:'published'}})).rejects.toMatchObject({status:409});expect(await durable()).toBe(before)})
++ it('records sanitized fixture inventory for browser checks',async()=>{const data=await readDashboard(p,editor,permissions,'1');writeFileSync('docs/admin-dashboard-dot1/evidence-db/dashboard-fixture-summary.json',JSON.stringify({inventory:data.inventory,products:data.products.map(d=>({id:d.id,title:d.title,links:d.cells.map(c=>c.href)})),home:data.home?.cells.map(c=>({locale:c.locale,href:c.href,missing:c.missing})),beforeBrowserContentHash:await durable()},null,2))})
++})
+diff --git a/tests/unit/dashboard-snapshot.spec.ts b/tests/unit/dashboard-snapshot.spec.ts
+new file mode 100644
+index 0000000..957b32b
+--- /dev/null
++++ b/tests/unit/dashboard-snapshot.spec.ts
+@@ -0,0 +1,32 @@
++import {describe,it,expect,vi} from 'vitest'
++vi.mock('server-only',()=>({}))
++import {snapshot, mediaState, displayWarnings, pageNumber, taskCounts, type Doc, type Source, type LocaleReads} from '@/lib/dashboard-snapshot'
++import {safeRead,readDashboard} from '@/lib/dashboard-read'
++import {sharedRevision} from '@/lib/banner-revision'
++import {landingRevision} from '@/lib/landing-approval'
++const ls=['ko','en','vi'] as const
++const all=(value:Doc|null):LocaleReads=>Object.fromEntries(ls.map(l=>[l,{kind:'ok',value}])) as LocaleReads
++function source(home=false):Source{const doc=home?{translationStatus:'approved',banners:{},bannerApprovals:Object.fromEntries(ls.map(l=>[l,sharedRevision({})]))}:{translationStatus:'approved',landing:[],landingApprovals:{},images:[]};return {draft:all(doc),main:all(doc),guest:all(doc)}}
++describe('read-only dashboard semantic boundaries',()=>{
++ it('never infers unpublished changes from draft status or timestamps',()=>{const s=source();s.draft.ko={kind:'ok',value:{translationStatus:'approved',landing:[],landingApprovals:{},images:[],_status:'draft',updatedAt:'future'}};expect(snapshot('products','1','P',s,true).cells[0]).toMatchObject({reason:null,publicLabel:'Khách đọc được bản hiện tại',sharedLabel:'Không áp dụng landing'})})
++ it('couples content review to structure without duplicate task',()=>{const s=source();s.draft=all({translationStatus:'in-review',landing:[{blockType:'hero'}],landingApprovals:{}});const c=snapshot('products','1','P',s,true).cells[0];expect(c.reason).toBe('CONTENT');expect(c.sharedLabel).toBe('Đi cùng lần duyệt nội dung')})
++ it('requires main as well as draft empty for N/A',()=>{const s=source();s.main=all({_status:'published',translationStatus:'approved',landing:[{blockType:'hero'}]});const c=snapshot('products','1','P',s,true).cells[0];expect(c.sharedLabel).not.toBe('Không áp dụng landing');expect(c.reason).toBe('SHARED')})
++ it('successful absent main matches null branch of Product guard',()=>{const s=source();s.main=all(null);expect(snapshot('products','1','P',s,true).cells[0].sharedLabel).toBe('Không áp dụng landing')})
++ it('Home {} main has no dependent locale, guest {} means default',()=>{const s=source(true);s.main=all({});s.guest=all({});expect(snapshot('home','home-page','Home',s,true).cells[0]).toMatchObject({reason:null,publicLabel:'Đang dùng banner mặc định'})})
++ it('Home CMS requires both public content approval and current shared approval',()=>{const s=source(true);expect(snapshot('home','h','Home',s,true).cells[0].publicLabel).toBe('Đang dùng banner CMS');s.guest=all({translationStatus:'approved',banners:{},bannerApprovals:{}});expect(snapshot('home','h','Home',s,true).cells[0].publicLabel).toBe('Đang dùng banner mặc định')})
++ it('generates all missing dependency links without hardcoded locales',()=>{const s=source(true);const banners={brand:{theme:'luma'}},rev=sharedRevision(banners);s.draft=all({translationStatus:'approved',banners,bannerApprovals:{vi:rev}});s.main=all({translationStatus:'approved',banners:{},_status:'draft'});const c=snapshot('home','h','H',s,true).cells[2];expect(c.reason).toBe('DEPENDENCY');expect(c.missing).toEqual([{locale:'ko',href:'/admin/globals/home-page?locale=ko'},{locale:'en',href:'/admin/globals/home-page?locale=en'}])})
++ it('Product dependency additionally requires published main',()=>{const s=source();const landing=[{blockType:'hero'}],rev=landingRevision(landing);s.draft=all({translationStatus:'approved',landing,landingApprovals:{ko:rev}});s.main=all({translationStatus:'approved',landing:[],_status:'draft'});expect(snapshot('products','2','P',s,true).cells[0].missing).toEqual([])})
++ it('does not turn read denied/error into empty public result',()=>{const s=source();s.guest.ko={kind:'denied'};s.guest.en={kind:'error'};const c=snapshot('products','1','P',s,false).cells;expect(c[0].publicLabel).toContain('Bị từ chối');expect(c[1].publicLabel).toContain('Chưa xác định');expect(c[0].instruction).toContain('editor/admin')})
++ it('missing raw status never defaults to in-review',()=>{const s=source();s.draft.ko={kind:'ok',value:{landing:[],landingApprovals:{}}};expect(snapshot('products','1','P',s,true).cells[0]).toMatchObject({contentLabel:'Chưa đọc được trạng thái duyệt',reason:'DATA'})})
++ it('unknown main is not N/A',()=>{const s=source();s.main.ko={kind:'error'};expect(snapshot('products','1','P',s,true).cells[0]).toMatchObject({reason:'DATA'});expect(snapshot('products','1','P',s,true).cells[0].sharedLabel).not.toBe('Không áp dụng landing')})
++ it('does not leak basis, approvals, private URLs or editorial notes',()=>{const s=source(true);s.draft=all({translationStatus:'in-review',banners:{brand:{visualType:'packshot',desktopImage:{id:3,url:'SECRET_URL',publicRelease:false}}},bannerApprovals:{_save:'SECRET_MARKER'},editorialNote:'SECRET_NOTE',approvalState:{basis:'SECRET_TOKEN'}});expect(JSON.stringify(snapshot('home','h','Home',s,true))).not.toMatch(/SECRET_/);expect(taskCounts([snapshot('home','h','H',s,true)]).total).toBe(3)})
++ it.each([null,7,{}, {id:1,publicRelease:true}])('unresolved media stays unknown %j',v=>expect(mediaState(v)).toBe('unknown'))
++ it('known-private band can be reported hidden, unresolved band cannot',()=>{const privateBand={blockType:'band',image:{id:1,url:'/private',publicRelease:false}};expect(displayWarnings({landing:[privateBand]},false).join()).toContain('khách không thấy khối');expect(displayWarnings({landing:[{...privateBand,image:1}]},false).join()).not.toContain('khách không thấy khối')})
++ it('does not claim a hero with private image is hidden',()=>expect(displayWarnings({landing:[{blockType:'hero',image:{id:1,url:'/private',publicRelease:false}}]},false).join()).not.toContain('khách không thấy khối'))
++ it('ignores hidden blocks and leaves ingredients relations unknown',()=>{expect(displayWarnings({landing:[{blockType:'band',hidden:true,image:1}]},false)).toEqual([]);expect(displayWarnings({landing:[{blockType:'ingredients',items:[{ingredient:3}]}]},false).join()).toContain('chưa xác minh')})
++ it.each([undefined,'0','-2','1.5','all',['2'],'99999999999999999'])('invalid page %j safely maps to 1',v=>expect(pageNumber(v)).toBe(1))
++ it('valid page is a positive integer',()=>expect(pageNumber('2')).toBe(2))
++ it('counts document/locale once, independently of warnings',()=>{const s=source();s.draft=all({translationStatus:'in-review',landing:[],landingApprovals:{}});expect(taskCounts([snapshot('products','1','P',s,true)])).toEqual({total:3,review:3,warning:0})})
++ it('read union separates Forbidden from another query failure',async()=>{expect(await safeRead(async()=>{throw {status:403}})).toEqual({kind:'denied'});expect(await safeRead(async()=>{throw {status:400}})).toEqual({kind:'error'});expect(await safeRead(async()=>null)).toEqual({kind:'ok',value:null})})
++ it('no staff or permission means no Payload reads at all',async()=>{const find=vi.fn();const data=await readDashboard({find} as never,null,{collections:{products:{read:true}}},'1');expect(data.productsAllowed).toBe(false);expect(find).not.toHaveBeenCalled()})
++})

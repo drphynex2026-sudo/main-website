@@ -1,0 +1,1687 @@
+{
+  "viewports": [
+    {
+      "buttons": [
+        "Lọc"
+      ],
+      "client": 375,
+      "columns": "343px",
+      "documents": 21,
+      "forms": [
+        {
+          "action": "/admin",
+          "method": "get"
+        }
+      ],
+      "role": "admin",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "client": 753,
+      "columns": "721px",
+      "dashboardRight": 737,
+      "role": "admin",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "client": 1425,
+      "columns": "427px 427px 427px",
+      "dashboardRight": 1365,
+      "role": "admin",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "buttons": [
+        "Lọc"
+      ],
+      "client": 375,
+      "columns": "343px",
+      "dashboardRight": 359,
+      "forbiddenShortcuts": 0,
+      "role": "editor",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "client": 753,
+      "columns": "721px",
+      "dashboardRight": 737,
+      "role": "editor",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "client": 1425,
+      "columns": "427px 427px 427px",
+      "dashboardRight": 1365,
+      "role": "editor",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "buttons": [
+        "Lọc"
+      ],
+      "client": 375,
+      "columns": "343px",
+      "dashboardRight": 359,
+      "forbiddenShortcuts": 0,
+      "rights": "Bạn có thể soạn bản nháp theo quyền của mình; không có quyền duyệt hoặc xuất bản.",
+      "role": "translator",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "client": 753,
+      "columns": "721px",
+      "dashboardRight": 737,
+      "role": "translator",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "client": 1425,
+      "columns": "427px 427px 427px",
+      "dashboardRight": 1365,
+      "role": "translator",
+      "scroll": 1425,
+      "width": 1440
+    }
+  ],
+  "links": [
+    {
+      "role": "admin",
+      "href": "/admin/globals/home-page?locale=ko",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/globals/home-page?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/globals/home-page?locale=en",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/globals/home-page?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/globals/home-page?locale=vi",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/globals/home-page?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/1?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/1?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/1?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/1?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/1?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/1?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/2?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/2?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/2?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/2?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/2?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/2?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/3?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/3?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/3?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/3?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/3?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/3?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/4?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/4?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/4?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/4?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/4?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/4?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/5?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/5?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/5?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/5?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/5?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/5?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/6?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/6?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/6?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/6?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/6?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/6?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/7?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/7?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/7?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/7?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/7?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/7?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/8?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/8?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/8?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/8?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/8?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/8?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/9?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/9?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/9?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/9?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/9?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/9?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/10?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/10?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/10?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/10?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/10?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/10?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/11?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/11?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/11?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/11?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/11?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/11?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/12?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/12?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/12?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/12?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/12?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/12?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/13?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/13?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/13?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/13?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/13?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/13?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/14?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/14?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/14?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/14?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/14?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/14?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/15?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/15?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/15?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/15?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/15?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/15?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/16?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/16?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/16?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/16?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/16?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/16?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/17?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/17?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/17?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/17?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/17?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/17?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/18?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/18?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/18?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/18?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/18?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/18?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/19?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/19?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/19?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/19?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/19?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/19?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/20?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/20?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/20?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/20?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/20?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/20?locale=vi"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/21?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/21?locale=ko"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/21?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/21?locale=en"
+    },
+    {
+      "role": "admin",
+      "href": "/admin/collections/products/21?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/21?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/globals/home-page?locale=ko",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/globals/home-page?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/globals/home-page?locale=en",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/globals/home-page?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/globals/home-page?locale=vi",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/globals/home-page?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/1?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/1?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/1?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/1?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/1?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/1?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/2?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/2?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/2?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/2?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/2?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/2?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/3?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/3?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/3?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/3?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/3?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/3?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/4?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/4?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/4?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/4?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/4?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/4?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/5?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/5?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/5?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/5?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/5?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/5?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/6?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/6?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/6?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/6?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/6?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/6?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/7?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/7?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/7?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/7?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/7?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/7?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/8?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/8?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/8?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/8?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/8?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/8?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/9?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/9?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/9?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/9?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/9?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/9?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/10?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/10?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/10?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/10?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/10?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/10?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/11?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/11?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/11?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/11?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/11?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/11?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/12?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/12?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/12?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/12?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/12?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/12?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/13?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/13?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/13?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/13?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/13?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/13?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/14?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/14?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/14?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/14?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/14?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/14?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/15?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/15?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/15?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/15?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/15?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/15?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/16?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/16?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/16?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/16?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/16?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/16?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/17?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/17?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/17?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/17?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/17?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/17?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/18?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/18?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/18?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/18?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/18?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/18?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/19?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/19?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/19?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/19?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/19?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/19?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/20?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/20?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/20?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/20?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/20?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/20?locale=vi"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/21?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/21?locale=ko"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/21?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/21?locale=en"
+    },
+    {
+      "role": "editor",
+      "href": "/admin/collections/products/21?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/21?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/globals/home-page?locale=ko",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/globals/home-page?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/globals/home-page?locale=en",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/globals/home-page?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/globals/home-page?locale=vi",
+      "hasError": false,
+      "heading": "Trang chủ",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/globals/home-page?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/1?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/1?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/1?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/1?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/1?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 01 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/1?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/2?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/2?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/2?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/2?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/2?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 02 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/2?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/3?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/3?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/3?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/3?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/3?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 03 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/3?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/4?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/4?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/4?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/4?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/4?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 04 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/4?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/5?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/5?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/5?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/5?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/5?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 05 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/5?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/6?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/6?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/6?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/6?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/6?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 06 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/6?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/7?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/7?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/7?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/7?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/7?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 07 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/7?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/8?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/8?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/8?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/8?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/8?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 08 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/8?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/9?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/9?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/9?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/9?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/9?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 09 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/9?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/10?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/10?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/10?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/10?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/10?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 10 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/10?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/11?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/11?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/11?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/11?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/11?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 11 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/11?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/12?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/12?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/12?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/12?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/12?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 12 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/12?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/13?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/13?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/13?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/13?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/13?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 13 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/13?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/14?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/14?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/14?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/14?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/14?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 14 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/14?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/15?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/15?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/15?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/15?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/15?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 15 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/15?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/16?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/16?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/16?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/16?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/16?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 16 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/16?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/17?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/17?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/17?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/17?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/17?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 17 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/17?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/18?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/18?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/18?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/18?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/18?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 18 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/18?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/19?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/19?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/19?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/19?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/19?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 19 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/19?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/20?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/20?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/20?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/20?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/20?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 20 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/20?locale=vi"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/21?locale=ko",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 KO",
+      "localeButton": "Ngôn ngữ nội dung: 한국어",
+      "url": "/admin/collections/products/21?locale=ko"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/21?locale=en",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 EN",
+      "localeButton": "Ngôn ngữ nội dung: English",
+      "url": "/admin/collections/products/21?locale=en"
+    },
+    {
+      "role": "translator",
+      "href": "/admin/collections/products/21?locale=vi",
+      "hasError": false,
+      "heading": "[FIXTURE] 21 VI",
+      "localeButton": "Ngôn ngữ nội dung: Tiếng Việt",
+      "url": "/admin/collections/products/21?locale=vi"
+    }
+  ],
+  "localeMismatches": [],
+  "notes": [
+    "Full browser navigations to DOM-collected URLs, not HTTP status-only checks.",
+    "One immediate read after soft navigation observed old content; final page read on next call confirmed page2.",
+    "At 390/768 root scrollWidth equals innerWidth while clientWidth is 15px smaller; dashboard cards do not exceed content area.",
+    "No save/publish/media controls used; authentication and existing document locking are separate from dashboard reads."
+  ]
+}

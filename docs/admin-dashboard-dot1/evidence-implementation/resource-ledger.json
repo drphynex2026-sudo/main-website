@@ -1,0 +1,81 @@
+{
+  "runId": "4f4ef780-521c-43e1-8a7e-cd976366fe3d",
+  "name": "dx-dashboard-implementation-4f4ef780",
+  "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+  "image": "postgres:17.6-alpine",
+  "created": [
+    {
+      "kind": "network",
+      "id": "ec99073639d7245e288dd9d48495afee99528a46f83ffe20bc26a6d30ba67984"
+    },
+    {
+      "kind": "container",
+      "id": "5f0e689aede290439510fb73aa1f274f196f5f8be17bc41fc9eef4d05eb243cd"
+    }
+  ],
+  "checks": [
+    {
+      "identity": true,
+      "networkInternal": false,
+      "exclusiveNetwork": true,
+      "port": "64565",
+      "mounts": [],
+      "noExternalVolumes": true
+    },
+    {
+      "name": "drphynex_independent_review_test",
+      "role": "postgres",
+      "address": "172.22.0.2",
+      "system_identifier": "7711003455184142371",
+      "marker": "drphynex-independent-review-disposable-v1",
+      "pgVersion": "17.6"
+    }
+  ],
+  "cleanup": [
+    {
+      "container": "5f0e689aede290439510fb73aa1f274f196f5f8be17bc41fc9eef4d05eb243cd",
+      "removed": true
+    },
+    {
+      "network": "ec99073639d7245e288dd9d48495afee99528a46f83ffe20bc26a6d30ba67984",
+      "removed": true
+    }
+  ],
+  "actualPortDiagnostic": {
+    "configured": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": ""
+        }
+      ]
+    },
+    "actual": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "64565"
+        }
+      ]
+    },
+    "state": "running"
+  },
+  "connectedIdentityObserved": {
+    "name": "drphynex_independent_review_test",
+    "role": "postgres",
+    "address": "172.22.0.2",
+    "system_identifier": "7711003455184142371"
+  },
+  "expectedServerAddress": "172.22.0.2",
+  "integration": {
+    "code": 0,
+    "signal": null
+  },
+  "build": {
+    "code": 0,
+    "signal": null
+  },
+  "browserReady": true,
+  "browserContentUnchanged": true,
+  "failure": "Path is a directory: rm returned EISDIR (is a directory) C:\\Users\\THAI\\AppData\\Local\\Temp\\dx-dashboard-fixture-y2zE0D"
+}

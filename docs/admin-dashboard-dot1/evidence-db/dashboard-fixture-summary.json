@@ -1,0 +1,219 @@
+{
+  "inventory": {
+    "kind": "ok",
+    "value": {
+      "total": 21,
+      "pages": 2,
+      "page": 1
+    }
+  },
+  "products": [
+    {
+      "id": "1",
+      "title": "[FIXTURE] 01 KO",
+      "links": [
+        "/admin/collections/products/1?locale=ko",
+        "/admin/collections/products/1?locale=en",
+        "/admin/collections/products/1?locale=vi"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "[FIXTURE] 02 KO",
+      "links": [
+        "/admin/collections/products/2?locale=ko",
+        "/admin/collections/products/2?locale=en",
+        "/admin/collections/products/2?locale=vi"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "[FIXTURE] 03 KO",
+      "links": [
+        "/admin/collections/products/3?locale=ko",
+        "/admin/collections/products/3?locale=en",
+        "/admin/collections/products/3?locale=vi"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "[FIXTURE] 04 KO",
+      "links": [
+        "/admin/collections/products/4?locale=ko",
+        "/admin/collections/products/4?locale=en",
+        "/admin/collections/products/4?locale=vi"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "[FIXTURE] 05 KO",
+      "links": [
+        "/admin/collections/products/5?locale=ko",
+        "/admin/collections/products/5?locale=en",
+        "/admin/collections/products/5?locale=vi"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "[FIXTURE] 06 KO",
+      "links": [
+        "/admin/collections/products/6?locale=ko",
+        "/admin/collections/products/6?locale=en",
+        "/admin/collections/products/6?locale=vi"
+      ]
+    },
+    {
+      "id": "7",
+      "title": "[FIXTURE] 07 KO",
+      "links": [
+        "/admin/collections/products/7?locale=ko",
+        "/admin/collections/products/7?locale=en",
+        "/admin/collections/products/7?locale=vi"
+      ]
+    },
+    {
+      "id": "8",
+      "title": "[FIXTURE] 08 KO",
+      "links": [
+        "/admin/collections/products/8?locale=ko",
+        "/admin/collections/products/8?locale=en",
+        "/admin/collections/products/8?locale=vi"
+      ]
+    },
+    {
+      "id": "9",
+      "title": "[FIXTURE] 09 KO",
+      "links": [
+        "/admin/collections/products/9?locale=ko",
+        "/admin/collections/products/9?locale=en",
+        "/admin/collections/products/9?locale=vi"
+      ]
+    },
+    {
+      "id": "10",
+      "title": "[FIXTURE] 10 KO",
+      "links": [
+        "/admin/collections/products/10?locale=ko",
+        "/admin/collections/products/10?locale=en",
+        "/admin/collections/products/10?locale=vi"
+      ]
+    },
+    {
+      "id": "11",
+      "title": "[FIXTURE] 11 KO",
+      "links": [
+        "/admin/collections/products/11?locale=ko",
+        "/admin/collections/products/11?locale=en",
+        "/admin/collections/products/11?locale=vi"
+      ]
+    },
+    {
+      "id": "12",
+      "title": "[FIXTURE] 12 KO",
+      "links": [
+        "/admin/collections/products/12?locale=ko",
+        "/admin/collections/products/12?locale=en",
+        "/admin/collections/products/12?locale=vi"
+      ]
+    },
+    {
+      "id": "13",
+      "title": "[FIXTURE] 13 KO",
+      "links": [
+        "/admin/collections/products/13?locale=ko",
+        "/admin/collections/products/13?locale=en",
+        "/admin/collections/products/13?locale=vi"
+      ]
+    },
+    {
+      "id": "14",
+      "title": "[FIXTURE] 14 KO",
+      "links": [
+        "/admin/collections/products/14?locale=ko",
+        "/admin/collections/products/14?locale=en",
+        "/admin/collections/products/14?locale=vi"
+      ]
+    },
+    {
+      "id": "15",
+      "title": "[FIXTURE] 15 KO",
+      "links": [
+        "/admin/collections/products/15?locale=ko",
+        "/admin/collections/products/15?locale=en",
+        "/admin/collections/products/15?locale=vi"
+      ]
+    },
+    {
+      "id": "16",
+      "title": "[FIXTURE] 16 KO",
+      "links": [
+        "/admin/collections/products/16?locale=ko",
+        "/admin/collections/products/16?locale=en",
+        "/admin/collections/products/16?locale=vi"
+      ]
+    },
+    {
+      "id": "17",
+      "title": "[FIXTURE] 17 KO",
+      "links": [
+        "/admin/collections/products/17?locale=ko",
+        "/admin/collections/products/17?locale=en",
+        "/admin/collections/products/17?locale=vi"
+      ]
+    },
+    {
+      "id": "18",
+      "title": "[FIXTURE] 18 KO",
+      "links": [
+        "/admin/collections/products/18?locale=ko",
+        "/admin/collections/products/18?locale=en",
+        "/admin/collections/products/18?locale=vi"
+      ]
+    },
+    {
+      "id": "19",
+      "title": "[FIXTURE] 19 KO",
+      "links": [
+        "/admin/collections/products/19?locale=ko",
+        "/admin/collections/products/19?locale=en",
+        "/admin/collections/products/19?locale=vi"
+      ]
+    },
+    {
+      "id": "20",
+      "title": "[FIXTURE] 20 KO",
+      "links": [
+        "/admin/collections/products/20?locale=ko",
+        "/admin/collections/products/20?locale=en",
+        "/admin/collections/products/20?locale=vi"
+      ]
+    }
+  ],
+  "home": [
+    {
+      "locale": "ko",
+      "href": "/admin/globals/home-page?locale=ko",
+      "missing": [
+        {
+          "locale": "en",
+          "href": "/admin/globals/home-page?locale=en"
+        },
+        {
+          "locale": "vi",
+          "href": "/admin/globals/home-page?locale=vi"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "href": "/admin/globals/home-page?locale=en",
+      "missing": []
+    },
+    {
+      "locale": "vi",
+      "href": "/admin/globals/home-page?locale=vi",
+      "missing": []
+    }
+  ],
+  "beforeBrowserContentHash": "77bb95a825338cf0fa11c9e9af1806281cdf0c7ca94eb744ad7aa6f5d7f11edf"
+}

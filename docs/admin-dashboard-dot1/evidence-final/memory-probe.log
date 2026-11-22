@@ -1,0 +1,9 @@
+PASS band known-private object filtered for guest has required image
+PASS band known-public populated image has no required image issue
+PASS hero private image remains optional; not a hidden-block proof
+PASS unresolved ID alone cannot distinguish released from private
+PASS fullBleed released image with embedded copy enables copyHidden
+PASS fullBleed private image guest fallback does not hide HTML copy
+PASS packshot chosen private is not replaced with another product image
+PASS Home current approval differs from old shared configuration
+8/8 pure-memory probes; NO DATABASE, NO WORKFLOW/PUBLISH proof

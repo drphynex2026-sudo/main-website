@@ -1,0 +1,65 @@
+import {afterAll,beforeAll,expect,it} from 'vitest'
+import {getPayload,type Payload} from 'payload'
+import {randomBytes,createHash} from 'node:crypto'
+import {writeFileSync} from 'node:fs'
+import config from '@/payload.config'
+import {migrations} from '@/migrations'
+import {assertDisposableDatabase} from '../../../tests/helpers/database'
+import {sharedRevision,readApprovals,bannersApprovedFor} from '@/lib/banner-revision'
+import {landingRevision,EMPTY_LANDING_REVISION} from '@/lib/landing-approval'
+import {resolveSlot} from '@/lib/home-banners'
+let p:Payload,admin:any,editor:any,translator:any
+const records:any[]=[]
+const locales=['ko','en','vi'] as const
+const args=(locale:any,user?:any)=>({locale,fallbackLocale:false,overrideAccess:false,draft:false,...(user?{user}:{})})
+const options={depth:0}
+const write=()=>writeFileSync('docs/admin-dashboard-dot1/evidence-db/expected-actual.json',JSON.stringify({sha:'75b07feed68d6dba833dd730b17e9d74902cac34',records},null,2))
+function note(name:string,expected:unknown,actual:unknown){records.push({name,expected,actual});write();expect(actual).toEqual(expected)}
+async function result(fn:()=>Promise<any>){try{return {kind:'ok',value:await fn()}}catch(e:any){return {kind:e.status===403?'denied':'error',status:e.status??null,name:e.name}}}
+const draft=(locale:any,data:any)=>p.updateGlobal({slug:'home-page',...args(locale,editor),draft:true,data})
+const latest=(locale:any)=>p.findGlobal({slug:'home-page',...args(locale,editor),draft:true,depth:0}) as Promise<any>
+const main=(locale:any,user=editor)=>p.findGlobal({slug:'home-page',...args(locale,user),depth:0}) as Promise<any>
+const guest=(locale:any)=>p.findGlobal({slug:'home-page',...args(locale),depth:0}) as Promise<any>
+const approve=async(locale:any)=>{const seen=await latest(locale);return p.updateGlobal({slug:'home-page',...args(locale,editor),draft:true,data:{translationStatus:'approved'},context:{approvalBasis:seen.approvalState?.basis}})}
+const publish=(locale:any)=>p.updateGlobal({slug:'home-page',...args(locale,editor),data:{_status:'published'}})
+const hash=(v:any)=>createHash('sha256').update(JSON.stringify(v)).digest('hex')
+const visible=(v:any,l:any)=>!!v&&v.translationStatus==='approved'&&bannersApprovedFor(v,l)
+async function publicSummary(){const out:any={};for(const l of locales){const v=await guest(l);out[l]={status:v.translationStatus??null,revision:sharedRevision(v.banners),cms:visible(v,l),headline:v.headline??null}}return out}
+async function durable(){return {main:await Promise.all(locales.map(l=>main(l))),versions:await p.findGlobalVersions({slug:'home-page',limit:100,depth:0,overrideAccess:false,user:editor})}}
+beforeAll(async()=>{p=await getPayload({config:await config});await assertDisposableDatabase(p);await p.db.migrate({migrations:migrations as any});admin=await p.create({collection:'users',overrideAccess:true,data:{email:'admin@fixture.invalid',password:randomBytes(24).toString('hex'),role:'admin'}});editor=await p.create({collection:'users',user:admin,overrideAccess:false,data:{email:'editor@fixture.invalid',password:randomBytes(24).toString('hex'),role:'editor'}});translator=await p.create({collection:'users',user:admin,overrideAccess:false,data:{email:'translator@fixture.invalid',password:randomBytes(24).toString('hex'),role:'translator'}})})
+afterAll(async()=>{write();await p?.destroy()})
+it('G1 never-published Product: staff main, draft, guest, denied and read error',async()=>{
+ const created=await p.create({collection:'products',...args('ko',editor),draft:true,data:{name:'[FIXTURE] Never published KO',slug:'fixture-never-published',translationStatus:'in-review',_status:'draft'}})
+ const state:any={}
+ for(const l of locales){const base={collection:'products' as const,where:{id:{equals:created.id}},depth:0};const staff=await p.find({...base,...args(l,translator)});const d=await p.find({...base,...args(l,translator),draft:true});const g=await result(()=>p.find({...base,...args(l)}));state[l]={staffMainCount:staff.docs.length,staffStatus:staff.docs[0]?._status??null,staffTS:staff.docs[0]?.translationStatus??null,staffLanding:staff.docs[0]?.landing?.length??null,draftCount:d.docs.length,guestKind:g.kind,guestCount:g.kind==='ok'?g.value.docs.length:null};records.push({name:'G1.observed-before-assert-'+l,expected:'observational; asserted below',actual:state[l]});write();expect(d.docs).toHaveLength(1);expect(staff.docs).toHaveLength(1);expect(g.kind).toBe('ok');if(g.kind==='ok')expect(g.value.docs).toHaveLength(0);expect(staff.docs[0]._status).toBe('draft');expect(landingRevision(staff.docs[0].landing)).toBe(EMPTY_LANDING_REVISION)}
+ records.push({name:'G1.actual-main-per-locale',expected:'Staff main has initial draft row; guest empty ok; never-published is not denied',actual:state});write()
+ note('G1.guest-single-locale-empty-kind','ok',(await result(()=>p.find({collection:'products',...args('ko'),where:{id:{equals:created.id}}}))).kind)
+ // Actual access refusal without locale:all or fallback variants: anonymous users collection read is denied.
+ note('G1.actual-read-ACL-denial','denied',(await result(()=>p.find({collection:'users',overrideAccess:false,depth:0}))).kind)
+ // Read path parameter error, not DB outage: genuine Local API rejects invalid where field; if not, fail.
+ const invalid=await result(()=>p.find({collection:'products',...args('ko'),where:{fixtureUnknownField:{equals:'x'}} as any}));
+ records.push({name:'G1.read-parameter-error',expected:'error distinct from empty and denied',actual:invalid.kind==='ok'?{kind:invalid.kind}:invalid});write();expect(invalid.kind).toBe('error')
+ const after=await p.findByID({collection:'products',id:created.id,...args('ko',editor),draft:true});expect(after.name).toBe('[FIXTURE] Never published KO')
+})
+it('G2 Home empty -> draft -> own approval -> CMS published, other locales unchanged',async()=>{
+ const empty=await guest('ko');note('G2.empty-home-keys',0,Object.keys(empty).length);note('G2.empty-home-CMS',false,visible(empty,'ko'))
+ await draft('ko',{headline:'[FIXTURE] HOME KO',banners:{luma:{title:'[FIXTURE] LUMA KO'}},translationStatus:'in-review',_status:'draft'})
+ note('G2.draft-not-CMS',false,visible(await guest('ko'),'ko'))
+ await approve('ko');note('G2.approved-draft-not-CMS',false,visible(await guest('ko'),'ko'))
+ await publish('ko');const pub=await publicSummary();note('G2.published-CMS',{ko:true,en:false,vi:false},Object.fromEntries(locales.map(l=>[l,pub[l].cms])))
+ for(const l of ['en','vi'] as const){await draft(l,{headline:`[FIXTURE] HOME ${l.toUpperCase()}`,translationStatus:'in-review'});await approve(l);await publish(l)}
+ note('G2.all-public-CMS',[true,true,true],(await Promise.all(locales.map(guest))).map((v,i)=>visible(v,locales[i])))
+})
+it('G3 shared change: approvals invalidated, own approval first, cross-locale dependency blocks, refusal durable unchanged, reapproval permits',async()=>{
+ const beforePublic=await publicSummary();await draft('ko',{banners:{luma:{theme:'forma'}}});
+ const d=await latest('ko');note('G3.shared-invalidates-all',{},readApprovals(d.bannerApprovals));note('G3.edited-status','in-review',d.translationStatus)
+ const own=await result(()=>publish('ko'));note('G3.publish-without-own-approval',409,own.status);note('G3.public-preserved-before-own',beforePublic,await publicSummary())
+ await approve('ko');const current=await latest('ko');const rev=sharedRevision(current.banners);const statuses:any={};for(const l of locales){const m=await main(l,translator);statuses[l]=m.translationStatus}
+ const missing=locales.filter(l=>l!=='ko'&&statuses[l]==='approved'&&readApprovals(current.bannerApprovals)[l]!==rev)
+ note('G3.dashboard-missing-set',['en','vi'],missing)
+ const stable=hash(await durable());const denied=await result(()=>publish('ko'));note('G3.guard-dependency-409',409,denied.status);note('G3.refused-main-all-versions-identical',stable,hash(await durable()));note('G3.refused-public-CMS-old-preserved',beforePublic,await publicSummary())
+ await approve('en');const one=await result(()=>publish('ko'));note('G3.still-needs-VI',409,one.status)
+ await approve('vi');await publish('ko');const after=await publicSummary();note('G3.new-shared-all-public',[true,true,true],locales.map(l=>after[l].cms));note('G3.shared-now-current',[rev,rev,rev],locales.map(l=>after[l].revision));note('G3.other-locale-copy-preserved',[beforePublic.en.headline,beforePublic.vi.headline],[after.en.headline,after.vi.headline]);note('G3.real-renderer-default-for-empty-content','default',resolveSlot('luma',null).text.source)
+})
+
+

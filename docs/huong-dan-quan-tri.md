@@ -108,3 +108,13 @@ Không chép dữ liệu khách ra file, chat hay email cá nhân.
 | Ảnh không hiện cho khách | Đã tích **Cleared for publication** chưa? |
 | Không chọn được Approved | Tài khoản Translator không duyệt được; nhờ Editor |
 | Bị khóa đăng nhập | Sai mật khẩu 5 lần sẽ khóa 10 phút |
+
+## Bảng điều khiển đợt 1: Sản phẩm và Trang chủ
+
+Bảng điều khiển chỉ đọc và dẫn tới màn hình chỉnh sửa hiện có. Mỗi tài liệu có KO/EN/VI; “Khách đọc được” nói về bản công khai, còn “Đã duyệt bản nháp” nói về bản đang soạn. Hai nhãn này không thay thế nhau. “Đang xem xét” không có nghĩa ai đó đã gửi yêu cầu duyệt.
+
+Sản phẩm chia 20 tài liệu mỗi trang. Số việc chỉ tính cặp tài liệu/ngôn ngữ ở trang đang xem; Trang chủ có số đếm riêng. Dùng Trang trước/Trang sau và bộ lọc để đọc, không có nút ghi dữ liệu trên dashboard.
+
+Bấm Mở để tới đúng tài liệu và ngôn ngữ; chưa hỗ trợ mở thẳng tab/field. Sản phẩm: kiểm nội dung, lưu nháp, duyệt riêng rồi xuất bản đúng locale trên màn hình hiện có. Trang chủ: dùng panel Duyệt cấu hình sau khi lưu nháp, không chỉ đổi dropdown. Khi cấu trúc chung đổi, dashboard nêu các ngôn ngữ khác cần duyệt kèm liên kết; server vẫn quyết định tại lần ghi.
+
+Biên dịch viên chỉ làm phần được quyền, không duyệt/xuất bản. Ảnh riêng, quan hệ chưa phân giải hoặc khối thiếu nội dung chỉ là cảnh báo hiển thị/chưa xác minh, không tự là chặn xuất bản. Chưa đọc được dữ liệu không đồng nghĩa chưa công khai. Snapshot có thể cũ khi người khác lưu; mở lại tài liệu trước khi xử lý. Không có cam kết “sẵn sàng xuất bản”, cũng không suy “thay đổi chưa xuất bản” từ trạng thái hay thời gian draft.

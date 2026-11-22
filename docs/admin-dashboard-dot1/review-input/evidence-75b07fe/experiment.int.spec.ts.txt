@@ -1,0 +1,119 @@
+import { randomBytes } from 'crypto'
+import { getPayload, type Migration, type Payload } from 'payload'
+import sharp from 'sharp'
+import { afterAll, beforeAll, describe, it } from 'vitest'
+import { migrations } from '@/migrations'
+import config from '@/payload.config'
+import { landingRevision } from '@/lib/landing-approval'
+import { asGuestView } from '@/lib/guest-view'
+import { blockIssues } from '@/lib/landing'
+const populated = <T,>(v: unknown): T | null => (v && typeof v === 'object' && 'id' in (v as object) ? (v as T) : null)
+import { assertDisposableDatabase } from '../helpers/database'
+
+type Loc = 'ko' | 'en' | 'vi'
+let payload: Payload
+let admin: any, editor: any, translator: any
+let id: number, privImg: number
+const pw = () => randomBytes(16).toString('hex')
+import { appendFileSync } from 'node:fs'
+const note = (k: string, v: unknown) => appendFileSync('../exp.out', k + ' ' + JSON.stringify(v) + String.fromCharCode(10))
+const save = (user: any, locale: Loc, data: any, draft = true) =>
+  payload.update({ collection: 'products', id, locale, draft, data, user, overrideAccess: false } as any)
+const guestFind = (locale: any, extra: any = {}) =>
+  payload.find({ collection: 'products', where: { id: { equals: id } }, depth: 2, overrideAccess: false, draft: false, locale, ...extra } as any)
+const staffMain = (user: any, locale: Loc) =>
+  payload.find({ collection: 'products', where: { id: { equals: id } }, depth: 0, overrideAccess: false, draft: false, user, locale, fallbackLocale: false } as any)
+const draftRead = (user: any, locale: Loc, depth = 0) =>
+  payload.find({ collection: 'products', where: { id: { equals: id } }, depth, overrideAccess: false, draft: true, user, locale, fallbackLocale: false } as any)
+const err = async (f: () => Promise<unknown>) => {
+  try {
+    await f()
+    return 'no-error'
+  } catch (e: any) {
+    return `${e?.name}:${e?.status}`
+  }
+}
+const msg = (e: any) => String(e?.message).slice(0, 140)
+
+beforeAll(async () => {
+  payload = await getPayload({ config: await config })
+  await assertDisposableDatabase(payload)
+  await payload.db.dropDatabase({ adapter: payload.db as never })
+  await payload.db.migrate({ migrations: migrations as unknown as Migration[] })
+  admin = await payload.create({ collection: 'users', data: { email: 'a@test.local', password: pw(), role: 'admin' }, overrideAccess: true })
+  editor = await payload.create({ collection: 'users', data: { email: 'e@test.local', password: pw(), role: 'editor' }, user: admin, overrideAccess: false })
+  translator = await payload.create({ collection: 'users', data: { email: 't@test.local', password: pw(), role: 'translator' }, user: admin, overrideAccess: false })
+  const data = await sharp({ create: { width: 40, height: 40, channels: 3, background: '#cccccc' } }).png().toBuffer()
+  privImg = (await payload.create({ collection: 'media', locale: 'ko', data: { alt: 'private', publicRelease: false }, file: { data, mimetype: 'image/png', name: 'p.png', size: data.length }, overrideAccess: true } as any)).id
+  id = (await payload.create({ collection: 'products', locale: 'ko', data: { name: '[MAU] KO', slug: 'exp', translationStatus: 'approved', _status: 'published' } as never, overrideAccess: true })).id
+})
+afterAll(async () => {
+  await payload?.destroy?.()
+})
+
+describe('E1 guest read', () => {
+  it('denied vs empty vs ok', async () => {
+    note('E1.ko_published_guest_docs', (await guestFind('ko', { fallbackLocale: false })).docs.length)
+    note('E1.vi_unpublished_guest_docs', (await guestFind('vi', { fallbackLocale: false })).docs.length)
+    note('E1.noFallbackArg', await err(() => guestFind('ko')))
+    note('E1.locale_all', await err(() => guestFind('all', { fallbackLocale: false })))
+    note('E1.fallback_ko', await err(() => guestFind('vi', { fallbackLocale: 'ko' })))
+    const g: any = await payload
+      .findGlobal({ slug: 'home-page', locale: 'vi', overrideAccess: false, draft: false, fallbackLocale: false } as any)
+      .catch((e: any) => `${e?.name}:${e?.status}`)
+    note('E1.home_never_published_guest', g && typeof g === 'object' ? { keys: Object.keys(g).length, ts: g.translationStatus ?? null } : g)
+    note('E1.home_noFallbackArg', await err(() => payload.findGlobal({ slug: 'home-page', locale: 'vi', overrideAccess: false, draft: false } as any)))
+    await draftRead(admin, 'ko')
+    note('E1.guest_after_staff_ko_docs', (await guestFind('ko', { fallbackLocale: false })).docs.length)
+  })
+})
+
+describe('E2-E6 product workflow', () => {
+  it('main vs draft, status, coupling, empty rule, dependent', async () => {
+    await save(editor, 'ko', { landing: [{ blockType: 'hero', tagline: 'KO' }, { blockType: 'band', image: privImg, alt: 'a' }] })
+    const d1 = (await draftRead(translator, 'ko')).docs[0] as any
+    const m1 = (await staffMain(translator, 'ko')).docs[0] as any
+    note('E2.after_draft_save', { draftStatus: d1._status, draftBlocks: d1.landing?.length, mainStatus: m1._status, mainBlocks: m1.landing?.length ?? 0 })
+    note('E2.landingApprovalState_in_guest_read', 'landingApprovalState' in ((await guestFind('ko', { fallbackLocale: false })).docs[0] as any))
+    await save(editor, 'ko', { translationStatus: 'approved' })
+    await save(editor, 'ko', { _status: 'published' }, false).then(() => note('E3.publish_ko', 'ok')).catch((e: any) => note('E3.publish_ko', msg(e)))
+    const d2 = (await draftRead(admin, 'ko')).docs[0] as any
+    note('E3.after_publish_ko', { _status: d2._status, state: d2.landingApprovalState })
+    await save(editor, 'vi', { name: '[MAU] VI' })
+    const dvi = (await draftRead(admin, 'vi')).docs[0] as any
+    const dko = (await draftRead(admin, 'ko')).docs[0] as any
+    note('E3.status_after_vi_draft', { ko: dko._status, vi: dvi._status, koTS: dko.translationStatus, viTS: dvi.translationStatus })
+    await save(editor, 'ko', { landing: (dko.landing as any[]).map((b) => (b.blockType === 'hero' ? { ...b, tagline: 'KO2' } : b)) })
+    const dko2 = (await draftRead(admin, 'ko')).docs[0] as any
+    note('E4.coupling_after_text_edit', { ts: dko2.translationStatus, structApproved: dko2.landingApprovalState })
+    await save(editor, 'ko', { translationStatus: 'approved' })
+    const g = (await guestFind('ko', { fallbackLocale: false })).docs[0] as any
+    const m = (await staffMain(editor, 'ko')).docs[0] as any
+    note('E6.revision_parity', { eq: landingRevision(g.landing) === landingRevision(m.landing), guestImageType: typeof g.landing?.[1]?.image })
+    const dd = (await draftRead(editor, 'ko', 2)).docs[0] as any
+    const band = dd.landing.find((b: any) => b.blockType === 'band')
+    const provides = { image: false, packSize: false, inci: false, howToUse: false, cautions: false, keyIngredients: false }
+    const staffImg = (v: unknown) => !!populated<any>(v)?.url
+    const guestImg = (v: unknown) => populated<any>(v)?.publicRelease === true && !!populated<any>(v)?.url
+    const d0 = (await draftRead(editor, 'ko', 0)).docs[0] as any
+    note('E9.band_private_image', {
+      staffSees: blockIssues(band, provides, staffImg).required,
+      guestViewSees: blockIssues(asGuestView(band), provides, guestImg).required,
+      depth0Type: typeof d0.landing[1].image,
+      depth0Staff: blockIssues(d0.landing[1], provides, staffImg).required,
+    })
+    await save(editor, 'vi', { translationStatus: 'approved' })
+    await save(editor, 'vi', { _status: 'published' }, false).then(() => note('E5.vi_publish', 'ok')).catch((e: any) => note('E5.vi_publish', msg(e)))
+    await save(editor, 'ko', { _status: 'published' }, false).then(() => note('E5.ko_publish', 'ok')).catch((e: any) => note('E5.ko_publish', msg(e)))
+    note('E5.public_locales', { ko: (await guestFind('ko', { fallbackLocale: false })).docs.length, vi: (await guestFind('vi', { fallbackLocale: false })).docs.length })
+    await save(editor, 'ko', { landing: [] })
+    const dc = (await draftRead(admin, 'ko')).docs[0] as any
+    note('E5.draft_after_clear', { blocks: dc.landing?.length ?? 0, ts: dc.translationStatus, state: dc.landingApprovalState })
+    await save(editor, 'ko', { translationStatus: 'approved' })
+    const dc2 = (await draftRead(admin, 'ko')).docs[0] as any
+    note('E5.state_after_approve_ko', dc2.landingApprovalState)
+    await save(editor, 'ko', { _status: 'published' }, false).then(() => note('E5.ko_publish_after_clear', 'ok')).catch((e: any) => note('E5.ko_publish_after_clear', msg(e)))
+    const mm = (await staffMain(admin, 'ko')).docs[0] as any
+    note('E5.main_blocks_now', mm.landing?.length ?? 0)
+  })
+})

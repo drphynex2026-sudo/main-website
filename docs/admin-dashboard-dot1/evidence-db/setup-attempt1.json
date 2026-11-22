@@ -1,0 +1,28 @@
+{
+  "runId": "24bff485-3aeb-437f-aa2c-e972be4e8efe",
+  "name": "dx-dashboard-gap-24bff485",
+  "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+  "image": "postgres:17.6-alpine",
+  "created": [
+    {
+      "kind": "network",
+      "id": "406a8c0a1c93eb3731c24815242f1f4793a37568e967e3c109b8ab68e6566777"
+    },
+    {
+      "kind": "container",
+      "id": "918390d4117454fbe5debcb5d1d5c37730797810755b2c15afb8a134b9e31fcf"
+    }
+  ],
+  "checks": [],
+  "cleanup": [
+    {
+      "container": "918390d4117454fbe5debcb5d1d5c37730797810755b2c15afb8a134b9e31fcf",
+      "removed": true
+    },
+    {
+      "network": "406a8c0a1c93eb3731c24815242f1f4793a37568e967e3c109b8ab68e6566777",
+      "removed": true
+    }
+  ],
+  "failure": "Actual port mismatch"
+}
