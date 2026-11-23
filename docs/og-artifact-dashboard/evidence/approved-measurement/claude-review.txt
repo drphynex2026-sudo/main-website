@@ -1,0 +1,187 @@
+Review OG và đo dashboard
+
+DESKTOP-BFM0O0I, Connected
+
+Computer actions available — press Tab until focus enters the card, Escape to return.
+
+
+Share
+
+Use the up and down arrow keys to move between messages.
+
+Hãy review độc lập ngắn gói mã dưới đây, chỉ phân tích không dùng connector hoặc sửa bất kỳ file/dịch vụ nào. Đây là review trước PR/deploy, chưa được coi là PASS. Tìm blocker có căn cứ, kiểm privacy và ranh giới timing. Nếu không có blocker nêu rõ giới hạn; không yêu cầu chứng minh Vercel trước khi
+
+PASTED
+4 hours ago
+
+
+
+Claude responded: Review độc lập: OG + đo dashboard (nền 5ec6a27, nhánh codex/og-artifact-dashboard-diagnostics)
+Đang soạn kết luận đánh giá và danh sách lỗi cần sửa
+
+Đang soạn kết luận đánh giá và danh sách lỗi cần sửa
+Review độc lập: OG + đo dashboard (nền 5ec6a27, nhánh codex/og-artifact-dashboard-diagnostics)
+
+Tôi chỉ đọc gói mã bạn dán, không mở repo, không dùng connector và không sửa file hay dịch vụ nào. Số dòng bên dưới đếm từ đầu mỗi file trong gói.
+
+Kết luận
+
+Chưa PASS. Còn 1 blocker. Lỗi này nằm ở cách observer gán truy vấn cho request, không phải lỗi privacy. Nó làm sai chính cam kết “không trộn thông tin request” mà gói muốn chứng minh, và sửa được bằng vài dòng. Các phần còn lại không có blocker. Những điểm cần ghi giới hạn nằm ở cuối.
+
+Blocker
+
+B1. Callback của pool.connect từ request ngoài phiên đo có thể chạy trong context của phiên đo
+
+File: src/lib/dashboard-diagnostics.ts, khoảng dòng 105–122.
+Nguyên nhân: wrapper chỉ bọc lại callback bằng s.als.run(c, …) khi đang có store (dòng 116–122). Khi không có store, dòng 107 truyền thẳng callback gốc.
+Cơ chế:
+Drizzle/Payload gọi phần lớn truy vấn qua Pool.query. Bên trong, hàm này gọi this.connect(cb) theo kiểu callback.
+Khi pool đầy, callback của request chờ được pg-pool gọi từ release() của client vừa trả về. Lời gọi này chạy trong async context của nơi release (callback query hoặc socket của client đó), không phải context của request chờ.
+Nếu client đó thuộc phiên dashboard đang mở, client.query của request khác sẽ thấy store dashboard ở dòng 69. Request khác đó có thể là trang public trong cùng instance Fluid.
+Kết quả: queryCount, driverSumMs và acquireSumMs của dashboard bị cộng nhầm.
+Mức độ: chỉ sai số đếm và timing, không lộ SQL hay dữ liệu. Lỗi xảy ra đúng lúc waitingCount > 0, cũng là lúc số đo quan trọng nhất. Test hiện tại không có kịch bản này.
+Cách sửa: luôn gắn callback vào context của người gọi, kể cả khi không có store.
+
+ts
+import { AsyncLocalStorage, AsyncResource } from 'node:async_hooks'
+// ở đầu wrapper pool.connect, trước khi kiểm tra store:
+if (typeof args[0] === 'function') args[0] = AsyncResource.bind(args[0])
+
+Nhánh có store vẫn giữ ready như cũ và bọc tiếp bên ngoài. Cần thêm một unit test: một request ngoài phiên đo đang chờ pool, client được release từ trong phiên đo, và truy vấn của request ngoài phiên phải không được đếm vào phiên đo.
+
+Không blocker, nên ghi giới hạn hoặc sửa nhẹ
+Nhãn nhóm dựa trên dạng options (stageName, dòng 147):
+!options.user bị gán là guest. Nếu reader truyền req thay vì user, hoặc một hook gọi req.payload.find mà không có user, truy vấn đó sẽ bị tính vào nhóm guest.
+Ngoài ra, mọi find có where đều bị coi là products.*.
+Việc cần làm: đối chiếu với các lời gọi thật trong readDashboardSources, phần không có trong diff.
+payloadGetMs có thể nằm ngoài cửa sổ serverToDashboardDataMs: generateMetadata → generatePageMetadata cũng đi qua initReq, và dùng chung React cache trong cùng request. Lời gọi getPayload có thể bắt đầu trước started (admin-server-timing.ts, dòng 14). Không được cộng hay trừ hai trường này với nhau. Điều này nên ghi vào phần diễn giải.
+rootAssemblyMs có thể là null hoặc có giá trị lúc log, tùy dashboard chạy bên trong hay sau khi RootPage resolve. Ranh giới bạn mô tả đã đúng, chỉ cần ghi rõ cả hai trường hợp đều hợp lệ.
+Loader không khớp thì hỏng lặng lẽ:
+Nếu rule initReq không áp dụng được, ví dụ do externalize hoặc đổi bundler, log ra payloadGetCalls: 0 và trông giống hệt “không có lời gọi”.
+Nên thêm một cờ, ví dụ payloadInitAdapter: true, để log phân biệt được hai trường hợp này.
+Với OG, việc kiểm /api/og trên Production đã đủ bù.
+Chế độ build trên Vercel: phải xác nhận log build trên Vercel là webpack, khớp với build cục bộ. Rule enforce: 'pre' và DefinePlugin không áp dụng khi build bằng Turbopack.
+Cap tính theo process, gồm cả admin khác mở dashboard trong lúc đo: log không chứa danh tính nên privacy vẫn ổn. Có thể bạn sẽ thấy ít record hơn kỳ vọng.
+Danh sách lint trong run-dashboard-checks.mjs thiếu 2 file: src/lib/dashboard-diagnostics-enabled.ts và tests/unit/dashboard-diagnostics-enabled.spec.ts. Đây là điểm nhỏ.
+Đã kiểm, không thấy vấn đề
+Phạm vi loader/font:
+Regex chỉ khớp đúng og/index.js và initReq.js, kể cả đường dẫn pnpm.
+Contract chuỗi fail khi thiếu hoặc trùng import.
+Adapter fs chỉ trả bytes nhúng cho tên roboto-regular.woff và trả bản sao Buffer mới mỗi lần.
+DefinePlugin chỉ chạy khi isServer, nên font không lọt vào client chunk.
+Không sửa node_modules.
+Phần giấy phép: tôi chưa thấy file license, chỉ dựa vào mô tả của bạn.
+Return/error không đổi: promise và Query gốc được trả nguyên. .then(finish, finish) không sinh unhandled rejection. Lỗi đồng bộ được ném lại. Logger hay observer lỗi đều bị nuốt trong observe. Khi tắt diagnostics, code không chạm vào payload.db.
+Privacy của log:
+Chỉ có các key cố định, UUID ngẫu nhiên, region qua regex, các số liệu và result là ok/error.
+Không có SQL, parameters, options, user, lỗi hay stack.
+Không có endpoint hay header mới, không có gì đi vào HTML/RSC.
+Bật/tắt và expiry: cần đủ cả hai biến, và UNTIL_MS được đánh giá lại mỗi lần gọi. Wrapper pool vẫn nằm lại sau khi hết hạn, nhưng khi không có store thì chỉ chuyển tiếp lời gọi, chi phí không đáng kể.
+React cache: chỉ giữ một object timing theo từng request. Khi gọi ngoài render, nó tạo object mới, nên không rò dữ liệu giữa các request.
+Giới hạn của review này
+Tôi không chạy build hay test, nên không xác nhận được con số 54/54, artifact, hay fingerprint bundle.
+Tôi không xem readDashboardSources, initReq.js và og/index.js thật của Payload 3.92.1. Phần nói về pg-pool dựa trên hành vi đã biết của pg-pool chứ không đọc trong repo.
+Tôi không đánh giá Vercel hay Neon. Đúng như bạn dặn, tôi không đòi chứng minh Vercel trước khi cho phép lượt đo: kế hoạch đo đã ổn, chỉ cần sửa B1 trước.
+
+
+
+
+
+4 hours ago
+
+Đã đối chiếu pg-pool thực: _release gọi _pulseQueue và pendingItem.callback trực tiếp. Regression sau khi sửa một lỗi setup spy đã tái hiện đúng B1: expected queryCount=1, actual=2; sau AsyncResource.bind cho mọi callback trước kiểm store thì 55/55 unit đạt. Không coi lỗi setup spy là bằng chứng tái
+
+PASTED
+4 hours ago
+
+
+
+Claude responded: Review lại B1 và cờ adapter
+Confirming the flag and reader labels
+
+Confirming the flag and reader labels
+Review lại B1 và cờ adapter
+
+Tôi chỉ đọc gói bạn gửi, không chạy test và không mở repo.
+
+Kết luận
+
+B1 đã được xử lý. Từ phía tôi không còn blocker cho PR/merge/deploy và lượt đo. Kết quả cuối vẫn chốt theo build, checks và fingerprint của bạn như đã thống nhất.
+
+B1: đạt
+
+Bản sửa đúng chỗ. Dòng 113 của dashboard-diagnostics.ts gọi AsyncResource.bind trước khi kiểm store, nên mọi callback của pool.connect đều gắn vào context của người gọi.
+
+Người gọi ngoài phiên đo giữ context “không có store”. Khi pg-pool gọi waiter từ _release → _pulseQueue, waiter vẫn chạy trong context của chính nó.
+Người gọi trong phiên đo vẫn được bọc thêm ready và als.run(c) như trước.
+AsyncResource.bind không truyền thisArg nên giữ nguyên this của nơi gọi. Return và lỗi không đổi.
+
+Test hồi quy hợp lệ. Tôi đã lần lại luồng chạy (dòng 354–407 của spec):
+
+publicRead gọi thẳng payload.find(), không qua proxy, nên được xếp hàng khi không có store.
+Request đo nhận client. Bên trong actualQuery, client được release cho waiter.
+Không có bind: waiter chạy trong store của request đo, queryCount = 2.
+Có bind: waiter đi thẳng qua wrapper không đo, queryCount = 1.
+
+actualQuery được lấy trước khi wrapper được cài, nên assert toHaveBeenCalledTimes(2) xác nhận cả hai truy vấn thật đều chạy. Bạn đúng khi không coi lỗi setup spy là bằng chứng tái hiện. Bằng chứng là bản đỏ trước khi sửa (thực tế 2, kỳ vọng 1) và bản xanh sau khi sửa.
+
+Giới hạn còn lại, không phải blocker:
+
+Callback của client.query chưa được bind. pg gọi callback này từ socket, nên nó mang context của nơi tạo socket. Nếu socket được mở trong phiên đo thì đó là store đo.
+Chỉ code ngoài phiên đo mà nối chuỗi client.query kiểu callback, trong lúc phiên đo còn mở, mới bị đếm nhầm. Pool.query chỉ release rồi resolve promise, phần đó đã được bind ở trên, và drizzle dùng promise. Vì vậy với Payload thực tế không có đường dẫn nào bị ảnh hưởng.
+Nếu muốn đối xứng hoàn toàn, áp cùng mẫu ở đầu wrapper client.query trước khi kiểm store:
+
+ts
+if (typeof args[last] === 'function') args[last] = AsyncResource.bind(args[last])
+Cờ payloadInitAdapter: đạt
+registerPayloadInitAdapter() chạy khi module initReq.js đã biến đổi được nạp.
+RootPage import initReq, nên cờ được bật trước khi dashboard ghi log.
+Nếu rule loader không khớp, cờ là false. Nhờ vậy log phân biệt được “adapter vắng mặt” với “payloadGetCalls: 0 thật”.
+Cờ là theo process, không theo request. Nó chứng minh adapter đã được nạp, không chứng minh request nào đã gọi getPayload. Cách diễn giải hiện tại phù hợp với điều này.
+Đối chiếu reader với stageName: nhãn đúng
+Lời gọi trong reader	Nhãn
+count	inventory.count
+find danh sách, không có where	inventory.list
+productSources guest (không có user, overrideAccess: false)	products.guest
+productSources có user, draft: true	products.draft
+productSources có user, draft: false	products.main
+findGlobal	home.*, cùng quy tắc trên
+Reader truyền user, không truyền req, nên lo ngại nhãn sai ở vòng trước không xảy ra.
+Proxy gọi target[name](options), nên req.payload bên trong là Payload thật. Truy vấn từ relation/populate/hook vẫn được tính vào group bên ngoài qua ALS mà không bị gán nhãn lại. Đây là hành vi mong muốn.
+Guest read không chuyển tiếp request hay cookie. Ghi chú này trong code là đúng.
+Lưu ý khi diễn giải: safeRead nuốt lỗi 403 và các lỗi khác, nên result: 'ok' không có nghĩa mọi read đều thành công. Cần đối chiếu với snapshot bạn xuất riêng trước khi so sánh các lượt đo.
+Với concurrency 3, các wall span chồng lên nhau. Bạn đã ghi rõ không được cộng chúng thành tổng.
+Giấy phép và lint: đạt
+Notice ghi đúng nguồn, đúng SHA-256, nêu rõ bytes không bị sửa và chỉ đổi cách đóng gói.
+Toàn văn Apache 2.0 và MIT có đủ, đáp ứng mục 4(a) và 4(c).
+Danh sách lint đã bổ sung dashboard-diagnostics-enabled.ts và spec của nó.
+Giới hạn của review
+Tôi không kiểm được SHA-256 và nội dung LICENSE gốc trong package, gồm năm bản quyền của Payload.
+Tôi không đọc được mã nguồn pg-pool thật. Phần đó tôi dựa vào việc bạn đã đối chiếu _release → _pulseQueue → pendingItem.callback.
+Tôi không chạy được con số 55/55 và build.
+Chế độ webpack trên Vercel vẫn chờ log build xác nhận.
+
+
+
+
+
+4 hours ago
+
+Claude is AI and can make mistakes.
+Auto is now the default.
+An automated check blocks actions it flags as risky; otherwise, Claude may act without asking. You can set a tool to “Always ask” in connector settings so Claude asks even in Auto mode. You can switch to Manual permissions at any time. Learn more.
+I acknowledge
+Reply
+
+
+
+
+
+
+
+
+Opus 5.5
+ Medium
+Manual
+Claude finished the response
+Session activity panel

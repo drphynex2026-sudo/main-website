@@ -1,4 +1,5 @@
 import 'server-only'
+import { withDashboardDiagnostics, traceDashboardProjection } from './dashboard-diagnostics'
 import type { Payload } from 'payload'
 import type { User } from '@/payload-types'
 import { isStaffUser, isEditorUser } from '@/access/roles'
@@ -67,7 +68,7 @@ export type DashboardData = {
   homeAllowed: boolean
   observedAt: string
 }
-export async function readDashboard(
+async function readDashboardSources(
   payload: Payload,
   user: User | null,
   permissions: unknown,
@@ -175,12 +176,29 @@ export async function readDashboard(
             .map((l) => source.draft[l])
             .find((r) => r.kind === 'ok' && typeof r.value?.name === 'string')
           const title = name?.kind === 'ok' ? String(name.value?.name) : `Sản phẩm #${id}`
-          return snapshot('products', id, title, source, isEditorUser(user))
+          return traceDashboardProjection(() =>
+            snapshot('products', id, title, source, isEditorUser(user)),
+          )
         })
       }
     }
   }
-  if (homeAllowed)
-    data.home = snapshot('home', 'home-page', 'Trang chủ', await homeSources(), isEditorUser(user))
+  if (homeAllowed) {
+    const sources = await homeSources()
+    data.home = traceDashboardProjection(() =>
+      snapshot('home', 'home-page', 'Trang chủ', sources, isEditorUser(user)),
+    )
+  }
   return data
+}
+
+export async function readDashboard(
+  payload: Payload,
+  user: User | null,
+  permissions: unknown,
+  requestedPage: unknown,
+): Promise<DashboardData> {
+  return withDashboardDiagnostics(payload, (measured) =>
+    readDashboardSources(measured, user, permissions, requestedPage),
+  )
 }

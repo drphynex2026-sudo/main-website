@@ -1,0 +1,13 @@
+{
+  "cleanup": [
+    {
+      "container": "ce4dff1c205756a8c324fb571faf0907b9cfe3504a7addf33f8b37195f0a4003",
+      "removed": true
+    },
+    {
+      "network": "34a1c89185f1462a0189b8e46ca941207a67ae54bdb8289e1b81d8eec80d344b",
+      "removed": true
+    }
+  ],
+  "failure": null
+}

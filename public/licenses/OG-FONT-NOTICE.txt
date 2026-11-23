@@ -1,0 +1,8 @@
+Roboto Regular
+Font data copyright Google 2011
+Unmodified font bytes supplied by @payloadcms/next 3.92.1, dist/routes/rest/og/roboto-regular.woff
+SHA-256: 717d25464787e5f7fa13f7cb693f12013b6f48136ebfb25c43ee6efc5c9edfe4
+Roboto source project: https://github.com/googlefonts/roboto-2
+License: Apache License 2.0; see roboto-Apache-2.0.txt
+Payload package: MIT; see payload-MIT.txt
+Only packaging changes: identical font bytes embedded in server code.

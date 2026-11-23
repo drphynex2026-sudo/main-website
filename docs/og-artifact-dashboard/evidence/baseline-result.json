@@ -1,0 +1,22 @@
+{
+  "status": 500,
+  "mime": "application/json",
+  "bytes": 117,
+  "nodeFsPermissionsLimitedToFunctionRoot": true,
+  "osSandbox": false,
+  "nativeAddonsEnabled": true,
+  "handler": "___next_launcher.cjs",
+  "audits": [
+    {
+      "file": "roboto-regular.woff",
+      "outsideFunction": true,
+      "success": false,
+      "code": "ERR_ACCESS_DENIED"
+    }
+  ],
+  "fontPathFailure": true,
+  "packagedFont": {
+    "bytes": 80304,
+    "sha256": "717d25464787e5f7fa13f7cb693f12013b6f48136ebfb25c43ee6efc5c9edfe4"
+  }
+}
