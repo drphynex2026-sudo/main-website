@@ -1,0 +1,66 @@
+{
+  "origin": "http://127.0.0.1:65102",
+  "productionBuildLocal": true,
+  "localPoolMax": 10,
+  "productionPoolMax": 3,
+  "coldNote": "Local fresh-process request, not Vercel cold start. Benchmark uses pool 3 separately.",
+  "dashboard": [
+    {
+      "sample": 1,
+      "kind": "first authenticated request in fresh Next process; includes initialization",
+      "ms": 4047.0641000000032,
+      "status": 200,
+      "documents": 5,
+      "localeCounts": {
+        "ko": 5,
+        "en": 5,
+        "vi": 5
+      }
+    },
+    {
+      "sample": 2,
+      "kind": "subsequent request",
+      "ms": 220.7577000000092,
+      "status": 200,
+      "documents": 5,
+      "localeCounts": {
+        "ko": 5,
+        "en": 5,
+        "vi": 5
+      }
+    },
+    {
+      "sample": 3,
+      "kind": "subsequent request",
+      "ms": 200.3932999999961,
+      "status": 200,
+      "documents": 5,
+      "localeCounts": {
+        "ko": 5,
+        "en": 5,
+        "vi": 5
+      }
+    },
+    {
+      "sample": 4,
+      "kind": "subsequent request",
+      "ms": 190.00200000000768,
+      "status": 200,
+      "documents": 5,
+      "localeCounts": {
+        "ko": 5,
+        "en": 5,
+        "vi": 5
+      }
+    }
+  ],
+  "og": {
+    "status": 200,
+    "type": "image/png",
+    "bytes": 23907,
+    "width": 1200,
+    "height": 630,
+    "entropy": 0.1357505431096797,
+    "fontTraced": true
+  }
+}

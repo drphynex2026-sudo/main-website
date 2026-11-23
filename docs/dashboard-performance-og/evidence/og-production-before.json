@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-23T03:59:52.061Z",
+  "status": 500,
+  "type": "application/json",
+  "missingFont": true,
+  "missingFile": true,
+  "sourceSHA": "beb7918aba36a5b4e11568de55be88bfff3aa961",
+  "runtimeFontPath": "/vercel/path0/node_modules/@payloadcms/next/dist/routes/rest/og/roboto-regular.woff",
+  "deploymentFileList": "CLI endpoint unavailable; absence supported by runtime ENOENT, not by full remote filesystem inspection"
+}

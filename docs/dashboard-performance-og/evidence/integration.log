@@ -1,0 +1,33 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90mC:/Users/THAI/.codex/worktrees/dashboard-phase-one/website-demo[39m
+
+[10:59:30] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+[10:59:30] [32mINFO[39m: [36mMigrating: 20261028_101829_initial[39m
+[10:59:31] [32mINFO[39m: [36mMigrated:  20261028_101829_initial (1114ms)[39m
+[10:59:31] [32mINFO[39m: [36mMigrating: 20261029_021524_media_release_and_line_appearance[39m
+[10:59:31] [32mINFO[39m: [36mMigrated:  20261029_021524_media_release_and_line_appearance (64ms)[39m
+[10:59:31] [32mINFO[39m: [36mMigrating: 20261029_035541_product_editorial_note[39m
+[10:59:31] [32mINFO[39m: [36mMigrated:  20261029_035541_product_editorial_note (181ms)[39m
+[10:59:32] [32mINFO[39m: [36mMigrating: 20261029_080000_form_rate_limits[39m
+[10:59:32] [32mINFO[39m: [36mMigrated:  20261029_080000_form_rate_limits (42ms)[39m
+[10:59:32] [32mINFO[39m: [36mMigrating: 20261029_100000_storage_fields[39m
+[10:59:32] [32mINFO[39m: [36mMigrated:  20261029_100000_storage_fields (41ms)[39m
+[10:59:32] [32mINFO[39m: [36mMigrating: 20261105_085002_home_banners[39m
+[10:59:32] [32mINFO[39m: [36mMigrated:  20261105_085002_home_banners (449ms)[39m
+[10:59:32] [32mINFO[39m: [36mMigrating: 20261107_050810_landing_blocks[39m
+[10:59:33] [32mINFO[39m: [36mMigrated:  20261107_050810_landing_blocks (364ms)[39m
+[10:59:33] [32mINFO[39m: [36mMigrating: 20261109_024237_landing_approvals[39m
+[10:59:33] [32mINFO[39m: [36mMigrated:  20261109_024237_landing_approvals (9ms)[39m
+ [32m✓[39m tests/int/dashboard-snapshot.int.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 47063[2mms[22m[39m
+     [33m[2m✓[22m[39m admin sees page20 and separate Home, without serializing hidden data [33m 511[2mms[22m[39m
+     [33m[2m✓[22m[39m editor sees page20 and separate Home, without serializing hidden data [33m 533[2mms[22m[39m
+     [33m[2m✓[22m[39m readDashboard performs no mutation calls and leaves main/version data unchanged [33m 3227[2mms[22m[39m
+     [33m[2m✓[22m[39m dashboard missing set agrees with actual Home publish guard and refusal changes no durable state [33m 2620[2mms[22m[39m
+     [33m[2m✓[22m[39m records sanitized fixture inventory for browser checks [33m 1210[2mms[22m[39m
+     [33m[2m✓[22m[39m bounded real reads preserve ordering and record actual top-level find concurrency [33m 883[2mms[22m[39m
+     [33m[2m✓[22m[39m Product dependency matches real 409 after shared structure changes [33m 2211[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m11 passed[39m[22m[90m (11)[39m
+[2m   Start at [22m 10:59:19
+[2m   Duration [22m 57.62s[2m (transform 1.01s, setup 0ms, import 9.12s, tests 47.06s, environment 0ms)[22m

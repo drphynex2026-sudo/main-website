@@ -51,8 +51,8 @@ describe('Dashboard application reads on disposable fixture',()=>{
  it('bounded real reads preserve ordering and record actual top-level find concurrency',async()=>{
   let active=0,peak=0
   const proxy=new Proxy(p,{get(target,key){if(key==='find')return async(opts:any)=>{const tracked=opts.collection==='products'&&!!opts.where?.id; if(tracked)peak=Math.max(peak,++active);try{return await target.find(opts)}finally{if(tracked)active--}};return Reflect.get(target,key)}})
-  const data=await readDashboard(proxy,editor,permissions,'1');expect(data.products.map(d=>Number(d.id))).toEqual(Array.from({length:20},(_,i)=>i+1));expect(peak).toBeGreaterThan(9);expect(peak).toBeLessThanOrEqual(36);expect(active).toBe(0)
-  writeFileSync(evidenceFile('real-concurrency.json'),JSON.stringify({productWorkersLimit:4,topLevelProductFindsPeak:peak,findsPerProduct:9,homeRunsAfterProducts:true,internalRelationQueriesNotCounted:true},null,2))
+  const data=await readDashboard(proxy,editor,permissions,'1');expect(data.products.map(d=>Number(d.id))).toEqual(Array.from({length:20},(_,i)=>i+1));expect(peak).toBe(3);expect(active).toBe(0)
+  writeFileSync(evidenceFile('real-concurrency.json'),JSON.stringify({topLevelProductFindsLimit:3,topLevelProductFindsPeak:peak,findsPerPage:9,homeRunsAfterProducts:true,internalRelationQueriesNotCounted:true},null,2))
  })
  it('Product dependency matches real 409 after shared structure changes',async()=>{
   const doc=await p.create({collection:'products',...options('ko',editor,true),draft:true,data:{name:'[FIXTURE] Product dependency KO',slug:'review-dependency-product',landing:[{blockType:'hero',tagline:'KO'}],translationStatus:'in-review'}})

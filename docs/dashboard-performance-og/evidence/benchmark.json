@@ -1,0 +1,1829 @@
+{
+  "condition": "PostgreSQL disposable, pool 3, 4 fixture Products, same persisted dataset, alternating order; Payload already initialized; not Vercel/Neon cold start.",
+  "samples": [
+    {
+      "role": "admin",
+      "round": 0,
+      "mode": "baseline",
+      "wallMs": 716.9161999999997,
+      "projectionMs": 1.6640000000043074,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 34.83020000000397,
+          "queries": 3,
+          "queryMs": 25.627300000000105,
+          "acquireMs": 0.2462999999988824
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 6521.184500000003,
+          "queries": 24,
+          "queryMs": 550.8147999999965,
+          "acquireMs": 5779.767999999993
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 4971.237999999994,
+          "queries": 24,
+          "queryMs": 451.9103000000068,
+          "acquireMs": 4365.1781999999985
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 1120.070800000005,
+          "queries": 14,
+          "queryMs": 150.85689999999158,
+          "acquireMs": 879.5758999999962
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 251.08230000000185,
+          "queries": 6,
+          "queryMs": 61.821499999998196,
+          "acquireMs": 162.075499999999
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 163.14849999999933,
+          "queries": 3,
+          "queryMs": 41.70610000000306,
+          "acquireMs": 95.43689999999697
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 210.85350000000108,
+          "queries": 6,
+          "queryMs": 47.73570000000109,
+          "acquireMs": 148.481200000002
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 34.96690000000308,
+        "products.draft": 589.5877,
+        "products.main": 465.30079999999725,
+        "products.guest": 590.3264000000017,
+        "home.draft": 88.2371000000021,
+        "home.main": 62.081999999998516,
+        "home.guest": 74.42020000000048
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 0,
+      "mode": "candidate",
+      "wallMs": 210.5461000000032,
+      "projectionMs": 0.5626000000011118,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 34.07719999999972,
+          "queries": 3,
+          "queryMs": 26.386999999998807,
+          "acquireMs": 0.10920000000260188
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 109.4581999999973,
+          "queries": 3,
+          "queryMs": 52.221300000001065,
+          "acquireMs": 24.718000000000757
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 77.94060000000172,
+          "queries": 3,
+          "queryMs": 52.62079999999696,
+          "acquireMs": 5.165099999998347
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 59.755599999996775,
+          "queries": 4,
+          "queryMs": 44.44970000000467,
+          "acquireMs": 7.525000000005093
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 110.28559999999925,
+          "queries": 6,
+          "queryMs": 73.39520000000266,
+          "acquireMs": 11.945200000001932
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 52.97859999999855,
+          "queries": 3,
+          "queryMs": 26.38310000000274,
+          "acquireMs": 14.855099999997037
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 77.28949999999895,
+          "queries": 6,
+          "queryMs": 52.51090000000477,
+          "acquireMs": 10.95560000000114
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 34.22580000000016,
+        "products.draft": 45.368099999999686,
+        "products.main": 45.78069999999934,
+        "products.guest": 31.929299999999785,
+        "home.draft": 45.113499999999476,
+        "home.main": 34.09660000000076,
+        "home.guest": 35.44629999999961
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 1,
+      "mode": "candidate",
+      "wallMs": 347.48109999999724,
+      "projectionMs": 0.49429999999847496,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 34.47999999999956,
+          "queries": 3,
+          "queryMs": 27.80609999999797,
+          "acquireMs": 0.10320000000137952
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 101.6169000000009,
+          "queries": 3,
+          "queryMs": 46.62350000000151,
+          "acquireMs": 23.128700000004756
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 77.01810000000114,
+          "queries": 3,
+          "queryMs": 54.78190000000177,
+          "acquireMs": 3.909800000004907
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 102.54130000000077,
+          "queries": 4,
+          "queryMs": 74.93919999999343,
+          "acquireMs": 20.482100000001083
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 135.68859999999768,
+          "queries": 6,
+          "queryMs": 83.96599999999671,
+          "acquireMs": 26.810999999994237
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 55.78349999999773,
+          "queries": 3,
+          "queryMs": 39.105600000002596,
+          "acquireMs": 5.390900000002148
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 378.69600000000355,
+          "queries": 6,
+          "queryMs": 284.952699999998,
+          "acquireMs": 80.27100000000064
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 34.521199999999226,
+        "products.draft": 43.00760000000082,
+        "products.main": 39.23869999999806,
+        "products.guest": 50.4997000000003,
+        "home.draft": 49.795500000000175,
+        "home.main": 35.418799999999464,
+        "home.guest": 154.53510000000097
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 1,
+      "mode": "baseline",
+      "wallMs": 864.6282000000028,
+      "projectionMs": 0.5772999999971944,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 76.83030000000508,
+          "queries": 3,
+          "queryMs": 70.40450000000419,
+          "acquireMs": 0.10670000000027358
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 6506.654700000003,
+          "queries": 24,
+          "queryMs": 711.071299999996,
+          "acquireMs": 5637.970499999996
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 4095.974500000004,
+          "queries": 24,
+          "queryMs": 444.4582999999948,
+          "acquireMs": 3523.009099999992
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 1340.6123999999982,
+          "queries": 14,
+          "queryMs": 169.47089999999298,
+          "acquireMs": 1106.4993999999933
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 321.2489999999998,
+          "queries": 6,
+          "queryMs": 60.45899999999892,
+          "acquireMs": 234.97199999999793
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 228.84639999999854,
+          "queries": 3,
+          "queryMs": 72.11510000000271,
+          "acquireMs": 128.1921000000002
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 292.9845000000023,
+          "queries": 6,
+          "queryMs": 64.51690000000235,
+          "acquireMs": 213.41630000000077
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 76.86870000000272,
+        "products.draft": 671.4501999999993,
+        "products.main": 420.65639999999985,
+        "products.guest": 675.7216999999982,
+        "home.draft": 111.15639999999985,
+        "home.main": 91.14029999999912,
+        "home.guest": 100.89429999999993
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 2,
+      "mode": "baseline",
+      "wallMs": 630.9234000000033,
+      "projectionMs": 0.6069000000024971,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 60.309000000004744,
+          "queries": 3,
+          "queryMs": 52.577000000001135,
+          "acquireMs": 0.10359999999855063
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 4999.384900000005,
+          "queries": 24,
+          "queryMs": 406.40639999999985,
+          "acquireMs": 4429.043499999985
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 3688.416699999998,
+          "queries": 24,
+          "queryMs": 366.7990000000027,
+          "acquireMs": 3196.023399999991
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 1220.0647000000026,
+          "queries": 14,
+          "queryMs": 182.51200000000244,
+          "acquireMs": 969.7997999999934
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 208.511599999998,
+          "queries": 6,
+          "queryMs": 56.44800000000396,
+          "acquireMs": 124.5822999999873
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 119.96859999999288,
+          "queries": 3,
+          "queryMs": 25.241699999998673,
+          "acquireMs": 70.55250000000524
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 154.68470000000525,
+          "queries": 6,
+          "queryMs": 41.38810000000376,
+          "acquireMs": 99.44859999999608
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 60.34870000000228,
+        "products.draft": 481.98259999999937,
+        "products.main": 345.3610000000008,
+        "products.guest": 495.54879999999685,
+        "home.draft": 74.21390000000247,
+        "home.main": 44.72060000000056,
+        "home.guest": 55.34780000000319
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 2,
+      "mode": "candidate",
+      "wallMs": 307.8257999999987,
+      "projectionMs": 0.4670999999943888,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 28.64669999999751,
+          "queries": 3,
+          "queryMs": 20.861999999993714,
+          "acquireMs": 0.08929999999236315
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 112.93210000000545,
+          "queries": 3,
+          "queryMs": 49.488499999999476,
+          "acquireMs": 26.179900000002817
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 65.39689999999973,
+          "queries": 3,
+          "queryMs": 44.33440000000701,
+          "acquireMs": 3.8315999999977066
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 91.26629999999568,
+          "queries": 4,
+          "queryMs": 77.17439999999624,
+          "acquireMs": 8.115600000004633
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 294.22609999999986,
+          "queries": 6,
+          "queryMs": 226.9219000000012,
+          "acquireMs": 42.40700000000652
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 114.11569999999483,
+          "queries": 3,
+          "queryMs": 36.249900000002526,
+          "acquireMs": 67.3202999999994
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 77.63820000000851,
+          "queries": 6,
+          "queryMs": 52.650399999998626,
+          "acquireMs": 11.986600000011094
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 28.686399999998685,
+        "products.draft": 46.91410000000178,
+        "products.main": 34.66449999999895,
+        "products.guest": 57.50920000000042,
+        "home.draft": 121.5364000000045,
+        "home.main": 84.08049999999639,
+        "home.guest": 34.75080000000162
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 3,
+      "mode": "candidate",
+      "wallMs": 275.2656999999963,
+      "projectionMs": 0.48009999999339925,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 61.06670000000304,
+          "queries": 3,
+          "queryMs": 50.10420000000158,
+          "acquireMs": 0.11059999999270076
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 130.73480000000563,
+          "queries": 3,
+          "queryMs": 69.97569999999541,
+          "acquireMs": 26.894200000009732
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 109.99080000000686,
+          "queries": 3,
+          "queryMs": 77.52930000000924,
+          "acquireMs": 14.8012000000017
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 193.40520000000106,
+          "queries": 4,
+          "queryMs": 125.31270000000222,
+          "acquireMs": 61.80809999999474
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 77.69020000000455,
+          "queries": 6,
+          "queryMs": 44.04279999999562,
+          "acquireMs": 9.612999999997555
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 42.78779999999824,
+          "queries": 3,
+          "queryMs": 28.215700000000652,
+          "acquireMs": 4.528600000005099
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 60.26089999999385,
+          "queries": 6,
+          "queryMs": 39.8177999999898,
+          "acquireMs": 9.475799999992887
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 61.11899999999878,
+        "products.draft": 64.18560000000434,
+        "products.main": 59.60990000000311,
+        "products.guest": 86.00400000000081,
+        "home.draft": 29.72790000000532,
+        "home.main": 21.25630000000092,
+        "home.guest": 25.812599999997474
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "admin",
+      "round": 3,
+      "mode": "baseline",
+      "wallMs": 643.7752000000037,
+      "projectionMs": 0.503099999994447,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 31.80840000000171,
+          "queries": 3,
+          "queryMs": 25.650399999998626,
+          "acquireMs": 0.08649999999761349
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 5614.822199999973,
+          "queries": 24,
+          "queryMs": 440.5153000000064,
+          "acquireMs": 5037.467000000004
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 4387.940500000004,
+          "queries": 24,
+          "queryMs": 420.75410000000556,
+          "acquireMs": 3854.6575000000157
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 1238.6242999999886,
+          "queries": 14,
+          "queryMs": 168.99660000000586,
+          "acquireMs": 1013.1410000000033
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 216.16830000000482,
+          "queries": 6,
+          "queryMs": 43.83269999999902,
+          "acquireMs": 146.99230000000534
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 153.03859999999986,
+          "queries": 3,
+          "queryMs": 26.872800000004645,
+          "acquireMs": 101.83229999999458
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 184.25829999999405,
+          "queries": 6,
+          "queryMs": 57.764999999984866,
+          "acquireMs": 113.21510000000853
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 31.84900000000198,
+        "products.draft": 513.9926999999952,
+        "products.main": 403.83170000000246,
+        "products.guest": 533.7494999999981,
+        "home.draft": 77.44050000000425,
+        "home.main": 54.24239999999554,
+        "home.guest": 64.96719999999914
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 0,
+      "mode": "baseline",
+      "wallMs": 502.1595000000016,
+      "projectionMs": 0.4751999999934924,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 27.145700000000943,
+          "queries": 3,
+          "queryMs": 21.070700000003853,
+          "acquireMs": 0.11650000000372529
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 4425.912099999994,
+          "queries": 24,
+          "queryMs": 366.7848999999842,
+          "acquireMs": 3925.3315999999904
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 3454.83219999999,
+          "queries": 24,
+          "queryMs": 367.2150000000038,
+          "acquireMs": 2972.992000000013
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 739.9037999999928,
+          "queries": 14,
+          "queryMs": 81.83030000000144,
+          "acquireMs": 604.212099999997
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 160.22499999999127,
+          "queries": 6,
+          "queryMs": 39.01900000000023,
+          "acquireMs": 96.00350000001345
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 101.53100000000268,
+          "queries": 3,
+          "queryMs": 21.211899999994785,
+          "acquireMs": 54.579899999997
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 130.74190000000817,
+          "queries": 6,
+          "queryMs": 30.650900000000547,
+          "acquireMs": 87.0515999999916
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 27.188999999998487,
+        "products.draft": 416.13850000000093,
+        "products.main": 322.00359999999637,
+        "products.guest": 416.57220000000234,
+        "home.draft": 57.883999999998196,
+        "home.main": 38.34389999999985,
+        "home.guest": 46.406300000002375
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 0,
+      "mode": "candidate",
+      "wallMs": 161.1713000000018,
+      "projectionMs": 0.5531000000046333,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 22.111000000004424,
+          "queries": 3,
+          "queryMs": 15.767400000004272,
+          "acquireMs": 0.07409999999799766
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 97.16739999999118,
+          "queries": 3,
+          "queryMs": 44.74360000000161,
+          "acquireMs": 22.674199999994016
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 63.08559999999852,
+          "queries": 3,
+          "queryMs": 43.619299999998475,
+          "acquireMs": 4.362499999995634
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 45.207799999996496,
+          "queries": 4,
+          "queryMs": 28.70789999999397,
+          "acquireMs": 10.525500000003376
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 85.22210000000632,
+          "queries": 6,
+          "queryMs": 50.1820000000007,
+          "acquireMs": 10.867500000007567
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 36.13670000001002,
+          "queries": 3,
+          "queryMs": 23.749100000000908,
+          "acquireMs": 2.331400000002759
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 53.76180000000022,
+          "queries": 6,
+          "queryMs": 36.445000000006985,
+          "acquireMs": 6.148199999995995
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 22.159899999998743,
+        "products.draft": 41.13749999999709,
+        "products.main": 34.46940000000177,
+        "products.guest": 30.11529999999766,
+        "home.draft": 32.824100000005274,
+        "home.main": 20.54500000000553,
+        "home.guest": 25.41660000000411
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 1,
+      "mode": "candidate",
+      "wallMs": 165.90520000000106,
+      "projectionMs": 0.43650000000343425,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 23.531600000002072,
+          "queries": 3,
+          "queryMs": 17.48410000000149,
+          "acquireMs": 0.06720000000495929
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 91.44449999999779,
+          "queries": 3,
+          "queryMs": 42.080100000006496,
+          "acquireMs": 19.733300000007148
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 73.02599999999074,
+          "queries": 3,
+          "queryMs": 54.57459999999992,
+          "acquireMs": 2.542799999995623
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 53.99530000000232,
+          "queries": 4,
+          "queryMs": 30.597299999993993,
+          "acquireMs": 17.359299999996438
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 90.59209999999439,
+          "queries": 6,
+          "queryMs": 53.037899999995716,
+          "acquireMs": 14.051200000008976
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 33.80539999999746,
+          "queries": 3,
+          "queryMs": 21.618900000001304,
+          "acquireMs": 2.1370999999999185
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 56.95830000000569,
+          "queries": 6,
+          "queryMs": 38.595799999995506,
+          "acquireMs": 6.76320000000851
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 23.575599999996484,
+        "products.draft": 38.64400000000023,
+        "products.main": 38.28049999999348,
+        "products.guest": 34.197100000004866,
+        "home.draft": 35.0911999999953,
+        "home.main": 18.177199999998265,
+        "home.guest": 24.36330000000453
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 1,
+      "mode": "baseline",
+      "wallMs": 461.3848999999973,
+      "projectionMs": 0.47870000000693835,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 21.39310000000114,
+          "queries": 3,
+          "queryMs": 15.158699999992677,
+          "acquireMs": 0.0650000000023283
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 3907.2973000000056,
+          "queries": 24,
+          "queryMs": 342.11329999999,
+          "acquireMs": 3432.2974000000104
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 2565.3849000000046,
+          "queries": 24,
+          "queryMs": 296.66979999999603,
+          "acquireMs": 2158.9386999999915
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 796.5839999999953,
+          "queries": 14,
+          "queryMs": 99.08489999999438,
+          "acquireMs": 644.874000000018
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 168.11400000000867,
+          "queries": 6,
+          "queryMs": 39.95329999999376,
+          "acquireMs": 104.00569999999425
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 102.2103999999963,
+          "queries": 3,
+          "queryMs": 21.234700000015437,
+          "acquireMs": 58.565999999998894
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 135.8492999999944,
+          "queries": 6,
+          "queryMs": 37.60890000000654,
+          "acquireMs": 85.15469999999186
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 21.435700000001816,
+        "products.draft": 377.093200000003,
+        "products.main": 263.5138999999981,
+        "products.guest": 377.50479999999516,
+        "home.draft": 61.70950000000448,
+        "home.main": 37.668799999999464,
+        "home.guest": 49.25890000000072
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 2,
+      "mode": "baseline",
+      "wallMs": 427.5966999999946,
+      "projectionMs": 0.5032999999893946,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 24.202499999999418,
+          "queries": 3,
+          "queryMs": 18.439100000003236,
+          "acquireMs": 0.06919999999809079
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 3577.6855999999752,
+          "queries": 24,
+          "queryMs": 299.7812000000122,
+          "acquireMs": 3143.8506999999954
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 2511.889900000009,
+          "queries": 24,
+          "queryMs": 283.7987000000212,
+          "acquireMs": 2120.3040999999866
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 606.3306000000084,
+          "queries": 14,
+          "queryMs": 75.80399999999645,
+          "acquireMs": 479.4927999999927
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 169.19019999999728,
+          "queries": 6,
+          "queryMs": 41.65870000000723,
+          "acquireMs": 102.31449999999313
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 116.9184000000023,
+          "queries": 3,
+          "queryMs": 21.197100000004866,
+          "acquireMs": 70.87970000000496
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 148.17569999999978,
+          "queries": 6,
+          "queryMs": 35.59160000000702,
+          "acquireMs": 99.43270000001212
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 24.249100000000908,
+        "products.draft": 334.4179000000004,
+        "products.main": 240.5425000000032,
+        "products.guest": 341.71370000000024,
+        "home.draft": 60.96999999999389,
+        "home.main": 42.51640000000043,
+        "home.guest": 54.17779999999766
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 2,
+      "mode": "candidate",
+      "wallMs": 162.6281999999992,
+      "projectionMs": 0.4782000000050175,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 25.589899999999034,
+          "queries": 3,
+          "queryMs": 19.749900000009802,
+          "acquireMs": 0.06450000000040745
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 92.43500000000495,
+          "queries": 3,
+          "queryMs": 39.713700000000244,
+          "acquireMs": 21.46059999999852
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 64.9184000000023,
+          "queries": 3,
+          "queryMs": 45.25430000000051,
+          "acquireMs": 4.155500000000757
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 48.88159999999334,
+          "queries": 4,
+          "queryMs": 32.09799999999086,
+          "acquireMs": 10.688500000003842
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 78.85699999999633,
+          "queries": 6,
+          "queryMs": 46.77890000001207,
+          "acquireMs": 8.591300000000047
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 35.50640000000567,
+          "queries": 3,
+          "queryMs": 21.64020000000164,
+          "acquireMs": 3.604800000000978
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 66.94160000000556,
+          "queries": 6,
+          "queryMs": 47.44169999998849,
+          "acquireMs": 7.961899999994785
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 25.632599999997183,
+        "products.draft": 39.16340000000491,
+        "products.main": 33.693599999998696,
+        "products.guest": 26.686599999993632,
+        "home.draft": 30.831599999997707,
+        "home.main": 21.949000000000524,
+        "home.guest": 29.998100000004342
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 3,
+      "mode": "candidate",
+      "wallMs": 164.08350000000064,
+      "projectionMs": 0.4132000000026892,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 22.745699999999488,
+          "queries": 3,
+          "queryMs": 16.86779999999999,
+          "acquireMs": 0.06530000000202563
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 91.0905999999959,
+          "queries": 3,
+          "queryMs": 41.30059999999503,
+          "acquireMs": 20.178599999992002
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 71.91829999999754,
+          "queries": 3,
+          "queryMs": 48.9343000000008,
+          "acquireMs": 7.457800000003772
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 41.562400000002526,
+          "queries": 4,
+          "queryMs": 25.164599999996426,
+          "acquireMs": 10.420699999995122
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 109.14119999999093,
+          "queries": 6,
+          "queryMs": 66.57459999999992,
+          "acquireMs": 19.629199999988487
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 37.67059999999037,
+          "queries": 3,
+          "queryMs": 23.827799999999115,
+          "acquireMs": 4.0314999999973224
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 46.901300000004994,
+          "queries": 6,
+          "queryMs": 30.760399999991932,
+          "acquireMs": 5.354400000003807
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 22.788399999997637,
+        "products.draft": 39.740200000000186,
+        "products.main": 36.514100000000326,
+        "products.guest": 25.92410000000382,
+        "home.draft": 40.57679999999527,
+        "home.main": 21.01829999999609,
+        "home.guest": 21.301399999996647
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "editor",
+      "round": 3,
+      "mode": "baseline",
+      "wallMs": 450.369200000001,
+      "projectionMs": 0.5625999999974738,
+      "snapshotHash": "25a4ff17cb58f0469e51c1b6728e50fe3b384f654947164bff7fe00c8323bd36",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 86.34449999999924,
+          "queries": 3,
+          "queryMs": 80.6443000000072,
+          "acquireMs": 0.07050000000162981
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 3229.0206000000107,
+          "queries": 24,
+          "queryMs": 291.26009999999224,
+          "acquireMs": 2813.4545999999755
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 2208.0074000000095,
+          "queries": 24,
+          "queryMs": 245.31270000002405,
+          "acquireMs": 1860.5859999999811
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 520.6321000000025,
+          "queries": 14,
+          "queryMs": 70.5940999999948,
+          "acquireMs": 403.8689999999988
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 148.8199999999997,
+          "queries": 6,
+          "queryMs": 33.32359999999608,
+          "acquireMs": 92.26799999998912
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 97.41109999999753,
+          "queries": 3,
+          "queryMs": 20.132899999989604,
+          "acquireMs": 54.89449999999488
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 124.3090000000011,
+          "queries": 6,
+          "queryMs": 31.503799999991315,
+          "acquireMs": 80.45299999999406
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 86.39059999999881,
+        "products.draft": 310.7684999999983,
+        "products.main": 230.94310000000405,
+        "products.guest": 311.167300000001,
+        "home.draft": 52.18789999999717,
+        "home.main": 35.59569999999803,
+        "home.guest": 44.39459999999963
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 0,
+      "mode": "baseline",
+      "wallMs": 547.0008999999991,
+      "projectionMs": 0.5250000000014552,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 21.03299999999581,
+          "queries": 3,
+          "queryMs": 15.138800000000629,
+          "acquireMs": 0.055900000006658956
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 3971.3153000000093,
+          "queries": 24,
+          "queryMs": 318.8248000000094,
+          "acquireMs": 3527.2986999999703
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 2810.0187999999907,
+          "queries": 24,
+          "queryMs": 336.7147999999652,
+          "acquireMs": 2371.5195000000167
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 643.4037000000098,
+          "queries": 14,
+          "queryMs": 109.46579999999085,
+          "acquireMs": 486.2933999999659
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 335.1944999999978,
+          "queries": 6,
+          "queryMs": 73.81979999999749,
+          "acquireMs": 236.65269999998418
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 204.72140000000218,
+          "queries": 3,
+          "queryMs": 23.593800000002375,
+          "acquireMs": 157.24730000000272
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 282.4531000000061,
+          "queries": 6,
+          "queryMs": 112.29149999999208,
+          "acquireMs": 157.3394000000044
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 21.08049999999639,
+        "products.draft": 372.7929000000004,
+        "products.main": 287.09150000000227,
+        "products.guest": 407.36699999999837,
+        "home.draft": 117.95730000000185,
+        "home.main": 74.18590000000404,
+        "home.guest": 103.9893000000011
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 0,
+      "mode": "candidate",
+      "wallMs": 345.1947999999975,
+      "projectionMs": 0.46820000000298023,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 107.31369999999879,
+          "queries": 3,
+          "queryMs": 101.34410000000207,
+          "acquireMs": 0.07410000000527361
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 202.4789000000019,
+          "queries": 3,
+          "queryMs": 119.29060000000027,
+          "acquireMs": 55.04980000000069
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 160.36480000000302,
+          "queries": 3,
+          "queryMs": 131.8055000000022,
+          "acquireMs": 14.58129999999801
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 95.86969999999565,
+          "queries": 4,
+          "queryMs": 41.29219999998895,
+          "acquireMs": 49.3292999999976
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 115.66839999999502,
+          "queries": 6,
+          "queryMs": 72.18819999998959,
+          "acquireMs": 19.779900000001362
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 49.60800000000745,
+          "queries": 3,
+          "queryMs": 30.314100000010512,
+          "acquireMs": 9.552899999995134
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 55.79070000000502,
+          "queries": 6,
+          "queryMs": 39.51489999999467,
+          "acquireMs": 5.349099999992177
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 107.35829999999987,
+        "products.draft": 82.39100000000326,
+        "products.main": 81.30769999999757,
+        "products.guest": 71.93080000000191,
+        "home.draft": 48.123099999997066,
+        "home.main": 26.871899999998277,
+        "home.guest": 25.8070000000007
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 1,
+      "mode": "candidate",
+      "wallMs": 167.51290000000154,
+      "projectionMs": 0.4188999999896623,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 17.86490000000049,
+          "queries": 3,
+          "queryMs": 11.694000000003143,
+          "acquireMs": 0.05619999999908032
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 99.55030000000261,
+          "queries": 3,
+          "queryMs": 47.78370000000723,
+          "acquireMs": 21.509500000000116
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 79.11060000000725,
+          "queries": 3,
+          "queryMs": 52.78499999999622,
+          "acquireMs": 11.25050000000192
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 53.79699999999866,
+          "queries": 4,
+          "queryMs": 34.035100000000966,
+          "acquireMs": 13.821200000005774
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 92.15690000000905,
+          "queries": 6,
+          "queryMs": 53.581900000011956,
+          "acquireMs": 16.850600000005215
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 34.94810000000143,
+          "queries": 3,
+          "queryMs": 24.710100000003877,
+          "acquireMs": 0.6036000000021886
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 57.19170000000304,
+          "queries": 6,
+          "queryMs": 37.176100000004226,
+          "acquireMs": 9.431500000006054
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 17.916199999999662,
+        "products.draft": 45.24250000000029,
+        "products.main": 44.16340000000491,
+        "products.guest": 31.860399999997753,
+        "home.draft": 38.193700000003446,
+        "home.main": 23.488499999999476,
+        "home.guest": 27.050300000002608
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 1,
+      "mode": "baseline",
+      "wallMs": 748.4728000000032,
+      "projectionMs": 0.5663999999960652,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 17.5908999999956,
+          "queries": 3,
+          "queryMs": 11.444600000002538,
+          "acquireMs": 0.052100000000791624
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 4851.604900000006,
+          "queries": 24,
+          "queryMs": 349.84240000000136,
+          "acquireMs": 4371.219499999985
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 2484.417699999998,
+          "queries": 24,
+          "queryMs": 515.161300000007,
+          "acquireMs": 1859.341500000024
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 633.5467000000062,
+          "queries": 14,
+          "queryMs": 50.598299999997835,
+          "acquireMs": 530.0821000000142
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 569.3543000000063,
+          "queries": 6,
+          "queryMs": 210.97789999999804,
+          "acquireMs": 333.4938000000111
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 248.06699999999546,
+          "queries": 3,
+          "queryMs": 51.68549999999959,
+          "acquireMs": 173.2314999999944
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 352.2549999999974,
+          "queries": 6,
+          "queryMs": 137.41730000000098,
+          "acquireMs": 201.896900000007
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 17.64129999999568,
+        "products.draft": 466.4154999999955,
+        "products.main": 349.190300000002,
+        "products.guest": 465.4710999999952,
+        "home.draft": 263.7803000000058,
+        "home.main": 89.49020000000019,
+        "home.guest": 131.3104999999996
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 2,
+      "mode": "baseline",
+      "wallMs": 799.5213999999978,
+      "projectionMs": 0.4801000000006752,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 44.03579999999056,
+          "queries": 3,
+          "queryMs": 38.2902000000031,
+          "acquireMs": 0.06199999999807915
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 6463.505299999997,
+          "queries": 24,
+          "queryMs": 496.9233000000095,
+          "acquireMs": 5835.748200000031
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 4834.513500000001,
+          "queries": 24,
+          "queryMs": 381.98350000000937,
+          "acquireMs": 4343.181699999994
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 1794.7569000000003,
+          "queries": 14,
+          "queryMs": 342.2666999999783,
+          "acquireMs": 1400.324400000005
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 381.6270999999906,
+          "queries": 6,
+          "queryMs": 135.44540000001143,
+          "acquireMs": 219.869200000001
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 243.3741000000009,
+          "queries": 3,
+          "queryMs": 40.74910000000091,
+          "acquireMs": 177.9890000000014
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 283.74849999999424,
+          "queries": 6,
+          "queryMs": 65.27989999999409,
+          "acquireMs": 205.05109999999695
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 44.06869999999617,
+        "products.draft": 618.2592000000004,
+        "products.main": 449.5529000000024,
+        "products.guest": 618.8301000000065,
+        "home.draft": 136.0384999999951,
+        "home.main": 87.31420000000071,
+        "home.guest": 98.28809999999794
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 2,
+      "mode": "candidate",
+      "wallMs": 320.75309999999445,
+      "projectionMs": 0.38799999999901047,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 39.39970000000176,
+          "queries": 3,
+          "queryMs": 33.35239999999612,
+          "acquireMs": 0.0650000000023283
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 123.62420000000566,
+          "queries": 3,
+          "queryMs": 69.4516999999978,
+          "acquireMs": 25.298099999999977
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 163.2265999999945,
+          "queries": 3,
+          "queryMs": 123.67520000000513,
+          "acquireMs": 23.391799999997602
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 148.0622000000003,
+          "queries": 4,
+          "queryMs": 87.12970000000496,
+          "acquireMs": 54.911899999991874
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 146.112000000001,
+          "queries": 6,
+          "queryMs": 94.75789999999688,
+          "acquireMs": 26.62290000000212
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 76.57110000000102,
+          "queries": 3,
+          "queryMs": 46.273300000000745,
+          "acquireMs": 19.40980000000127
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 124.04950000000099,
+          "queries": 6,
+          "queryMs": 86.24270000000251,
+          "acquireMs": 26.137999999991735
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 39.433499999999185,
+        "products.draft": 62.689900000004855,
+        "products.main": 82.86489999999321,
+        "products.guest": 83.47720000000118,
+        "home.draft": 55.746500000001106,
+        "home.main": 40.9742000000042,
+        "home.guest": 58.51090000000113
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 3,
+      "mode": "candidate",
+      "wallMs": 301.0494000000035,
+      "projectionMs": 0.4676999999937834,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 77.28959999999643,
+          "queries": 3,
+          "queryMs": 71.75870000000577,
+          "acquireMs": 0.052100000000791624
+        },
+        "products.draft": {
+          "calls": 3,
+          "ms": 106.52489999998943,
+          "queries": 3,
+          "queryMs": 52.79699999999866,
+          "acquireMs": 26.281300000002375
+        },
+        "products.main": {
+          "calls": 3,
+          "ms": 61.73889999999665,
+          "queries": 3,
+          "queryMs": 43.199500000002445,
+          "acquireMs": 4.050899999994726
+        },
+        "products.guest": {
+          "calls": 3,
+          "ms": 94.54080000000249,
+          "queries": 4,
+          "queryMs": 74.14639999998326,
+          "acquireMs": 14.641999999999825
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 164.57860000000073,
+          "queries": 6,
+          "queryMs": 114.25780000000668,
+          "acquireMs": 27.129399999997986
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 88.64340000000084,
+          "queries": 3,
+          "queryMs": 51.31919999999809,
+          "acquireMs": 27.085199999994074
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 104.39329999999609,
+          "queries": 6,
+          "queryMs": 66.97299999999086,
+          "acquireMs": 26.07549999999901
+        }
+      },
+      "acquires": 28,
+      "pendingPeak": 3,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 77.3153999999995,
+        "products.draft": 43.65199999999459,
+        "products.main": 32.052999999999884,
+        "products.guest": 47.35319999999774,
+        "home.draft": 64.51299999999901,
+        "home.main": 57.85409999999683,
+        "home.guest": 49.9513999999981
+      },
+      "sqlCount": 28,
+      "uniqueSQLShapes": 11,
+      "repeatedSQLShapes": 7,
+      "duplicateSQLExecutions": 13,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    },
+    {
+      "role": "translator",
+      "round": 3,
+      "mode": "baseline",
+      "wallMs": 388.69840000000113,
+      "projectionMs": 0.5114000000030501,
+      "snapshotHash": "a65c3a7fd62b2ba55024b35e9380321ce986d34c518b31eda404af4c536d5457",
+      "groups": {
+        "inventory": {
+          "calls": 2,
+          "ms": 24.961300000002666,
+          "queries": 3,
+          "queryMs": 19.095000000001164,
+          "acquireMs": 0.06199999999807915
+        },
+        "products.draft": {
+          "calls": 12,
+          "ms": 3193.089000000007,
+          "queries": 24,
+          "queryMs": 305.45479999999225,
+          "acquireMs": 2758.101800000004
+        },
+        "products.main": {
+          "calls": 12,
+          "ms": 2035.3147000000172,
+          "queries": 24,
+          "queryMs": 225.8191999999981,
+          "acquireMs": 1703.8336999999956
+        },
+        "products.guest": {
+          "calls": 12,
+          "ms": 656.6779999999999,
+          "queries": 14,
+          "queryMs": 79.67820000000938,
+          "acquireMs": 524.4303000000145
+        },
+        "home.draft": {
+          "calls": 3,
+          "ms": 134.0607999999993,
+          "queries": 6,
+          "queryMs": 31.73960000000079,
+          "acquireMs": 78.10059999999794
+        },
+        "home.main": {
+          "calls": 3,
+          "ms": 87.59139999999752,
+          "queries": 3,
+          "queryMs": 18.465100000001257,
+          "acquireMs": 44.81680000000779
+        },
+        "home.guest": {
+          "calls": 3,
+          "ms": 110.94580000000133,
+          "queries": 6,
+          "queryMs": 23.637599999994563,
+          "acquireMs": 74.68110000000888
+        }
+      },
+      "acquires": 80,
+      "pendingPeak": 36,
+      "poolMax": 3,
+      "groupElapsedMs": {
+        "inventory": 24.986100000001898,
+        "products.draft": 310.3470000000016,
+        "products.main": 207.01880000000529,
+        "products.guest": 316.22670000000653,
+        "home.draft": 46.8379999999961,
+        "home.main": 32.32839999999851,
+        "home.guest": 39.73090000000229
+      },
+      "sqlCount": 80,
+      "uniqueSQLShapes": 14,
+      "repeatedSQLShapes": 9,
+      "duplicateSQLExecutions": 41,
+      "note": "Group ms overlap. Acquire includes connection establishment and queue; queryMs excludes pool wait. Repeated shapes may have different parameters."
+    }
+  ]
+}
