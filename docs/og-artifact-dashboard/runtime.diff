@@ -1,0 +1,292 @@
+diff --git a/next.config.ts b/next.config.ts
+index 086df16..71a1dfc 100644
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -2,6 +2,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
+ import type { NextConfig } from 'next'
+ import createNextIntlPlugin from 'next-intl/plugin'
+ import path from 'path'
++import { readFileSync } from 'node:fs'
+ import { fileURLToPath } from 'url'
+ 
+ const __filename = fileURLToPath(import.meta.url)
+@@ -28,13 +29,6 @@ const securityHeaders = [
+ const nextConfig: NextConfig = {
+   // Also stops @payloadcms/next/withPayload from adding "X-Powered-By: Next.js, Payload".
+   poweredByHeader: false,
+-  // Payload 3.92.1 reads this package asset at runtime via import.meta.url.
+-  // Pin it into the REST catch-all trace; do not replace the OG handler or font.
+-  outputFileTracingIncludes: {
+-    '/api/\\[\\.\\.\\.slug\\]': [
+-      './node_modules/@payloadcms/next/dist/routes/rest/og/roboto-regular.woff',
+-    ],
+-  },
+   headers: async () => [{ source: '/:path*', headers: securityHeaders }],
+   images: {
+     // Media release can be revoked; serve originals through Payload on every request.
+@@ -45,13 +39,46 @@ const nextConfig: NextConfig = {
+       },
+     ],
+   },
+-  webpack: (webpackConfig) => {
++  webpack: (webpackConfig, { isServer, webpack }) => {
+     webpackConfig.resolve.extensionAlias = {
+       '.cjs': ['.cts', '.cjs'],
+       '.js': ['.ts', '.tsx', '.js', '.jsx'],
+       '.mjs': ['.mts', '.mjs'],
+     }
+ 
++    if (isServer) {
++      // Payload 3.92.1's OG module derives its font path from import.meta.url.
++      // Webpack freezes that URL to the build machine. Inline this one public
++      // vendor asset and replace ONLY that module's fs import, not other IO.
++      webpackConfig.module ??= {}
++      webpackConfig.module.rules ??= []
++      webpackConfig.plugins ??= []
++      webpackConfig.plugins.push(
++        new webpack.DefinePlugin({
++          __PAYLOAD_OG_FONT_BASE64__: JSON.stringify(
++            readFileSync(
++              path.join(
++                dirname,
++                'node_modules/@payloadcms/next/dist/routes/rest/og/roboto-regular.woff',
++              ),
++            ).toString('base64'),
++          ),
++        }),
++      )
++      // Built-in fs is externalized before NormalModuleReplacementPlugin can
++      // rewrite it. Transform this one SDK source before dependency parsing.
++      webpackConfig.module.rules.push({
++        test: /[\\/]@payloadcms[\\/]next[\\/]dist[\\/]routes[\\/]rest[\\/]og[\\/]index\.js$/,
++        enforce: 'pre',
++        use: [{ loader: path.join(dirname, 'scripts/webpack/payload-og-font.cjs') }],
++      })
++      webpackConfig.module.rules.push({
++        test: /[\\/]@payloadcms[\\/]next[\\/]dist[\\/]utilities[\\/]initReq\.js$/,
++        enforce: 'pre',
++        use: [{ loader: path.join(dirname, 'scripts/webpack/payload-init-timing.cjs') }],
++      })
++    }
++
+     return webpackConfig
+   },
+   turbopack: {
+diff --git a/scripts/run-dashboard-checks.mjs b/scripts/run-dashboard-checks.mjs
+index 7cb4589..3393fd4 100644
+--- a/scripts/run-dashboard-checks.mjs
++++ b/scripts/run-dashboard-checks.mjs
+@@ -38,6 +38,11 @@ const commands = {
+     'node_modules/eslint/bin/eslint.js',
+     'src/lib/dashboard-read.ts',
+     'next.config.ts',
++    'src/lib/payload-og-font.ts',
++    'src/lib/dashboard-diagnostics.ts',
++    'src/lib/admin-server-timing.ts',
++    'src/lib/dashboard-diagnostics-enabled.ts',
++    'src/app/(payload)/admin/[[...segments]]/page.tsx',
+     'tests/helpers/dashboard-profile.ts',
+     'tests/int/dashboard-performance.int.spec.ts',
+     'tests/int/dashboard-snapshot.int.spec.ts',
+@@ -45,7 +50,13 @@ const commands = {
+     'tests/unit/dashboard-concurrency.spec.ts',
+     'tests/unit/dashboard-profile.spec.ts',
+     'tests/unit/next-config-og.spec.ts',
++    'tests/unit/payload-og-font.spec.ts',
++    'tests/unit/dashboard-diagnostics.spec.ts',
++    'tests/unit/dashboard-server-timing.spec.ts',
++    'tests/unit/dashboard-diagnostics-enabled.spec.ts',
+     'scripts/run-dashboard-checks.mjs',
++    'scripts/webpack/payload-og-font.cjs',
++    'scripts/webpack/payload-init-timing.cjs',
+     'scripts/run-dashboard-performance.mjs',
+     'tests/dashboard-unit.config.mts',
+     'tests/dashboard-performance.config.mts',
+diff --git a/src/app/(payload)/admin/[[...segments]]/page.tsx b/src/app/(payload)/admin/[[...segments]]/page.tsx
+index 0de685c..4fcd0e1 100644
+--- a/src/app/(payload)/admin/[[...segments]]/page.tsx
++++ b/src/app/(payload)/admin/[[...segments]]/page.tsx
+@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
+ import config from '@payload-config'
+ import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
+ import { importMap } from '../importMap'
++import { traceAdminRoot } from '@/lib/admin-server-timing'
+ 
+ type Args = {
+   params: Promise<{
+@@ -19,6 +20,6 @@ export const generateMetadata = ({ params, searchParams }: Args): Promise<Metada
+   generatePageMetadata({ config, params, searchParams })
+ 
+ const Page = ({ params, searchParams }: Args) =>
+-  RootPage({ config, params, searchParams, importMap })
++  traceAdminRoot(() => RootPage({ config, params, searchParams, importMap }))
+ 
+ export default Page
+diff --git a/src/lib/dashboard-read.ts b/src/lib/dashboard-read.ts
+index 4dd88ff..c70e819 100644
+--- a/src/lib/dashboard-read.ts
++++ b/src/lib/dashboard-read.ts
+@@ -1,4 +1,5 @@
+ import 'server-only'
++import { withDashboardDiagnostics, traceDashboardProjection } from './dashboard-diagnostics'
+ import type { Payload } from 'payload'
+ import type { User } from '@/payload-types'
+ import { isStaffUser, isEditorUser } from '@/access/roles'
+@@ -67,7 +68,7 @@ export type DashboardData = {
+   homeAllowed: boolean
+   observedAt: string
+ }
+-export async function readDashboard(
++async function readDashboardSources(
+   payload: Payload,
+   user: User | null,
+   permissions: unknown,
+@@ -175,12 +176,29 @@ export async function readDashboard(
+             .map((l) => source.draft[l])
+             .find((r) => r.kind === 'ok' && typeof r.value?.name === 'string')
+           const title = name?.kind === 'ok' ? String(name.value?.name) : `Sản phẩm #${id}`
+-          return snapshot('products', id, title, source, isEditorUser(user))
++          return traceDashboardProjection(() =>
++            snapshot('products', id, title, source, isEditorUser(user)),
++          )
+         })
+       }
+     }
+   }
+-  if (homeAllowed)
+-    data.home = snapshot('home', 'home-page', 'Trang chủ', await homeSources(), isEditorUser(user))
++  if (homeAllowed) {
++    const sources = await homeSources()
++    data.home = traceDashboardProjection(() =>
++      snapshot('home', 'home-page', 'Trang chủ', sources, isEditorUser(user)),
++    )
++  }
+   return data
+ }
++
++export async function readDashboard(
++  payload: Payload,
++  user: User | null,
++  permissions: unknown,
++  requestedPage: unknown,
++): Promise<DashboardData> {
++  return withDashboardDiagnostics(payload, (measured) =>
++    readDashboardSources(measured, user, permissions, requestedPage),
++  )
++}
+diff --git a/tests/dashboard-unit.config.mts b/tests/dashboard-unit.config.mts
+index 854855e..61fa109 100644
+--- a/tests/dashboard-unit.config.mts
++++ b/tests/dashboard-unit.config.mts
+@@ -6,7 +6,11 @@ export default defineConfig({
+   esbuild: { jsx: 'automatic' },
+   test: {
+     environment: 'node',
+-    include: ['tests/unit/dashboard-*.spec.ts', 'tests/unit/next-config-og.spec.ts'],
++    include: [
++      'tests/unit/dashboard-*.spec.ts',
++      'tests/unit/next-config-og.spec.ts',
++      'tests/unit/payload-og-font.spec.ts',
++    ],
+     maxWorkers: 1,
+     fileParallelism: false,
+   },
+diff --git a/tests/unit/next-config-og.spec.ts b/tests/unit/next-config-og.spec.ts
+index a14a21a..95bf5ec 100644
+--- a/tests/unit/next-config-og.spec.ts
++++ b/tests/unit/next-config-og.spec.ts
+@@ -1,14 +1,73 @@
+ import { describe, expect, it, vi } from 'vitest'
++import { createRequire } from 'node:module'
++import { readFileSync } from 'node:fs'
++const require = createRequire(import.meta.url)
++class Define {
++  constructor(readonly definitions: Record<string, string>) {}
++}
+ vi.mock('@payloadcms/next/withPayload', () => ({ withPayload: (config: unknown) => config }))
+ vi.mock('next-intl/plugin', () => ({ default: () => (config: unknown) => config }))
+ import config from '../../next.config'
+-describe('Payload OG runtime asset trace', () => {
+-  it('includes the exact vendor font only in the REST catch-all trace', () => {
+-    expect(config.outputFileTracingIncludes).toEqual({
+-      '/api/\\[\\.\\.\\.slug\\]': [
+-        './node_modules/@payloadcms/next/dist/routes/rest/og/roboto-regular.woff',
+-      ],
+-    })
++function configure(isServer: boolean) {
++  const base = { resolve: {}, module: { rules: [] }, plugins: [] }
++  return config.webpack!(base, {
++    isServer,
++    webpack: { DefinePlugin: Define },
++  } as never)
++}
++describe('Payload OG bundled public font', () => {
++  it('rewrites the actual pinned SDK import and fails closed on a changed/duplicate import', () => {
++    const loader = require('../../scripts/webpack/payload-og-font.cjs') as (
++      source: string,
++    ) => string
++    const source = readFileSync(
++      new URL('../../node_modules/@payloadcms/next/dist/routes/rest/og/index.js', import.meta.url),
++      'utf8',
++    )
++    const transformed = loader(source)
++    expect(transformed).not.toContain("import fs from 'fs/promises';")
++    expect(transformed).toContain('/src/lib/payload-og-font.ts')
++    expect(transformed.slice(transformed.indexOf('import { ImageResponse'))).toBe(
++      source.slice(source.indexOf('import { ImageResponse')),
++    )
++    expect(() => loader(source.replace("import fs from 'fs/promises';", ''))).toThrow(
++      'import changed',
++    )
++    expect(() => loader(source + "import fs from 'fs/promises';")).toThrow('import changed')
++  })
++  it('embeds exact vendor font bytes in server code rather than trusting NFT presence', () => {
++    const result = configure(true),
++      plugin = result.plugins[0] as Define
++    expect(config.outputFileTracingIncludes).toBeUndefined()
++    const bytes = readFileSync(
++      new URL(
++        '../../node_modules/@payloadcms/next/dist/routes/rest/og/roboto-regular.woff',
++        import.meta.url,
++      ),
++    )
++    expect(
++      Buffer.from(JSON.parse(plugin.definitions.__PAYLOAD_OG_FONT_BASE64__), 'base64'),
++    ).toEqual(bytes)
++    expect(configure(false).plugins).toHaveLength(0)
++    expect(configure(false).module.rules).toHaveLength(0)
++  })
++  it('transforms only the pinned SDK OG source before dependency parsing', () => {
++    const rule = configure(true).module.rules[0]
++    expect(rule.enforce).toBe('pre')
++    expect(rule.use[0].loader.replaceAll('\\', '/')).toMatch(
++      /scripts\/webpack\/payload-og-font.cjs$/,
++    )
++    for (const file of [
++      '/app/node_modules/@payloadcms/next/dist/routes/rest/og/index.js',
++      'C:\\app\\node_modules\\@payloadcms\\next\\dist\\routes\\rest\\og\\index.js',
++    ])
++      expect(rule.test.test(file)).toBe(true)
++    for (const file of [
++      '/app/src/index.js',
++      '/app/node_modules/payload/dist/uploads/index.js',
++      '/app/node_modules/@payloadcms/next/dist/routes/rest/index.js',
++    ])
++      expect(rule.test.test(file)).toBe(false)
+   })
+   it('retains security headers and does not configure a canonical/noindex override', async () => {
+     expect(await config.headers!()).toEqual([
+diff --git a/vercel.json b/vercel.json
+index 76cec03..1f02946 100644
+--- a/vercel.json
++++ b/vercel.json
+@@ -5,7 +5,8 @@
+       "codex/admin-locale-unpublish-fix": false,
+       "codex/preview-navigation-fix": false,
+       "codex/dashboard-phase-one": false,
+-      "codex/dashboard-performance-og-fix": false
++      "codex/dashboard-performance-og-fix": false,
++      "codex/og-artifact-dashboard-diagnostics": false
+     }
+   }
+ }

@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-11-23T10:27:57.088Z",
+  "id": "dpl_C4Z7KzTwdpAVPSyLVrepGLqicpjC",
+  "readyState": "READY",
+  "sha": "5ec6a27fbcf4c0369a5ad2bc4c10aa83f810402d",
+  "regions": [
+    "iad1"
+  ],
+  "functions": [],
+  "source": "Vercel deployment API"
+}

@@ -1,0 +1,13 @@
+{
+  "status": 200,
+  "mime": "image/png",
+  "bytes": 23907,
+  "nodeFsPermissionsLimitedToFunctionRoot": true,
+  "osSandbox": false,
+  "nativeAddonsEnabled": true,
+  "handler": "___next_launcher.cjs",
+  "audits": [],
+  "fontPathFailure": false,
+  "width": 1200,
+  "height": 630
+}

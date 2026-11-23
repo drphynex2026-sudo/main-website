@@ -6,7 +6,11 @@ export default defineConfig({
   esbuild: { jsx: 'automatic' },
   test: {
     environment: 'node',
-    include: ['tests/unit/dashboard-*.spec.ts', 'tests/unit/next-config-og.spec.ts'],
+    include: [
+      'tests/unit/dashboard-*.spec.ts',
+      'tests/unit/next-config-og.spec.ts',
+      'tests/unit/payload-og-font.spec.ts',
+    ],
     maxWorkers: 1,
     fileParallelism: false,
   },

@@ -1,0 +1,19 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90mC:/Users/THAI/.codex/worktrees/dashboard-phase-one/website-demo[39m
+
+ [32m✓[39m tests/unit/dashboard-diagnostics.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/unit/next-config-og.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 238[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-concurrency.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 189[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-server-timing.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-batch.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-fallback.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-snapshot.spec.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-profile.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/unit/payload-og-font.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/unit/dashboard-diagnostics-enabled.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m      Tests [22m [1m[32m55 passed[39m[22m[90m (55)[39m
+[2m   Start at [22m 17:31:39
+[2m   Duration [22m 3.55s[2m (transform 335ms, setup 0ms, import 695ms, tests 556ms, environment 1ms)[22m
+

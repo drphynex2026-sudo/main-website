@@ -1,0 +1,102 @@
+[
+  {
+    "file": "public/licenses/OG-FONT-NOTICE.txt",
+    "sha256": "45474a523232911b5aa4d4c7235d6a59dcd294370b634fdc3af9ba779d9ec4a1",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "public/licenses/payload-MIT.txt",
+    "sha256": "f5622f480e4419ef6be7691d4b04521a5f18365ddedb9a160e92a4b365e94ecd",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "public/licenses/roboto-Apache-2.0.txt",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "scripts/webpack/payload-init-timing.cjs",
+    "sha256": "9b4202190c6db30ff1d21ab45a7ac065a356f874e5828569e5468c91952ff6b6",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "scripts/webpack/payload-og-font.cjs",
+    "sha256": "ebcfd7b8c657a5399b978e2704429bbeedbf3f30152a3572140993e37d38041c",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "src/lib/admin-server-timing.ts",
+    "sha256": "d0193108c3d9400013643c43f0d03ab11470ef658cd87369f27371b72ee60599",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "src/lib/dashboard-diagnostics-enabled.ts",
+    "sha256": "a778c796810765dde27fff6a7e343009317b35d88055b5df26b6927083f44947",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "src/lib/dashboard-diagnostics.ts",
+    "sha256": "c3a5c1987d6ac3d7f5ff0549b2560d61e4f3cf06b6cd41436c5eb4bd2dac5474",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "src/lib/payload-og-font.ts",
+    "sha256": "14bf2ea44f7f1d7085b92a03fba6317b1316b24a377e563c5da9e0fbe3b6032c",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "tests/unit/dashboard-diagnostics-enabled.spec.ts",
+    "sha256": "b16aea2c7edaa6e1b36d761332b6b95a8abbbddece2ff149b0d02b0e4e75cacb",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "tests/unit/dashboard-diagnostics.spec.ts",
+    "sha256": "4ee25dcfff8c168ce486ea915379ee6088a1cea80f1d7fa3d0de5518ccd9bbad",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "tests/unit/dashboard-server-timing.spec.ts",
+    "sha256": "c01427a0d5d8229b6afc5afca8c2a5835ecf96a5e4d59865c8404b703d214f5f",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "tests/unit/payload-og-font.spec.ts",
+    "sha256": "21036c73ddb4b5a1a605c6ea20b3472b23a4b388b9ecf661940ec497bf5eda49",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "next.config.ts",
+    "sha256": "165e7ebf3c6b5e304176bd2bcea2ede0a7d750f679d0dc9b1e0667d5cf9b02b9",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "scripts/run-dashboard-checks.mjs",
+    "sha256": "4dccccf330fa53eb15d86d402cb68c9d0ddeaf80558b933c6c5f473514af0b7e",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "src/app/(payload)/admin/[[...segments]]/page.tsx",
+    "sha256": "4dacf894e8ccae2b71c520745fd4c586dcd939eb978810eb4aaa8e1513401534",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "src/lib/dashboard-read.ts",
+    "sha256": "8cdc069749a723f87dca713c4a3821bf472c22de40275a171b3c03d64650c21e",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "tests/dashboard-unit.config.mts",
+    "sha256": "37546f057641ecdbf85bee603e9ed43da9ccc7f28960da5d23bc60310238cd85",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "tests/unit/next-config-og.spec.ts",
+    "sha256": "da3e720855f3ec48cc2a3647f3ebab1954a1c865221f0b0cb70f0136f7abed0e",
+    "exactBuildInputMatch": true
+  },
+  {
+    "file": "vercel.json",
+    "sha256": "a0ac6650a73a7dea43ca9fe88055198227d125fb521f6ac85202016fad7b1fba",
+    "exactBuildInputMatch": true
+  }
+]

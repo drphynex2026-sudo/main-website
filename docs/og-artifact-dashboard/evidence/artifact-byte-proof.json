@@ -1,0 +1,36 @@
+{
+  "font": {
+    "bytes": 80304,
+    "sha256": "717d25464787e5f7fa13f7cb693f12013b6f48136ebfb25c43ee6efc5c9edfe4"
+  },
+  "bundlesContainingExactFontBase64": [
+    {
+      "file": ".next/server/app/(payload)/api/graphql/route.js",
+      "sha256": "0e37c3d53ebf5495715b803d1913f703397cc2587d70d6f2bc67af9239da41d5"
+    },
+    {
+      "file": ".next/server/app/(payload)/api/[...slug]/route.js",
+      "sha256": "072422ad2a405dbd0630bad8042873c3e8e1649129c2a85f17be808cb2987192"
+    }
+  ],
+  "sources": [
+    {
+      "file": "next.config.ts",
+      "workingTreeHash": "4cfc9a3efdbb29249ce51c8b5ff2a0902db54752aadc066f86ecaa1d75100a15",
+      "buildInputHash": "fada76f16ec4814c3ac1f197e760b75717a2b16c5b6a3e1b5a1db1822d342aaa",
+      "sameAfterPrettierAndLintCommentRemoval": true
+    },
+    {
+      "file": "src/lib/payload-og-font.ts",
+      "workingTreeHash": "14bf2ea44f7f1d7085b92a03fba6317b1316b24a377e563c5da9e0fbe3b6032c",
+      "buildInputHash": "14bf2ea44f7f1d7085b92a03fba6317b1316b24a377e563c5da9e0fbe3b6032c",
+      "sameAfterPrettierAndLintCommentRemoval": true
+    },
+    {
+      "file": "scripts/webpack/payload-og-font.cjs",
+      "workingTreeHash": "ebcfd7b8c657a5399b978e2704429bbeedbf3f30152a3572140993e37d38041c",
+      "buildInputHash": "32f696e83cb4b8165bccb51a6fa813c11dd41c4263162563d20e24bce3d26817",
+      "sameAfterPrettierAndLintCommentRemoval": true
+    }
+  ]
+}
