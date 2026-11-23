@@ -19,12 +19,22 @@ const securityHeaders = [
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
   { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" },
-  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+  },
 ]
 
 const nextConfig: NextConfig = {
   // Also stops @payloadcms/next/withPayload from adding "X-Powered-By: Next.js, Payload".
   poweredByHeader: false,
+  // Payload 3.92.1 reads this package asset at runtime via import.meta.url.
+  // Pin it into the REST catch-all trace; do not replace the OG handler or font.
+  outputFileTracingIncludes: {
+    '/api/\\[\\.\\.\\.slug\\]': [
+      './node_modules/@payloadcms/next/dist/routes/rest/og/roboto-regular.woff',
+    ],
+  },
   headers: async () => [{ source: '/:path*', headers: securityHeaders }],
   images: {
     // Media release can be revoked; serve originals through Payload on every request.
