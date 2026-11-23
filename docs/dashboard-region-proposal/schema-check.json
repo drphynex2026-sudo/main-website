@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-23T15:40:43.441Z",
+  "source": "https://openapi.vercel.sh/vercel.json",
+  "regionsSchema": {
+    "description": "An array of the regions the deployment's Serverless Functions should be deployed to",
+    "example": [
+      "sfo",
+      "bru"
+    ],
+    "items": {
+      "maxLength": 256,
+      "type": "string"
+    },
+    "maxItems": 1000,
+    "minItems": 1,
+    "type": "array"
+  },
+  "proposedRegions": [
+    "sin1"
+  ],
+  "scope": "Region schema shape and JSON syntax only; not an executed Vercel deployment or plan-enforcement test"
+}

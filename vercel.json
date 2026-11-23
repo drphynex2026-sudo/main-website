@@ -1,12 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["sin1"],
   "git": {
     "deploymentEnabled": {
       "codex/admin-locale-unpublish-fix": false,
       "codex/preview-navigation-fix": false,
       "codex/dashboard-phase-one": false,
       "codex/dashboard-performance-og-fix": false,
-      "codex/og-artifact-dashboard-diagnostics": false
+      "codex/og-artifact-dashboard-diagnostics": false,
+      "codex/dashboard-region-proposal": false
     }
   }
 }
