@@ -1,0 +1,92 @@
+{
+  "baseline": {
+    "wallMs": 588.9621500000012,
+    "projectionMs": 0.5182000000022526,
+    "sqlCount": 80,
+    "duplicateSQLExecutions": 41,
+    "pendingPeak": 36,
+    "acquireSumMs": 7604.802300000021,
+    "groups": {
+      "inventory": {
+        "calls": 2,
+        "queries": 3,
+        "elapsedMs": 29.519000000000233
+      },
+      "products.draft": {
+        "calls": 12,
+        "queries": 24,
+        "elapsedMs": 441.2769999999982
+      },
+      "products.main": {
+        "calls": 12,
+        "queries": 24,
+        "elapsedMs": 333.6822999999986
+      },
+      "products.guest": {
+        "calls": 12,
+        "queries": 14,
+        "elapsedMs": 441.0216499999988
+      },
+      "home.draft": {
+        "calls": 3,
+        "queries": 6,
+        "elapsedMs": 75.82720000000336
+      },
+      "home.main": {
+        "calls": 3,
+        "queries": 3,
+        "elapsedMs": 49.48149999999805
+      },
+      "home.guest": {
+        "calls": 3,
+        "queries": 6,
+        "elapsedMs": 60.157500000001164
+      }
+    }
+  },
+  "candidate": {
+    "wallMs": 242.90589999999975,
+    "projectionMs": 0.4679499999983818,
+    "sqlCount": 28,
+    "duplicateSQLExecutions": 13,
+    "pendingPeak": 3,
+    "acquireSumMs": 100.29479999999785,
+    "groups": {
+      "inventory": {
+        "calls": 2,
+        "queries": 3,
+        "elapsedMs": 31.456099999999424
+      },
+      "products.draft": {
+        "calls": 3,
+        "queries": 3,
+        "elapsedMs": 44.44724999999744
+      },
+      "products.main": {
+        "calls": 3,
+        "queries": 3,
+        "elapsedMs": 38.75959999999577
+      },
+      "products.guest": {
+        "calls": 3,
+        "queries": 4,
+        "elapsedMs": 40.775150000001304
+      },
+      "home.draft": {
+        "calls": 3,
+        "queries": 6,
+        "elapsedMs": 42.845149999997375
+      },
+      "home.main": {
+        "calls": 3,
+        "queries": 3,
+        "elapsedMs": 25.180199999998877
+      },
+      "home.guest": {
+        "calls": 3,
+        "queries": 6,
+        "elapsedMs": 28.524200000003475
+      }
+    }
+  }
+}

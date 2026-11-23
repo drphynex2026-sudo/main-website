@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "file": "src/lib/dashboard-read.ts",
+      "sha256": "6230d23024c396b9544b2688169a1764bff92ed23f2ee4afc1e4a225ed918865"
+    },
+    {
+      "file": "src/lib/dashboard-snapshot.ts",
+      "sha256": "f33c676f6a104eba769b2da87ee38f7f8c50f8b6dc0a22c49d95ceca8a5b6248"
+    },
+    {
+      "file": "src/components/admin/Dashboard.tsx",
+      "sha256": "56c574149ff0c8e7f76b7f0434feb9aa75a3798937c2d5c80b7665906dda781a"
+    },
+    {
+      "file": "src/payload.config.ts",
+      "sha256": "853ff31c895591311f605a0f8fd7db00dcff5ad2d715ca427b9694ffb411b31f"
+    },
+    {
+      "file": "next.config.ts",
+      "sha256": "b74b91201fd655c6eb04feba05bfcd08942da290b6f93ae79d44f8ec4c6aab37"
+    },
+    {
+      "file": "vercel.json",
+      "sha256": "50b5e5a7fb06d32e6cc4146057ecf16595208dbf38ef0412b3f748f9edf81ccf"
+    },
+    {
+      "file": "package.json",
+      "sha256": "8cc1faa89940d72b50ec5f5c3f849ac77cdf751d8829ab30299ebc4e16b41843"
+    },
+    {
+      "file": "package-lock.json",
+      "sha256": "babfaa8e2be37aa8570ba7bd0172eaa20a1189ccca710354ff74112d8351ebb6"
+    }
+  ],
+  "buildID": "CKMv_Sb1lZBLTn5MtqG0X"
+}

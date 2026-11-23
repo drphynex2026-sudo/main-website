@@ -4,7 +4,8 @@
     "deploymentEnabled": {
       "codex/admin-locale-unpublish-fix": false,
       "codex/preview-navigation-fix": false,
-      "codex/dashboard-phase-one": false
+      "codex/dashboard-phase-one": false,
+      "codex/dashboard-performance-og-fix": false
     }
   }
 }

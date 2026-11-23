@@ -1,0 +1,27 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90mC:/Users/THAI/.codex/worktrees/dashboard-phase-one/website-demo[39m
+
+[11:19:48] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+[11:19:49] [32mINFO[39m: [36mMigrating: 20261028_101829_initial[39m
+[11:19:50] [32mINFO[39m: [36mMigrated:  20261028_101829_initial (1049ms)[39m
+[11:19:50] [32mINFO[39m: [36mMigrating: 20261029_021524_media_release_and_line_appearance[39m
+[11:19:50] [32mINFO[39m: [36mMigrated:  20261029_021524_media_release_and_line_appearance (35ms)[39m
+[11:19:50] [32mINFO[39m: [36mMigrating: 20261029_035541_product_editorial_note[39m
+[11:19:50] [32mINFO[39m: [36mMigrated:  20261029_035541_product_editorial_note (15ms)[39m
+[11:19:50] [32mINFO[39m: [36mMigrating: 20261029_080000_form_rate_limits[39m
+[11:19:50] [32mINFO[39m: [36mMigrated:  20261029_080000_form_rate_limits (39ms)[39m
+[11:19:50] [32mINFO[39m: [36mMigrating: 20261029_100000_storage_fields[39m
+[11:19:50] [32mINFO[39m: [36mMigrated:  20261029_100000_storage_fields (23ms)[39m
+[11:19:50] [32mINFO[39m: [36mMigrating: 20261105_085002_home_banners[39m
+[11:19:51] [32mINFO[39m: [36mMigrated:  20261105_085002_home_banners (254ms)[39m
+[11:19:51] [32mINFO[39m: [36mMigrating: 20261107_050810_landing_blocks[39m
+[11:19:51] [32mINFO[39m: [36mMigrated:  20261107_050810_landing_blocks (473ms)[39m
+[11:19:51] [32mINFO[39m: [36mMigrating: 20261109_024237_landing_approvals[39m
+[11:19:51] [32mINFO[39m: [36mMigrated:  20261109_024237_landing_approvals (69ms)[39m
+ [32m✓[39m tests/int/dashboard-performance.int.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 27062[2mms[22m[39m
+   [33m[2m✓[22m[39m compares pinned baseline and candidate on identical data/pool and preserves every projected cell for all roles [33m 10119[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 11:19:34
+[2m   Duration [22m 40.64s[2m (transform 4.62s, setup 0ms, import 12.26s, tests 27.06s, environment 0ms)[22m

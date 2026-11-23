@@ -1,0 +1,84 @@
+{
+  "runId": "a6aa2885-75f9-4970-a7b4-a613351fbc9b",
+  "name": "dx-dashboard-perf-a6aa2885",
+  "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+  "image": "postgres:17.6-alpine",
+  "created": [
+    {
+      "kind": "network",
+      "id": "080f19ee7f610d734efaced3324d3202089b5f85389f054c1ebb172f6bd5e032"
+    },
+    {
+      "kind": "container",
+      "id": "5ee2deb51a1928f3aac2b265e96f036679f41b176c4bc80f21b198cb680b0480"
+    }
+  ],
+  "checks": [
+    {
+      "identity": true,
+      "networkInternal": false,
+      "exclusiveNetwork": true,
+      "port": "65086",
+      "mounts": [],
+      "noExternalVolumes": true
+    },
+    {
+      "name": "drphynex_independent_review_test",
+      "role": "postgres",
+      "address": "172.22.0.2",
+      "system_identifier": "7711216791566323747",
+      "marker": "drphynex-independent-review-disposable-v1",
+      "pgVersion": "17.6"
+    }
+  ],
+  "cleanup": [
+    {
+      "localServerPid": 14368,
+      "exitCode": null,
+      "signalCode": "SIGTERM"
+    },
+    {
+      "container": "5ee2deb51a1928f3aac2b265e96f036679f41b176c4bc80f21b198cb680b0480",
+      "removed": true
+    },
+    {
+      "network": "080f19ee7f610d734efaced3324d3202089b5f85389f054c1ebb172f6bd5e032",
+      "removed": true
+    },
+    {
+      "fixtureAuthScratchRemoved": true
+    }
+  ],
+  "actualPortDiagnostic": {
+    "configured": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": ""
+        }
+      ]
+    },
+    "actual": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "65086"
+        }
+      ]
+    },
+    "state": "running"
+  },
+  "connectedIdentityObserved": {
+    "name": "drphynex_independent_review_test",
+    "role": "postgres",
+    "address": "172.22.0.2",
+    "system_identifier": "7711216791566323747"
+  },
+  "expectedServerAddress": "172.22.0.2",
+  "result": {
+    "code": 0,
+    "signal": null
+  },
+  "reusedVerifiedBuild": "CKMv_Sb1lZBLTn5MtqG0X",
+  "ogFontTraced": true
+}
