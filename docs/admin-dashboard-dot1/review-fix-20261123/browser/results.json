@@ -1,0 +1,29 @@
+{
+  "normal": {
+    "documents": 21,
+    "fallback": null,
+    "forms": [
+      "get"
+    ],
+    "shortcutCount": 7,
+    "text": "Bảng điều khiểnXin chào admin@fixture.invalid · Quản trị viênChỉ đọc: mở tài liệu để xử lý. Đây là snapshot lúc 2026-11-23T02:18:09.514Z; không bảo đảm lần xuất bản sau sẽ được chấp nhận. Không suy thay đổi chưa xuất bản từ trạng thái bản nháp.Trang chủ · tính riêngTrang chủ한국어Công khaiĐang dùng banner CMSNội dung bản nhápĐã duyệt bản nhápDuyệt cấu trúc bản nhápĐã duyệt cấu trúc hiện tạiCần ngôn ngữ khác duyệt cấu trúcMở Trang chủ · KOEnglishCông khaiĐang dùng banner CMSNội dung bản nhápĐã duyệt bản nhápDuyệt cấu trúc bản nhápChưa có duyệt khớp cấu trúc hiện tạiCần duyệt cấu trúc hiện tạiMở Trang chủ · ENTiếng ViệtCông khaiĐang dùng banner CMSNội dung bản nhápĐã duyệt bản nhápDuyệt cấu trúc bản nhápChưa có duyệt khớp cấu trúc hiện tạiCần duyệt cấu trúc hiện tạiMở Trang chủ · VI3 cặp tài liệu/ngôn ngữ có việc ở Trang chủ. Không cộng vào Sản phẩm.Việc Trang chủTrang chủ · KO — Cần ngôn ngữ khác duyệt cấu trúcMở Banner trang chủ, lưu nháp và duyệt bằng panel Duyệt cấu hình; xuất bản riêng từng ngôn ngữ.Ngôn ngữ cần duyệt: Mở Trang chủ · EN · Mở Trang chủ · VIMở Trang chủ · KOTrang chủ · EN — Cần duyệt cấu trúc hiện tạiMở Banner trang chủ, lưu nháp và duyệt bằng panel Duyệt cấu hình; xuất bản riêng từng ngôn ngữ.Mở Trang chủ · ENTrang chủ · VI — Cần duyệt cấu trúc hiện tạiMở Banner trang chủ, lưu nháp và duyệt bằng panel Duyệt cấu hình; xuất bản riêng từng ngôn ngữ.Mở Trang chủ · VISản phẩmTrang 1/2 · 20/22 sản phẩm. Số đếm việc chỉ tính Sản phẩm trên trang này, không phải toàn website.Trang 1Trang sauViệc cần xử lý · trang hiện tại60 cặp có việc: 60 cần xem xét, 0 chỉ cảnh báo/chưa xác định. Không gồm Trang chủ hoặc trang khác.Lọc việc trong trangTất cả việcCần xem xét/duyệtCảnh báo/chưa xác địnhLọc[FIXTURE] 01 KO · KO — Cần xem xét nội dungMở tab Landing page; xem lại, lư",
+    "title": "Bảng điều khiển",
+    "url": "/admin"
+  },
+  "fallback": {
+    "alert": "Chưa đọc được bảng việc. Hãy tải lại.",
+    "cards": 0,
+    "leaks": false,
+    "shortcutLinks": [
+      "/admin/globals/home-page",
+      "/admin/collections/products",
+      "/admin/collections/media",
+      "/admin/collections/articles",
+      "/admin/collections/stores",
+      "/admin/collections/contact-submissions",
+      "/admin/collections/partner-inquiries"
+    ],
+    "title": "Bảng điều khiển",
+    "zeroOrSuccess": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": 22,
+  "missing": [
+    {
+      "locale": "en",
+      "href": "/admin/collections/products/22?locale=en"
+    }
+  ],
+  "guardStatus": 409,
+  "durableUnchanged": true
+}

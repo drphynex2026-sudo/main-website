@@ -3,7 +3,7 @@ import type { AdminViewServerProps } from 'payload'
 import Link from 'next/link'
 
 import { localeLabels } from '@/i18n/locales'
-import { readDashboard } from '@/lib/dashboard-read'
+import { readDashboard, type DashboardData } from '@/lib/dashboard-read'
 import { permissionAllowed, taskCounts, type Cell, type DocumentSnapshot } from '@/lib/dashboard-snapshot'
 
 /**
@@ -57,13 +57,24 @@ export async function Dashboard({ initPageResult, payload, searchParams }: Admin
   const params = searchParams as Record<string, unknown> | undefined
   const filter = typeof params?.work === 'string' && filters.includes(params.work as typeof filters[number]) ? params.work : 'all'
   const open = shortcuts.filter(s => permissionAllowed((permissions as unknown as Record<string, Record<string, { read?: unknown }>>)?.[s.kind]?.[s.slug]?.read))
-  const data = await readDashboard(payload, req.user, permissions, params?.page)
-  const counts = taskCounts(data.products), homeCounts = taskCounts(data.home ? [data.home] : [])
-  const inventory = data.inventory.kind === 'ok' ? data.inventory.value : null
+  let work: { data: DashboardData; counts: ReturnType<typeof taskCounts>; homeCounts: ReturnType<typeof taskCounts> } | null = null
+  try {
+    const data = await readDashboard(payload, req.user, permissions, params?.page)
+    work = { data, counts: taskCounts(data.products), homeCounts: taskCounts(data.home ? [data.home] : []) }
+  } catch {
+    // An aggregate/projection failure must not remove the permitted shortcuts,
+    // fabricate zero work, or expose the exception to the UI.
+    work = null
+  }
+  const data = work?.data
+  const counts = work?.counts
+  const homeCounts = work?.homeCounts
+  const inventory = data?.inventory.kind === 'ok' ? data.inventory.value : null
   return <Gutter><div className="dx-dash">
     <header className="dx-dash__head"><h1>Bảng điều khiển</h1><p>Xin chào <strong>{user?.name || user?.email}</strong>{user?.role ? ` · ${roleName[user.role] ?? user.role}` : ''}</p></header>
-    <p className="dx-dash-notice">Chỉ đọc: mở tài liệu để xử lý. Đây là snapshot lúc {data.observedAt}; không bảo đảm lần xuất bản sau sẽ được chấp nhận. Không suy thay đổi chưa xuất bản từ trạng thái bản nháp.</p>
+    <p className="dx-dash-notice">Chỉ đọc: mở tài liệu để xử lý. Đây là snapshot lúc {data?.observedAt ?? 'chưa xác định'}; không bảo đảm lần xuất bản sau sẽ được chấp nhận. Không suy thay đổi chưa xuất bản từ trạng thái bản nháp.</p>
     {user?.role === 'translator' && <p className="dx-dash-notice">Bạn có thể soạn bản nháp theo quyền của mình; không có quyền duyệt hoặc xuất bản.</p>}
+    {!data || !counts || !homeCounts ? <p role="alert">Chưa đọc được bảng việc. Hãy tải lại.</p> : <>
     <section aria-labelledby="dx-home-title"><h2 id="dx-home-title">Trang chủ · tính riêng</h2>{!data.homeAllowed ? <p>Không có quyền đọc Trang chủ.</p> : data.home ? <>
       <DocumentState doc={data.home} /><p>{homeCounts.total} cặp tài liệu/ngôn ngữ có việc ở Trang chủ. Không cộng vào Sản phẩm.</p><details><summary>Việc Trang chủ</summary><Tasks docs={[data.home]} /></details>
     </> : <p>Chưa đọc được Trang chủ.</p>}</section>
@@ -75,6 +86,7 @@ export async function Dashboard({ initPageResult, payload, searchParams }: Admin
       <Tasks docs={data.products} filter={filter} />
       <details open><summary>Trạng thái Sản phẩm · KO/EN/VI</summary>{data.products.length ? data.products.map(doc => <DocumentState key={doc.id} doc={doc} />) : <p>Chưa có Sản phẩm trong phạm vi được đọc.</p>}</details>
     </>}</section>
+    </>}
     <section aria-labelledby="dx-links-title"><h2 id="dx-links-title">Lối tắt</h2>{open.length ? <ul className="dx-dash__cards">{open.map(s => <li key={s.href}><Link href={s.href}><strong>{s.label}</strong><span>{s.note}</span></Link></li>)}</ul> : <p>Tài khoản chưa có quyền truy cập mục nào.</p>}</section>
   </div></Gutter>
 }

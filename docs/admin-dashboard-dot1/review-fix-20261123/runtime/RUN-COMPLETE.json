@@ -1,0 +1,13 @@
+{
+  "runId": "b55fcfac-37d9-47dc-bbaf-8d24922dba99",
+  "integration": {
+    "code": 0,
+    "signal": null
+  },
+  "build": {
+    "code": 0,
+    "signal": null
+  },
+  "browserContentUnchanged": true,
+  "completedAt": "2026-11-23T02:19:23.342Z"
+}

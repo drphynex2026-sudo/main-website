@@ -10,6 +10,28 @@ export async function safeRead<T>(fn: () => Promise<T>): Promise<Read<T>> {
     return { kind: error && typeof error === 'object' && 'status' in error && error.status === 403 ? 'denied' : 'error' }
   }
 }
+/** Four document workers, not an unbounded Promise.all over the page/inventory.
+ * Each worker fans out nine Local API finds (3 locales x draft/main/guest), so
+ * Products can have at most 36 top-level finds in flight. Payload relation reads
+ * and the adapter's connection pool are separate limits. Home runs afterwards.
+ */
+export const PRODUCT_CONCURRENCY = 4
+export async function mapProducts<T, R>(items: readonly T[], map: (item: T, index: number) => Promise<R>): Promise<R[]> {
+  const results = new Array<R>(items.length)
+  let next = 0, failed = false, failure: unknown
+  const worker = async () => {
+    while (!failed && next < items.length) {
+      const index = next++
+      try { results[index] = await map(items[index], index) }
+      catch (error) { if (!failed) { failed = true; failure = error } }
+    }
+  }
+  // Drain the workers before reporting failure: no new document is scheduled
+  // after an aggregate error, and no read is left running behind the fallback.
+  await Promise.all(Array.from({ length: Math.min(PRODUCT_CONCURRENCY, items.length) }, worker))
+  if (failed) throw failure
+  return results
+}
 export const PAGE_SIZE = 20
 export type DashboardData = { products: DocumentSnapshot[]; home: DocumentSnapshot | null; inventory: Read<{ total: number; pages: number; page: number }>; productsAllowed: boolean; homeAllowed: boolean; observedAt: string }
 export async function readDashboard(payload: Payload, user: User | null, permissions: unknown, requestedPage: unknown): Promise<DashboardData> {
@@ -37,12 +59,12 @@ export async function readDashboard(payload: Payload, user: User | null, permiss
       data.inventory = { kind: 'ok', value: { total: count.value.totalDocs, pages, page } }
       const list = await safeRead(() => payload.find({ collection: 'products', locale: 'ko', fallbackLocale: false, draft: true, user, overrideAccess: false, limit: PAGE_SIZE, page, sort: ['slug', 'id'], depth: 0 }))
       if (list.kind !== 'ok') data.inventory = list
-      else for (const item of list.value.docs) {
+      else data.products = await mapProducts(list.value.docs, async item => {
         const id = String(item.id), source = await sources('products', id)
         const name = locales.map(l => source.draft[l]).find(r => r.kind === 'ok' && typeof r.value?.name === 'string')
         const title = name?.kind === 'ok' ? String(name.value?.name) : `Sản phẩm #${id}`
-        data.products.push(snapshot('products', id, title, source, isEditorUser(user)))
-      }
+        return snapshot('products', id, title, source, isEditorUser(user))
+      })
     }
   }
   if (homeAllowed) data.home = snapshot('home', 'home-page', 'Trang chủ', await sources('home'), isEditorUser(user))
