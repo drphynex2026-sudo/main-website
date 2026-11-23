@@ -1,0 +1,66 @@
+{
+  "_home_page_v": {
+    "count": 14,
+    "checksum": "2d82072c69ac4fcf0b9494058f073652"
+  },
+  "_home_page_v_locales": {
+    "count": 30,
+    "checksum": "0866f9e32c3bb6df79159600c313d0db"
+  },
+  "_home_page_v_rels": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "_products_v": {
+    "count": 77,
+    "checksum": "487c2994260d06d3335d9b56f4f56541"
+  },
+  "_products_v_locales": {
+    "count": 152,
+    "checksum": "851786bce84714836e06a9d09c565323"
+  },
+  "_products_v_rels": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "_products_v_version_claims": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "_products_v_version_skin_types": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "home_page": {
+    "count": 1,
+    "checksum": "35649c8f31d26b54bfe9b11c7a7ff16e"
+  },
+  "home_page_locales": {
+    "count": 3,
+    "checksum": "4e599ce85e23322cb974b1e57a4e72d5"
+  },
+  "home_page_rels": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "products": {
+    "count": 22,
+    "checksum": "0b27c3d16acacd01545db4ebc74ce5b7"
+  },
+  "products_claims": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "products_locales": {
+    "count": 23,
+    "checksum": "7b4d420b4079df71370fed9df1d59fac"
+  },
+  "products_rels": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "products_skin_types": {
+    "count": 0,
+    "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+  }
+}

@@ -1,0 +1,23 @@
+E1.ko_published_guest_docs 1
+E1.vi_unpublished_guest_docs 0
+E1.noFallbackArg "no-error"
+E1.locale_all "Forbidden:403"
+E1.fallback_ko "Forbidden:403"
+E1.home_never_published_guest {"keys":0,"ts":null}
+E1.home_noFallbackArg "no-error"
+E1.guest_after_staff_ko_docs 1
+E2.after_draft_save {"draftStatus":"draft","draftBlocks":2,"mainStatus":"published","mainBlocks":0}
+E2.landingApprovalState_in_guest_read true
+E3.publish_ko "ok"
+E3.after_publish_ko {"_status":"draft","state":{"ko":true,"en":false,"vi":false}}
+E3.status_after_vi_draft {"ko":"draft","vi":"draft","koTS":"approved","viTS":"in-review"}
+E4.coupling_after_text_edit {"ts":"in-review","structApproved":{"ko":false,"en":false,"vi":false}}
+E6.revision_parity {"eq":true,"guestImageType":"number"}
+E9.band_private_image {"staffSees":[],"guestViewSees":["ảnh"],"depth0Type":"number","depth0Staff":["ảnh"]}
+E5.vi_publish "ok"
+E5.ko_publish "ok"
+E5.public_locales {"ko":1,"vi":1}
+E5.draft_after_clear {"blocks":0,"ts":"in-review","state":{"ko":false,"en":false,"vi":false}}
+E5.state_after_approve_ko {"ko":true,"en":false,"vi":false}
+E5.ko_publish_after_clear "Xuất bản KO sẽ thay đổi cấu trúc landing page mà khách đang thấy ở VI. Hãy duyệt các ngôn ngữ đó cho cấu trúc mới trước; bản công khai hiện "
+E5.main_blocks_now 2

@@ -1,0 +1,71 @@
+{
+  "runId": "243276c1-9c81-4d90-bfa9-72ece130c61f",
+  "name": "dx-dashboard-implementation-243276c1",
+  "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+  "image": "postgres:17.6-alpine",
+  "created": [
+    {
+      "kind": "network",
+      "id": "1d0fbb83653f52a1d0e11459c4ba54babcedd1674d85df77c378cafba3a02587"
+    },
+    {
+      "kind": "container",
+      "id": "b1fb21c799a3213409eb4676962b00054026a5a265bda05f586b53dca4653363"
+    }
+  ],
+  "checks": [
+    {
+      "identity": true,
+      "networkInternal": false,
+      "exclusiveNetwork": true,
+      "port": "64534",
+      "mounts": [],
+      "noExternalVolumes": true
+    },
+    {
+      "name": "drphynex_independent_review_test",
+      "role": "postgres",
+      "address": "172.22.0.2",
+      "system_identifier": "7711003387513307171",
+      "marker": "drphynex-independent-review-disposable-v1",
+      "pgVersion": "17.6"
+    }
+  ],
+  "cleanup": [
+    {
+      "container": "b1fb21c799a3213409eb4676962b00054026a5a265bda05f586b53dca4653363",
+      "removed": true
+    },
+    {
+      "network": "1d0fbb83653f52a1d0e11459c4ba54babcedd1674d85df77c378cafba3a02587",
+      "removed": true
+    }
+  ],
+  "actualPortDiagnostic": {
+    "configured": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": ""
+        }
+      ]
+    },
+    "actual": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "64534"
+        }
+      ]
+    },
+    "state": "running"
+  },
+  "connectedIdentityObserved": {
+    "name": "drphynex_independent_review_test",
+    "role": "postgres",
+    "address": "172.22.0.2",
+    "system_identifier": "7711003387513307171"
+  },
+  "expectedServerAddress": "172.22.0.2",
+  "failure": "net.createServer is not a function"
+}

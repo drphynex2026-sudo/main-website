@@ -1,0 +1,48 @@
+▲ Next.js 16.4.3 (webpack)
+✓ Running next.config.ts took 669ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 41s
+  Running TypeScript ...
+  Finished TypeScript in 13.3s ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/7) ...
+  Generating static pages using 1 worker (1/7) 
+  Generating static pages using 1 worker (3/7) 
+  Generating static pages using 1 worker (5/7) 
+✓ Generating static pages using 1 worker (7/7) in 3.8s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /_not-found
+├ ƒ /[locale]
+├ ƒ /[locale]/[...rest]
+├ ƒ /[locale]/[legal]
+├ ƒ /[locale]/brand
+├ ƒ /[locale]/contact
+├ ƒ /[locale]/ingredients
+├ ƒ /[locale]/ingredients/[slug]
+├ ƒ /[locale]/journal
+├ ƒ /[locale]/journal/[slug]
+├ ƒ /[locale]/partnership
+├ ƒ /[locale]/products
+├ ƒ /[locale]/products/[slug]
+├ ƒ /[locale]/products/line/[slug]
+├ ƒ /[locale]/stores
+├ ƒ /[locale]/technologies/[slug]
+├ ƒ /admin/[[...segments]]
+├ ƒ /api/[...slug]
+├ ƒ /api/graphql
+├ ƒ /api/graphql-playground
+├ ƒ /preview
+├ ƒ /preview/exit
+├ ○ /robots.txt
+└ ƒ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

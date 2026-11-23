@@ -1,0 +1,56 @@
+{
+  "runId": "c8e39e61-cc4f-4d7b-b3f0-d2623e98b157",
+  "name": "dx-dashboard-gap-c8e39e61",
+  "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+  "image": "postgres:17.6-alpine",
+  "created": [
+    {
+      "kind": "network",
+      "id": "69ba7428e35914146cc75d0acb0c9e72ddb14addfd69a2ba4aec5f4146e3edb4"
+    },
+    {
+      "kind": "container",
+      "id": "717a7096e30185465dd3b2bd8bd5b4c1caba3ce23312456c2d7c9934e788158d"
+    }
+  ],
+  "checks": [
+    {
+      "identity": true,
+      "networkInternal": false,
+      "exclusiveNetwork": true,
+      "port": "65043",
+      "mounts": [],
+      "noExternalVolumes": true
+    }
+  ],
+  "cleanup": [
+    {
+      "container": "717a7096e30185465dd3b2bd8bd5b4c1caba3ce23312456c2d7c9934e788158d",
+      "removed": true
+    },
+    {
+      "network": "69ba7428e35914146cc75d0acb0c9e72ddb14addfd69a2ba4aec5f4146e3edb4",
+      "removed": true
+    }
+  ],
+  "actualPortDiagnostic": {
+    "configured": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": ""
+        }
+      ]
+    },
+    "actual": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "65043"
+        }
+      ]
+    },
+    "state": "running"
+  },
+  "failure": "Connected DB identity mismatch"
+}

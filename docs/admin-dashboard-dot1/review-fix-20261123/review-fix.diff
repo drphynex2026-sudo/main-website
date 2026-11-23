@@ -1,0 +1,224 @@
+diff --git a/src/components/admin/Dashboard.tsx b/src/components/admin/Dashboard.tsx
+index ddf153a..d319be3 100644
+--- a/src/components/admin/Dashboard.tsx
++++ b/src/components/admin/Dashboard.tsx
+@@ -3,7 +3,7 @@ import type { AdminViewServerProps } from 'payload'
+ import Link from 'next/link'
+ 
+ import { localeLabels } from '@/i18n/locales'
+-import { readDashboard } from '@/lib/dashboard-read'
++import { readDashboard, type DashboardData } from '@/lib/dashboard-read'
+ import { permissionAllowed, taskCounts, type Cell, type DocumentSnapshot } from '@/lib/dashboard-snapshot'
+ 
+ /**
+@@ -57,13 +57,24 @@ export async function Dashboard({ initPageResult, payload, searchParams }: Admin
+   const params = searchParams as Record<string, unknown> | undefined
+   const filter = typeof params?.work === 'string' && filters.includes(params.work as typeof filters[number]) ? params.work : 'all'
+   const open = shortcuts.filter(s => permissionAllowed((permissions as unknown as Record<string, Record<string, { read?: unknown }>>)?.[s.kind]?.[s.slug]?.read))
+-  const data = await readDashboard(payload, req.user, permissions, params?.page)
+-  const counts = taskCounts(data.products), homeCounts = taskCounts(data.home ? [data.home] : [])
+-  const inventory = data.inventory.kind === 'ok' ? data.inventory.value : null
++  let work: { data: DashboardData; counts: ReturnType<typeof taskCounts>; homeCounts: ReturnType<typeof taskCounts> } | null = null
++  try {
++    const data = await readDashboard(payload, req.user, permissions, params?.page)
++    work = { data, counts: taskCounts(data.products), homeCounts: taskCounts(data.home ? [data.home] : []) }
++  } catch {
++    // An aggregate/projection failure must not remove the permitted shortcuts,
++    // fabricate zero work, or expose the exception to the UI.
++    work = null
++  }
++  const data = work?.data
++  const counts = work?.counts
++  const homeCounts = work?.homeCounts
++  const inventory = data?.inventory.kind === 'ok' ? data.inventory.value : null
+   return <Gutter><div className="dx-dash">
+     <header className="dx-dash__head"><h1>Bảng điều khiển</h1><p>Xin chào <strong>{user?.name || user?.email}</strong>{user?.role ? ` · ${roleName[user.role] ?? user.role}` : ''}</p></header>
+-    <p className="dx-dash-notice">Chỉ đọc: mở tài liệu để xử lý. Đây là snapshot lúc {data.observedAt}; không bảo đảm lần xuất bản sau sẽ được chấp nhận. Không suy thay đổi chưa xuất bản từ trạng thái bản nháp.</p>
++    <p className="dx-dash-notice">Chỉ đọc: mở tài liệu để xử lý. Đây là snapshot lúc {data?.observedAt ?? 'chưa xác định'}; không bảo đảm lần xuất bản sau sẽ được chấp nhận. Không suy thay đổi chưa xuất bản từ trạng thái bản nháp.</p>
+     {user?.role === 'translator' && <p className="dx-dash-notice">Bạn có thể soạn bản nháp theo quyền của mình; không có quyền duyệt hoặc xuất bản.</p>}
++    {!data || !counts || !homeCounts ? <p role="alert">Chưa đọc được bảng việc. Hãy tải lại.</p> : <>
+     <section aria-labelledby="dx-home-title"><h2 id="dx-home-title">Trang chủ · tính riêng</h2>{!data.homeAllowed ? <p>Không có quyền đọc Trang chủ.</p> : data.home ? <>
+       <DocumentState doc={data.home} /><p>{homeCounts.total} cặp tài liệu/ngôn ngữ có việc ở Trang chủ. Không cộng vào Sản phẩm.</p><details><summary>Việc Trang chủ</summary><Tasks docs={[data.home]} /></details>
+     </> : <p>Chưa đọc được Trang chủ.</p>}</section>
+@@ -75,6 +86,7 @@ export async function Dashboard({ initPageResult, payload, searchParams }: Admin
+       <Tasks docs={data.products} filter={filter} />
+       <details open><summary>Trạng thái Sản phẩm · KO/EN/VI</summary>{data.products.length ? data.products.map(doc => <DocumentState key={doc.id} doc={doc} />) : <p>Chưa có Sản phẩm trong phạm vi được đọc.</p>}</details>
+     </>}</section>
++    </>}
+     <section aria-labelledby="dx-links-title"><h2 id="dx-links-title">Lối tắt</h2>{open.length ? <ul className="dx-dash__cards">{open.map(s => <li key={s.href}><Link href={s.href}><strong>{s.label}</strong><span>{s.note}</span></Link></li>)}</ul> : <p>Tài khoản chưa có quyền truy cập mục nào.</p>}</section>
+   </div></Gutter>
+ }
+diff --git a/src/lib/dashboard-read.ts b/src/lib/dashboard-read.ts
+index 2b5632f..8cf1f86 100644
+--- a/src/lib/dashboard-read.ts
++++ b/src/lib/dashboard-read.ts
+@@ -10,6 +10,28 @@ export async function safeRead<T>(fn: () => Promise<T>): Promise<Read<T>> {
+     return { kind: error && typeof error === 'object' && 'status' in error && error.status === 403 ? 'denied' : 'error' }
+   }
+ }
++/** Four document workers, not an unbounded Promise.all over the page/inventory.
++ * Each worker fans out nine Local API finds (3 locales x draft/main/guest), so
++ * Products can have at most 36 top-level finds in flight. Payload relation reads
++ * and the adapter's connection pool are separate limits. Home runs afterwards.
++ */
++export const PRODUCT_CONCURRENCY = 4
++export async function mapProducts<T, R>(items: readonly T[], map: (item: T, index: number) => Promise<R>): Promise<R[]> {
++  const results = new Array<R>(items.length)
++  let next = 0, failed = false, failure: unknown
++  const worker = async () => {
++    while (!failed && next < items.length) {
++      const index = next++
++      try { results[index] = await map(items[index], index) }
++      catch (error) { if (!failed) { failed = true; failure = error } }
++    }
++  }
++  // Drain the workers before reporting failure: no new document is scheduled
++  // after an aggregate error, and no read is left running behind the fallback.
++  await Promise.all(Array.from({ length: Math.min(PRODUCT_CONCURRENCY, items.length) }, worker))
++  if (failed) throw failure
++  return results
++}
+ export const PAGE_SIZE = 20
+ export type DashboardData = { products: DocumentSnapshot[]; home: DocumentSnapshot | null; inventory: Read<{ total: number; pages: number; page: number }>; productsAllowed: boolean; homeAllowed: boolean; observedAt: string }
+ export async function readDashboard(payload: Payload, user: User | null, permissions: unknown, requestedPage: unknown): Promise<DashboardData> {
+@@ -37,12 +59,12 @@ export async function readDashboard(payload: Payload, user: User | null, permiss
+       data.inventory = { kind: 'ok', value: { total: count.value.totalDocs, pages, page } }
+       const list = await safeRead(() => payload.find({ collection: 'products', locale: 'ko', fallbackLocale: false, draft: true, user, overrideAccess: false, limit: PAGE_SIZE, page, sort: ['slug', 'id'], depth: 0 }))
+       if (list.kind !== 'ok') data.inventory = list
+-      else for (const item of list.value.docs) {
++      else data.products = await mapProducts(list.value.docs, async item => {
+         const id = String(item.id), source = await sources('products', id)
+         const name = locales.map(l => source.draft[l]).find(r => r.kind === 'ok' && typeof r.value?.name === 'string')
+         const title = name?.kind === 'ok' ? String(name.value?.name) : `Sản phẩm #${id}`
+-        data.products.push(snapshot('products', id, title, source, isEditorUser(user)))
+-      }
++        return snapshot('products', id, title, source, isEditorUser(user))
++      })
+     }
+   }
+   if (homeAllowed) data.home = snapshot('home', 'home-page', 'Trang chủ', await sources('home'), isEditorUser(user))
+diff --git a/tests/int/dashboard-snapshot.int.spec.ts b/tests/int/dashboard-snapshot.int.spec.ts
+index 01a293c..ee1d768 100644
+--- a/tests/int/dashboard-snapshot.int.spec.ts
++++ b/tests/int/dashboard-snapshot.int.spec.ts
+@@ -12,6 +12,7 @@ import {taskCounts} from '@/lib/dashboard-snapshot'
+ import {homeApprovalContext} from '../helpers/home-approval'
+ let p:Payload,admin:any,editor:any,translator:any
+ const locales=['ko','en','vi'] as const
++const evidenceFile=(name:string)=>(process.env.DASHBOARD_EVIDENCE_DIR || 'docs/admin-dashboard-dot1/evidence-db')+'/'+name
+ const permissions={collections:{products:{read:true}},globals:{'home-page':{read:true}}}
+ const pw=process.env.TEST_FIXTURE_PASSWORD || randomBytes(24).toString('hex')
+ const options=(locale:any,user=editor,draft=false)=>({locale,user,draft,overrideAccess:false,fallbackLocale:false as const})
+@@ -38,5 +39,31 @@ describe('Dashboard application reads on disposable fixture',()=>{
+  it('permission denied does not leak the other source',async()=>{const data=await readDashboard(p,translator,{collections:{products:{read:false}},globals:{'home-page':{read:false}}},'1');expect(data.products).toEqual([]);expect(data.home).toBeNull();expect(data.productsAllowed).toBe(false)})
+  it('readDashboard performs no mutation calls and leaves main/version data unchanged',async()=>{const before=await durable();const calls:string[]=[];const proxy=new Proxy(p,{get(target,key){if(['create','update','delete','updateGlobal','restoreVersion','restoreGlobalVersion'].includes(String(key)))return()=>{calls.push(String(key));throw Error('Mutation from dashboard')};return Reflect.get(target,key)}});await readDashboard(proxy,editor,permissions,'1');expect(calls).toEqual([]);expect(await durable()).toBe(before)})
+  it('dashboard missing set agrees with actual Home publish guard and refusal changes no durable state',async()=>{const before=await durable(),data=await readDashboard(p,editor,permissions,'1');expect(data.home!.cells[0].missing.map(m=>m.locale)).toEqual(['en','vi']);await expect(p.updateGlobal({slug:'home-page',...options('ko'),data:{_status:'published'}})).rejects.toMatchObject({status:409});expect(await durable()).toBe(before)})
+- it('records sanitized fixture inventory for browser checks',async()=>{const data=await readDashboard(p,editor,permissions,'1');writeFileSync('docs/admin-dashboard-dot1/evidence-db/dashboard-fixture-summary.json',JSON.stringify({inventory:data.inventory,products:data.products.map(d=>({id:d.id,title:d.title,links:d.cells.map(c=>c.href)})),home:data.home?.cells.map(c=>({locale:c.locale,href:c.href,missing:c.missing})),beforeBrowserContentHash:await durable()},null,2))})
++ it('records sanitized fixture inventory for browser checks',async()=>{const data=await readDashboard(p,editor,permissions,'1');writeFileSync(evidenceFile('dashboard-fixture-summary.json'),JSON.stringify({inventory:data.inventory,products:data.products.map(d=>({id:d.id,title:d.title,links:d.cells.map(c=>c.href)})),home:data.home?.cells.map(c=>({locale:c.locale,href:c.href,missing:c.missing})),beforeBrowserContentHash:await durable()},null,2))})
++ it('never-published Product: staff main succeeds and guest gets no document',async()=>{
++  const where={slug:{equals:'dashboard-fixture-02'}}
++  for(const locale of locales){
++   const staff=await p.find({collection:'products',...options(locale,translator),where,depth:0})
++   const guest=await p.find({collection:'products',locale,fallbackLocale:false,overrideAccess:false,draft:false,where,depth:0})
++   expect(staff.docs).toHaveLength(1);expect(staff.docs[0]._status).toBe('draft');expect(guest.docs).toHaveLength(0)
++  }
++ })
++ it('bounded real reads preserve ordering and record actual top-level find concurrency',async()=>{
++  let active=0,peak=0
++  const proxy=new Proxy(p,{get(target,key){if(key==='find')return async(opts:any)=>{const tracked=opts.collection==='products'&&!!opts.where?.id; if(tracked)peak=Math.max(peak,++active);try{return await target.find(opts)}finally{if(tracked)active--}};return Reflect.get(target,key)}})
++  const data=await readDashboard(proxy,editor,permissions,'1');expect(data.products.map(d=>Number(d.id))).toEqual(Array.from({length:20},(_,i)=>i+1));expect(peak).toBeGreaterThan(9);expect(peak).toBeLessThanOrEqual(36);expect(active).toBe(0)
++  writeFileSync(evidenceFile('real-concurrency.json'),JSON.stringify({productWorkersLimit:4,topLevelProductFindsPeak:peak,findsPerProduct:9,homeRunsAfterProducts:true,internalRelationQueriesNotCounted:true},null,2))
++ })
++ it('Product dependency matches real 409 after shared structure changes',async()=>{
++  const doc=await p.create({collection:'products',...options('ko',editor,true),draft:true,data:{name:'[FIXTURE] Product dependency KO',slug:'review-dependency-product',landing:[{blockType:'hero',tagline:'KO'}],translationStatus:'in-review'}})
++  await p.update({collection:'products',id:doc.id,...options('ko',editor,true),data:{translationStatus:'approved'}});await p.update({collection:'products',id:doc.id,...options('ko'),data:{_status:'published'}})
++  await p.update({collection:'products',id:doc.id,...options('en',editor,true),data:{name:'[FIXTURE] Product dependency EN'}});await p.update({collection:'products',id:doc.id,...options('en',editor,true),data:{translationStatus:'approved'}});await p.update({collection:'products',id:doc.id,...options('en'),data:{_status:'published'}})
++  const seen=await p.findByID({collection:'products',id:doc.id,...options('ko',editor,true),depth:0})
++  await p.update({collection:'products',id:doc.id,...options('ko',editor,true),data:{landing:seen.landing!.map(b=>({...b,tone:'dark'}))}})
++  await p.update({collection:'products',id:doc.id,...options('ko',editor,true),data:{translationStatus:'approved'}})
++  const data=await readDashboard(p,editor,permissions,'2'),cell=data.products.find(d=>d.id===String(doc.id))!.cells[0]
++  expect(cell.reason).toBe('DEPENDENCY');expect(cell.missing).toEqual([{locale:'en',href:`/admin/collections/products/${doc.id}?locale=en`}])
++  const before=await durable();await expect(p.update({collection:'products',id:doc.id,...options('ko'),data:{_status:'published'}})).rejects.toMatchObject({status:409});expect(await durable()).toBe(before)
++  writeFileSync(evidenceFile('product-dependency.json'),JSON.stringify({id:doc.id,missing:cell.missing,guardStatus:409,durableUnchanged:true},null,2))
++ })
+ })
+diff --git a/tests/unit/dashboard-concurrency.spec.ts b/tests/unit/dashboard-concurrency.spec.ts
+new file mode 100644
+index 0000000..cfb67ec
+--- /dev/null
++++ b/tests/unit/dashboard-concurrency.spec.ts
+@@ -0,0 +1,31 @@
++import {describe,it,expect,vi} from 'vitest'
++vi.mock('server-only',()=>({}))
++import {mapProducts,readDashboard} from '@/lib/dashboard-read'
++const gate=()=>{let resolve!:()=>void;const promise=new Promise<void>(r=>{resolve=r});return{promise,resolve}}
++describe('bounded Product aggregation',()=>{
++ it('at most four workers, out-of-order completion retains input order',async()=>{
++  const gates=Array.from({length:9},gate),started:number[]=[],finished:number[]=[];let active=0,peak=0
++  const work=mapProducts(gates,async(g,i)=>{started.push(i);peak=Math.max(peak,++active);await g.promise;active--;finished.push(i);return i*10})
++  await vi.waitFor(()=>expect(started).toEqual([0,1,2,3]));expect(peak).toBe(4)
++  gates[3].resolve();await vi.waitFor(()=>expect(started).toEqual([0,1,2,3,4]));gates.forEach(g=>g.resolve())
++  expect(await work).toEqual([0,10,20,30,40,50,60,70,80]);expect(finished[0]).toBe(3);expect(peak).toBe(4)
++ })
++ it('drains in-flight workers after failure and schedules no further Products',async()=>{
++  const gates=Array.from({length:4},gate),started:number[]=[];let completed=0,settled=false
++  const work=mapProducts([0,1,2,3,4,5],async n=>{started.push(n);await gates[n].promise;if(n===0)throw Error('aggregate failure');completed++;return n})
++  const outcome=work.then(()=>{throw Error('unexpected success')},e=>{settled=true;return e.message})
++  expect(started).toEqual([0,1,2,3]);gates[0].resolve();await Promise.resolve();await Promise.resolve();expect(settled).toBe(false)
++  gates.slice(1).forEach(g=>g.resolve());expect(await outcome).toBe('aggregate failure');expect(completed).toBe(3);expect(started).toEqual([0,1,2,3])
++ })
++ it('four Products fan out to 36 top-level Local API finds, not all inventory',async()=>{
++  const gates=Array.from({length:8},gate);const started=new Set<number>();let active=0,peak=0
++  const payload={count:vi.fn(async()=>({totalDocs:8})),find:vi.fn(async(opts:{where?:{id:{equals:string}}})=>{
++   if(!opts.where)return{docs:gates.map((_,i)=>({id:i+1}))}
++   const id=Number(opts.where.id.equals);started.add(id);peak=Math.max(peak,++active);await gates[id-1].promise;active--
++   return{docs:[{id,name:`P${id}`,translationStatus:'in-review',landing:[],landingApprovals:{},images:[]}]}
++  })}
++  const work=readDashboard(payload as never,{role:'editor'} as never,{collections:{products:{read:true}}},'1')
++  await vi.waitFor(()=>expect(active).toBe(36));expect([...started]).toEqual([1,2,3,4]);gates[3].resolve();await vi.waitFor(()=>expect(started.has(5)).toBe(true));gates.forEach(g=>g.resolve())
++  const data=await work;expect(data.products.map(p=>p.id)).toEqual(['1','2','3','4','5','6','7','8']);expect(peak).toBe(36);expect(active).toBe(0)
++ })
++})
+diff --git a/tests/unit/dashboard-fallback.spec.ts b/tests/unit/dashboard-fallback.spec.ts
+new file mode 100644
+index 0000000..760c499
+--- /dev/null
++++ b/tests/unit/dashboard-fallback.spec.ts
+@@ -0,0 +1,23 @@
++import {beforeEach,describe,it,expect,vi} from 'vitest'
++import {createElement,type ReactNode} from 'react'
++import {renderToStaticMarkup} from 'react-dom/server'
++vi.mock('@payloadcms/ui',()=>({Gutter:({children}:{children:ReactNode})=>createElement('div',null,children)}))
++vi.mock('next/link',()=>({default:({children,href}:{children:ReactNode;href:string})=>createElement('a',{href},children)}))
++vi.mock('@/lib/dashboard-read',()=>({readDashboard:vi.fn()}))
++import {readDashboard} from '@/lib/dashboard-read'
++import {Dashboard} from '@/components/admin/Dashboard'
++const props=(role='editor')=>({initPageResult:{req:{user:{role,email:'fixture@invalid.test'}},permissions:{collections:{products:{read:true},media:{read:true},'contact-submissions':{read:role==='admin'}},globals:{'home-page':{read:true}}}},payload:{},searchParams:{}})
++beforeEach(()=>vi.resetAllMocks())
++describe('aggregate fallback retains permitted dashboard shell',()=>{
++ it.each(['admin','editor','translator'])('%s still sees title and only allowed shortcuts on reader/snapshot failure',async role=>{
++  vi.mocked(readDashboard).mockRejectedValueOnce(new Error('SECRET_DB_URL_AND_TOKEN'))
++  const html=renderToStaticMarkup(await Dashboard(props(role) as never))
++  expect(html).toContain('Bảng điều khiển');expect(html).toContain('Chưa đọc được bảng việc. Hãy tải lại.');expect(html).toContain('Lối tắt');expect(html).toContain('href="/admin/collections/products"');expect(html).toContain('href="/admin/globals/home-page"')
++  expect(html.includes('href="/admin/collections/contact-submissions"')).toBe(role==='admin')
++  expect(html).not.toMatch(/SECRET_DB|cặp có việc|Chưa phát hiện điều kiện chặn|Trang 1\//)
++ })
++ it('also covers a task-count/projection failure after loading',async()=>{
++  vi.mocked(readDashboard).mockResolvedValueOnce({products:null} as never)
++  const html=renderToStaticMarkup(await Dashboard(props() as never));expect(html).toContain('Chưa đọc được bảng việc. Hãy tải lại.');expect(html).toContain('Lối tắt');expect(html).not.toContain('cặp có việc')
++ })
++})
+diff --git a/vercel.json b/vercel.json
+index be9dbc2..5343358 100644
+--- a/vercel.json
++++ b/vercel.json
+@@ -3,7 +3,8 @@
+   "git": {
+     "deploymentEnabled": {
+       "codex/admin-locale-unpublish-fix": false,
+-      "codex/preview-navigation-fix": false
++      "codex/preview-navigation-fix": false,
++      "codex/dashboard-phase-one": false
+     }
+   }
+ }

@@ -1,0 +1,107 @@
+{
+  "runId": "98f257ee-2785-4be7-ab68-18a24bb8de68",
+  "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+  "name": "dx-dashboard-diag-98f257ee",
+  "scope": "metadata only; NO DB connection or tests",
+  "snapshots": [
+    {
+      "index": 0,
+      "at": "2026-11-21T14:47:13.182Z",
+      "state": {
+        "status": "running",
+        "running": true,
+        "exitCode": 0,
+        "error": ""
+      },
+      "configuredBindings": {
+        "5432/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": ""
+          }
+        ]
+      },
+      "actualPorts": {
+        "5432/tcp": []
+      },
+      "dockerPort": "",
+      "network": {
+        "id": "a0811af976112f0d7325e73a841ba5b35a61cfc2fe3ae44750cab50bce1462e6",
+        "internal": true,
+        "members": [
+          "cc247f93de8a19da1240ff8de48ee33d926dff8915240e7ebfb090b86a0fe1e7"
+        ]
+      },
+      "attachments": [
+        {
+          "name": "dx-dashboard-diag-net-98f257ee",
+          "id": "a0811af976112f0d7325e73a841ba5b35a61cfc2fe3ae44750cab50bce1462e6",
+          "ip": "172.22.0.2"
+        }
+      ],
+      "mounts": [],
+      "resources": {
+        "memory": 805306368,
+        "nanoCPUs": 1000000000,
+        "pidsLimit": 128
+      }
+    },
+    {
+      "index": 1,
+      "at": "2026-11-21T14:47:22.418Z",
+      "state": {
+        "status": "running",
+        "running": true,
+        "exitCode": 0,
+        "error": ""
+      },
+      "configuredBindings": {
+        "5432/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": ""
+          }
+        ]
+      },
+      "actualPorts": {
+        "5432/tcp": []
+      },
+      "dockerPort": "",
+      "network": {
+        "id": "a0811af976112f0d7325e73a841ba5b35a61cfc2fe3ae44750cab50bce1462e6",
+        "internal": true,
+        "members": [
+          "cc247f93de8a19da1240ff8de48ee33d926dff8915240e7ebfb090b86a0fe1e7"
+        ]
+      },
+      "attachments": [
+        {
+          "name": "dx-dashboard-diag-net-98f257ee",
+          "id": "a0811af976112f0d7325e73a841ba5b35a61cfc2fe3ae44750cab50bce1462e6",
+          "ip": "172.22.0.2"
+        }
+      ],
+      "mounts": [],
+      "resources": {
+        "memory": 805306368,
+        "nanoCPUs": 1000000000,
+        "pidsLimit": 128
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "containerId": "cc247f93de8a19da1240ff8de48ee33d926dff8915240e7ebfb090b86a0fe1e7",
+      "removed": true
+    },
+    {
+      "networkId": "a0811af976112f0d7325e73a841ba5b35a61cfc2fe3ae44750cab50bce1462e6",
+      "removed": true
+    }
+  ],
+  "startedAt": "2026-11-21T14:47:09.470Z",
+  "networkId": "a0811af976112f0d7325e73a841ba5b35a61cfc2fe3ae44750cab50bce1462e6",
+  "containerId": "cc247f93de8a19da1240ff8de48ee33d926dff8915240e7ebfb090b86a0fe1e7",
+  "diagnosticComplete": true,
+  "finishedAt": "2026-11-21T14:47:29.182Z"
+}

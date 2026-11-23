@@ -3,7 +3,8 @@
   "git": {
     "deploymentEnabled": {
       "codex/admin-locale-unpublish-fix": false,
-      "codex/preview-navigation-fix": false
+      "codex/preview-navigation-fix": false,
+      "codex/dashboard-phase-one": false
     }
   }
 }

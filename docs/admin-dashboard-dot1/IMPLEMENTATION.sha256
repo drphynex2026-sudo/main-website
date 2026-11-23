@@ -1,0 +1,7 @@
+9be800a5b4304c2d150586f369f45b1dcbbdeb213d773c04217941204a589fb0  src/components/admin/Dashboard.tsx
+5ff58441b5e973424f5872b41b1b6e3b63344efdfe1f535de19cda79aaceb4a9  src/lib/dashboard-read.ts
+f33c676f6a104eba769b2da87ee38f7f8c50f8b6dc0a22c49d95ceca8a5b6248  src/lib/dashboard-snapshot.ts
+39bbffec2dad0b92e9258387f2a2123020373ad46a1be04a6dbd337e0326c3de  src/app/(payload)/custom.scss
+a9018240d56b1af1486978bc4b5bdd383dcd277179e5e3bc3dc32e856e3671c4  tests/unit/dashboard-snapshot.spec.ts
+3fb0881799ad9665d01056a98ec2259225ef443368e5f1bde774d9c927442ac1  tests/int/dashboard-snapshot.int.spec.ts
+aed6d3dd31f09c56103ed894646e471220a13befb5809068574f6ce1edba776f  docs/huong-dan-quan-tri.md

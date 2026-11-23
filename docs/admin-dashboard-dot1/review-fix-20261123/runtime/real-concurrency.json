@@ -1,0 +1,7 @@
+{
+  "productWorkersLimit": 4,
+  "topLevelProductFindsPeak": 36,
+  "findsPerProduct": 9,
+  "homeRunsAfterProducts": true,
+  "internalRelationQueriesNotCounted": true
+}
