@@ -1,0 +1,497 @@
+{
+  "observedAt": "2026-11-23T15:34:16.968Z",
+  "deployment": {
+    "id": "dpl_Vm1jvrB5kisYZ9hfSn6KboZg5ARY",
+    "sha": "e3e4eb04b8ce5432bad1945bb28cd365da5502d3",
+    "ready": "READY",
+    "plan": "hobby",
+    "regions": [
+      "iad1"
+    ]
+  },
+  "currentTeamPlan": "hobby",
+  "teamBillingStatus": "active",
+  "functions": [
+    {
+      "path": "[locale]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/[...rest]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/[...rest].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/[legal]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/[legal].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/brand",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/brand.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/contact",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/contact.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/ingredients",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/ingredients.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/ingredients/[slug]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/ingredients/[slug].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/journal",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/journal.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/journal/[slug]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/journal/[slug].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/partnership",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/partnership.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/products",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/products.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/products/[slug]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/products/[slug].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/products/line/[slug]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/products/line/[slug].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/stores",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/stores.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/technologies/[slug]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "[locale]/technologies/[slug].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_not-found",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_not-found.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "admin/[[...segments]]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "admin/[[...segments]].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_global-error",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_global-error.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_global-error.segments/_full.segment.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_global-error.segments/_global-error/__PAGE__.segment.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_global-error.segments/_tree.segment.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "_middleware",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "bom1",
+        "fra1",
+        "gru1",
+        "iad1",
+        "lhr1",
+        "sfo1",
+        "sin1",
+        "syd1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "api/[...slug]",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "api/[...slug].rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "api/graphql",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "api/graphql-playground",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "api/graphql-playground.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "api/graphql.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "preview",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "preview.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "preview/exit",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "preview/exit.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "sitemap.xml",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    },
+    {
+      "path": "sitemap.xml.rsc",
+      "runtime": "nodejs24.x",
+      "regions": [
+        "iad1"
+      ],
+      "memoryMB": 2048,
+      "timeoutSec": 300
+    }
+  ],
+  "otherOutputTypes": [
+    "lambda"
+  ],
+  "buildRegions": [
+    "sfo1"
+  ]
+}
